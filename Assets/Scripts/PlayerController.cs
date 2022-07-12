@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : Hittable
 {
-    //[RequireComponent(typeof)]
-    //INITIALIZE OBJECTS
+    #region INITIALIZE OBJECTS
     [Header("Components")]
+    public DuckSettings duckSettings;
     public Transform tr;
     public Rigidbody2D rb;
     public CapsuleCollider2D cl;
@@ -15,10 +15,11 @@ public class PlayerController : MonoBehaviour
     public Animator headAnim;
     public Animator bodyAnim;
     public Animator feetAnim;
+    #endregion
 
-
-    //INITIALIZE VARIABLES
+    #region INITIALIZE VARIABLES
     [Header("Movement")]
+    public float direction;
     public float speed;
     public float jumpSpeed;
     public int flapCount;
@@ -32,12 +33,16 @@ public class PlayerController : MonoBehaviour
     public float walkingAnimSpeed;
 
     [Header("Cooldowns")]
-    public float flapCooldown = 2;
-    public float peckCooldown = 2;
+    public float flapCooldown;
+    public float peckCooldown;
+    public float landingCooldown;
 
+    [Header("Stats")]
+    float damage;
+    #endregion
 
-    //NON-PUBLIC VARIABLES
-
+    #region PRIVATE VARIABLES
+    
     private Vector2 movementVector;
     private bool inputJump, inputPeck;
     int currentFlaps;
@@ -46,13 +51,19 @@ public class PlayerController : MonoBehaviour
     float anim_xvel; //xvelocity that is sent to the animations
     float anim_yvel;
 
-    
-    float flapCooldownTimer = 0;
-    float peckCooldownTimer = 0;
+    float flapCooldownTimer;
+    float peckCooldownTimer;
+    float landingCooldownTimer;
+    float hitstunCooldownTimer;
 
-
-    bool jumping, crouching, turning, isFalling, onGround;
+    bool jumping, crouching, turning, isFalling, onGround, inHitstun;
     int againstWall;
+
+    float attack;
+    float defense;
+    #endregion
+
+
 
 
     // START: is called before the first frame update
@@ -60,20 +71,28 @@ public class PlayerController : MonoBehaviour
     {
         tr = GetComponent<Transform>();
         rb = GetComponent<Rigidbody2D>();
-        cl = GetComponent<CapsuleCollider2D>();
-        //animator = GetComponentInChildren<Animator>();
+        cl = GetComponent<CapsuleCollider2D>();        
 
-        //Debug.Log(bodyAnim.GetBool("isJumping"));
-
-        //sprite.enabled = false;
         rb.simulated = true;
         canControl = true;
         isDead = false;
         onGround = false;
         canPeck = true;
+        inHitstun = false;
+
+        damage = 0;
+        speed = duckSettings.speed;
+        jumpSpeed = duckSettings.jumpHeight;
+        flapCount = duckSettings.flapCount;
+        flapHeight = duckSettings.flapHeight;
+        friction = duckSettings.friction;
+
+        attack = duckSettings.attack;
+        defense = duckSettings.defense;
+
+        flapCooldown = duckSettings.flapCooldown;
+        peckCooldown = duckSettings.peckCooldown;
     }
-
-
 
     private void Update()
     {
@@ -83,14 +102,12 @@ public class PlayerController : MonoBehaviour
     // FIXED UPDATE: updates in delta time
     private void FixedUpdate()
     {
-
-        NewMovementCode();
-
+        MovementCode();
         StateAssignmentCode();
-
         AnimationVariables();
-    }
 
+        
+    }
 
     void Cooldowns()
     {
@@ -136,9 +153,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-
-
-    void NewMovementCode()
+    void MovementCode()
     {
         //Basic sideways movement
         if (againstWall != movementVector.x)
@@ -163,9 +178,18 @@ public class PlayerController : MonoBehaviour
         {
             rb.velocity = new Vector2(rb.velocity.x, jumpSpeed * Time.deltaTime);
         }
+
+
+        if(movementVector.x > 0)
+        {
+            direction = 1;
+        }
+        else if(movementVector.x < 0)
+        {
+            direction = -1;
+        }
+
     }
-
-
 
     public void AnimationVariables()
     {
@@ -235,7 +259,7 @@ public class PlayerController : MonoBehaviour
 
     }
 
-
+    #region ONGROUND METHODS
     public bool getOnGround()
     {
         return onGround;
@@ -244,9 +268,9 @@ public class PlayerController : MonoBehaviour
     {
         onGround = newValue;
     }
+    #endregion
 
-
-    //INPUTS
+    #region INPUT METHODS
     public void Direction(InputAction.CallbackContext context)
     {
         movementVector = context.ReadValue<Vector2>();
@@ -294,6 +318,35 @@ public class PlayerController : MonoBehaviour
             rb.velocity = new Vector2(rb.velocity.x, flapHeight * Time.deltaTime);
             flapCooldownTimer = flapCooldown;
         }
+    }
+    #endregion
+
+
+
+    public override void GetHit(float damage, float knockback, float hitstun, Vector2 direction, knockbackType type)
+    {
+        this.damage += damage;
+        if (hitstun > 0)
+        {
+            inHitstun = true;
+        }
+
+        switch (type)
+        {
+            case knockbackType.Fixed:
+                rb.AddForce(direction * knockback);
+                break;
+            case knockbackType.Relative:
+                rb.AddForce(direction * knockback * movementVector);
+                break;
+            case knockbackType.Centered:
+                rb.AddForce(direction * knockback * movementVector);
+                break;
+        }
+
+        
+        
+        
     }
 
 

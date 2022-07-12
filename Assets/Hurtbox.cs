@@ -4,15 +4,16 @@ using UnityEngine;
 
 public class Hurtbox : MonoBehaviour
 {
+    Hittable hittable;
+
     // Start is called before the first frame update
     void Start()
     {
-        
+        hittable = this.transform.root.GetComponent<Hittable>();
     }
 
-    // Update is called once per frame
-    void Update()
+    public void GetHit(float damage, float knockback, float hitstun, Vector2 direction, Hittable.knockbackType type)
     {
-        
+        hittable.GetHit(damage, knockback, hitstun, direction, type);
     }
 }
