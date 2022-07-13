@@ -84,7 +84,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 1
-        y: 97
+        y: 169
         width: 35
         height: 22
       alignment: 0
@@ -105,7 +105,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 38
-        y: 97
+        y: 169
         width: 35
         height: 22
       alignment: 0
@@ -126,7 +126,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 75
-        y: 97
+        y: 169
         width: 35
         height: 22
       alignment: 0
@@ -146,8 +146,8 @@ TextureImporter:
       name: pekinW03
       rect:
         serializedVersion: 2
-        x: 1
-        y: 73
+        x: 112
+        y: 169
         width: 35
         height: 22
       alignment: 0
@@ -167,8 +167,8 @@ TextureImporter:
       name: pekinW04
       rect:
         serializedVersion: 2
-        x: 38
-        y: 73
+        x: 149
+        y: 169
         width: 35
         height: 22
       alignment: 0
@@ -188,8 +188,8 @@ TextureImporter:
       name: pekinW05
       rect:
         serializedVersion: 2
-        x: 75
-        y: 73
+        x: 1
+        y: 145
         width: 35
         height: 22
       alignment: 0
@@ -209,8 +209,8 @@ TextureImporter:
       name: pekinW06
       rect:
         serializedVersion: 2
-        x: 1
-        y: 49
+        x: 38
+        y: 145
         width: 35
         height: 22
       alignment: 0
@@ -230,8 +230,8 @@ TextureImporter:
       name: pekinW07
       rect:
         serializedVersion: 2
-        x: 38
-        y: 49
+        x: 75
+        y: 145
         width: 35
         height: 22
       alignment: 0
@@ -251,8 +251,8 @@ TextureImporter:
       name: pekinW08
       rect:
         serializedVersion: 2
-        x: 75
-        y: 49
+        x: 112
+        y: 145
         width: 35
         height: 22
       alignment: 0
@@ -272,8 +272,8 @@ TextureImporter:
       name: pekinW09
       rect:
         serializedVersion: 2
-        x: 1
-        y: 25
+        x: 149
+        y: 145
         width: 35
         height: 22
       alignment: 0
@@ -293,8 +293,8 @@ TextureImporter:
       name: pekinW10
       rect:
         serializedVersion: 2
-        x: 38
-        y: 25
+        x: 1
+        y: 121
         width: 35
         height: 22
       alignment: 0
@@ -314,8 +314,8 @@ TextureImporter:
       name: pekinW11
       rect:
         serializedVersion: 2
-        x: 75
-        y: 25
+        x: 38
+        y: 121
         width: 35
         height: 22
       alignment: 0
@@ -335,8 +335,8 @@ TextureImporter:
       name: pekinW12
       rect:
         serializedVersion: 2
-        x: 1
-        y: 1
+        x: 75
+        y: 121
         width: 35
         height: 22
       alignment: 0
@@ -356,8 +356,8 @@ TextureImporter:
       name: pekinW13
       rect:
         serializedVersion: 2
-        x: 38
-        y: 1
+        x: 112
+        y: 121
         width: 35
         height: 22
       alignment: 0
@@ -373,6 +373,405 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: pekinW14
+      rect:
+        serializedVersion: 2
+        x: 149
+        y: 121
+        width: 35
+        height: 22
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 00000000000000000800000000000000
+      internalID: 0
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: pekinW15
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 97
+        width: 35
+        height: 22
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 00000000000000000800000000000000
+      internalID: 0
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: pekinW16
+      rect:
+        serializedVersion: 2
+        x: 38
+        y: 97
+        width: 35
+        height: 22
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 00000000000000000800000000000000
+      internalID: 0
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: pekinW17
+      rect:
+        serializedVersion: 2
+        x: 75
+        y: 97
+        width: 35
+        height: 22
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 00000000000000000800000000000000
+      internalID: 0
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: pekinW18
+      rect:
+        serializedVersion: 2
+        x: 112
+        y: 97
+        width: 35
+        height: 22
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 00000000000000000800000000000000
+      internalID: 0
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: pekinW19
+      rect:
+        serializedVersion: 2
+        x: 149
+        y: 97
+        width: 35
+        height: 22
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 00000000000000000800000000000000
+      internalID: 0
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: pekinW20
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 73
+        width: 35
+        height: 22
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 00000000000000000800000000000000
+      internalID: 0
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: pekinW21
+      rect:
+        serializedVersion: 2
+        x: 38
+        y: 73
+        width: 35
+        height: 22
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 00000000000000000800000000000000
+      internalID: 0
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: pekinW22
+      rect:
+        serializedVersion: 2
+        x: 75
+        y: 73
+        width: 35
+        height: 22
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 00000000000000000800000000000000
+      internalID: 0
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: pekinW23
+      rect:
+        serializedVersion: 2
+        x: 112
+        y: 73
+        width: 35
+        height: 22
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 00000000000000000800000000000000
+      internalID: 0
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: pekinW24
+      rect:
+        serializedVersion: 2
+        x: 149
+        y: 73
+        width: 35
+        height: 22
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 00000000000000000800000000000000
+      internalID: 0
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: pekinW25
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 49
+        width: 35
+        height: 22
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 00000000000000000800000000000000
+      internalID: 0
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: pekinW26
+      rect:
+        serializedVersion: 2
+        x: 38
+        y: 49
+        width: 35
+        height: 22
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 00000000000000000800000000000000
+      internalID: 0
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: pekinW27
+      rect:
+        serializedVersion: 2
+        x: 75
+        y: 49
+        width: 35
+        height: 22
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 00000000000000000800000000000000
+      internalID: 0
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: pekinW28
+      rect:
+        serializedVersion: 2
+        x: 112
+        y: 49
+        width: 35
+        height: 22
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 00000000000000000800000000000000
+      internalID: 0
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: pekinW29
+      rect:
+        serializedVersion: 2
+        x: 149
+        y: 49
+        width: 35
+        height: 22
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 00000000000000000800000000000000
+      internalID: 0
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: pekinW30
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 25
+        width: 35
+        height: 22
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 00000000000000000800000000000000
+      internalID: 0
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: pekinW31
+      rect:
+        serializedVersion: 2
+        x: 38
+        y: 25
+        width: 35
+        height: 22
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 00000000000000000800000000000000
+      internalID: 0
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: pekinW32
+      rect:
+        serializedVersion: 2
+        x: 75
+        y: 25
+        width: 35
+        height: 22
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 00000000000000000800000000000000
+      internalID: 0
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -384,19 +783,38 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
+      pekinW25: 0
       pekinW00: 8855863886269720193
+      pekinW30: 0
       pekinW13: 6524632983087093972
+      pekinW17: 0
       pekinW05: 9117869472002677610
+      pekinW23: 0
+      pekinW14: 0
       pekinW01: 4721826928780586392
       pekinW11: -4906667263286392737
+      pekinW21: 0
+      pekinW16: 0
+      pekinW31: 0
       pekinW10: 2057698240151819624
+      pekinW26: 0
       pekinW06: -3292525006321435483
       pekinW04: 163922158737677481
       pekinW09: -4014532638039463950
+      pekinW15: 0
+      pekinW32: 0
+      pekinW29: 0
       pekinW08: 6428628701409340950
+      pekinW18: 0
+      pekinW28: 0
+      pekinW19: 0
       pekinW02: -287521914309714701
+      pekinW20: 0
+      pekinW22: 0
+      pekinW24: 0
       pekinW03: -1198752387809571084
       pekinW12: -8874893677808291994
+      pekinW27: 0
       pekinW07: -7141484437581112515
   spritePackingTag: 
   pSDRemoveMatte: 0

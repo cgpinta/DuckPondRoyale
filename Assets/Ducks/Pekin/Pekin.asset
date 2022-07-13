@@ -15,14 +15,15 @@ MonoBehaviour:
   health: 5
   attack: 5
   defense: 5
-  speed: 10
-  jumpHeight: 200
+  speed: 100
+  maxSpeed: 10
+  jumpHeight: 500
   flapCount: 2
   flapHeight: 500
   friction: 5
   flapCooldown: 0.2
   peckCooldown: 0.2
-  honkCooldown: 0.2
+  honkCooldown: 1
   swimCooldown: 0.2
   throwCooldown: 0.2
   landingCooldown: 0.2

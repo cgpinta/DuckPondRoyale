@@ -6,7 +6,7 @@ AnimationClip:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pekinB_Falling
+  m_Name: pekinL_Crouch
   serializedVersion: 6
   m_Legacy: 0
   m_Compressed: 0
@@ -20,9 +20,15 @@ AnimationClip:
   m_PPtrCurves:
   - curve:
     - time: 0
-      value: {fileID: 0, guid: fae53f9f216ef3e45bb8f5ce332d3da4, type: 3}
-    - time: 0.060000002
-      value: {fileID: 0, guid: fae53f9f216ef3e45bb8f5ce332d3da4, type: 3}
+      value: {fileID: -896450936086706415, guid: bfab451ce7be04b48882ce10285fe03d, type: 3}
+    - time: 0.1
+      value: {fileID: -3008535695914654454, guid: bfab451ce7be04b48882ce10285fe03d, type: 3}
+    - time: 0.2
+      value: {fileID: 6919203243978878761, guid: bfab451ce7be04b48882ce10285fe03d, type: 3}
+    - time: 0.3
+      value: {fileID: -2087756151535211959, guid: bfab451ce7be04b48882ce10285fe03d, type: 3}
+    - time: 0.36
+      value: {fileID: -2087756151535211959, guid: bfab451ce7be04b48882ce10285fe03d, type: 3}
     attribute: m_Sprite
     path: 
     classID: 212
@@ -42,14 +48,17 @@ AnimationClip:
       customType: 23
       isPPtrCurve: 1
     pptrCurveMapping:
-    - {fileID: 0, guid: fae53f9f216ef3e45bb8f5ce332d3da4, type: 3}
-    - {fileID: 0, guid: fae53f9f216ef3e45bb8f5ce332d3da4, type: 3}
+    - {fileID: -896450936086706415, guid: bfab451ce7be04b48882ce10285fe03d, type: 3}
+    - {fileID: -3008535695914654454, guid: bfab451ce7be04b48882ce10285fe03d, type: 3}
+    - {fileID: 6919203243978878761, guid: bfab451ce7be04b48882ce10285fe03d, type: 3}
+    - {fileID: -2087756151535211959, guid: bfab451ce7be04b48882ce10285fe03d, type: 3}
+    - {fileID: -2087756151535211959, guid: bfab451ce7be04b48882ce10285fe03d, type: 3}
   m_AnimationClipSettings:
     serializedVersion: 2
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
-    m_StopTime: 0.1
+    m_StopTime: 0.4
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0

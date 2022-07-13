@@ -6,13 +6,7 @@ public class PlayerGroundDetection : MonoBehaviour
 {
 
     public PlayerController playerController;
-
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        //playerController = GetComponentInParent<PlayerController>();
-    }
+    List<Collider2D> colliders = new List<Collider2D>();
 
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -20,6 +14,7 @@ public class PlayerGroundDetection : MonoBehaviour
         Debug.Log("entered");
         if (!collision.isTrigger)
         {
+            colliders.Add(collision);
             Debug.Log("GROUNDED");
             playerController.setOnGround(true);
         }
@@ -27,9 +22,8 @@ public class PlayerGroundDetection : MonoBehaviour
 
     private void OnTriggerStay2D(Collider2D collision)
     {
-        if (!collision.isTrigger && !playerController.getOnGround())
+        if (colliders.Count > 0)
         {
-            Debug.Log("GROUNDED");
             playerController.setOnGround(true);
         }
     }
@@ -38,6 +32,7 @@ public class PlayerGroundDetection : MonoBehaviour
     {
         if (!collision.isTrigger)
         {
+            colliders.Remove(collision);
             Debug.Log("NOT GROUNDED");
             playerController.setOnGround(false);
         }

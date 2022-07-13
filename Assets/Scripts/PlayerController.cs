@@ -17,10 +17,11 @@ public class PlayerController : Hittable
     public Animator feetAnim;
     #endregion
 
-    #region INITIALIZE VARIABLES
+    #region VARIABLES
     [Header("Movement")]
     public float direction;
     public float speed;
+    public float maxSpeed;
     public float jumpSpeed;
     public int flapCount;
     public float flapHeight;
@@ -35,24 +36,25 @@ public class PlayerController : Hittable
     [Header("Cooldowns")]
     public float flapCooldown;
     public float peckCooldown;
+    public float honkCooldown;
     public float landingCooldown;
 
     [Header("Stats")]
     float damage;
-    #endregion
 
-    #region PRIVATE VARIABLES
+
     
     private Vector2 movementVector;
     private bool inputJump, inputPeck;
     int currentFlaps;
     bool canControl, isDead;
-    bool canPeck, canFlap;
+    bool canPeck, canFlap, canHonk;
     float anim_xvel; //xvelocity that is sent to the animations
     float anim_yvel;
 
     float flapCooldownTimer;
     float peckCooldownTimer;
+    float honkCooldownTimer;
     float landingCooldownTimer;
     float hitstunCooldownTimer;
 
@@ -62,9 +64,6 @@ public class PlayerController : Hittable
     float attack;
     float defense;
     #endregion
-
-
-
 
     // START: is called before the first frame update
     void Start()
@@ -82,6 +81,7 @@ public class PlayerController : Hittable
 
         damage = 0;
         speed = duckSettings.speed;
+        maxSpeed = duckSettings.maxSpeed;
         jumpSpeed = duckSettings.jumpHeight;
         flapCount = duckSettings.flapCount;
         flapHeight = duckSettings.flapHeight;
@@ -92,6 +92,8 @@ public class PlayerController : Hittable
 
         flapCooldown = duckSettings.flapCooldown;
         peckCooldown = duckSettings.peckCooldown;
+        honkCooldown = duckSettings.honkCooldown;
+        landingCooldown = duckSettings.landingCooldown;
     }
 
     private void Update()
@@ -130,11 +132,28 @@ public class PlayerController : Hittable
         {
             canPeck = true;
         }
+
+        if(honkCooldownTimer > 0)
+        {
+            honkCooldownTimer -= Time.deltaTime;
+        }
+        else
+        {
+            canHonk = true;
+        }
     }
 
     //whenever a state variable is set, it is set in here
     void StateAssignmentCode()
     {
+        if(onGround && movementVector.y < 0)
+        {
+            crouching = true;
+        }
+        else
+        {
+            crouching = false;
+        }
 
         if (rb.velocity.y < 0)
             isFalling = true;
@@ -155,14 +174,25 @@ public class PlayerController : Hittable
 
     void MovementCode()
     {
+        //rb.velocity += Vector2.right * movementVector.x * Time.deltaTime;
         //Basic sideways movement
-        if (againstWall != movementVector.x)
+        if (onGround)
         {
-            rb.velocity += Vector2.right * speed * movementVector.x *Time.deltaTime;
-            //rb.velocity = new Vector2(movementVector.x * speed, rb.velocity.y);
-            //rb.AddForce(new Vector2(movementVector.x * speed, rb.velocity.y));
-        
+            if(Mathf.Abs(rb.velocity.x) < maxSpeed)
+            {
+                rb.velocity += Vector2.right * speed * movementVector.x * Time.deltaTime;
+            }
         }
+        else
+        {
+            rb.velocity += Vector2.right * maxSpeed * movementVector.x * Time.deltaTime;
+        }
+
+        if(Mathf.Abs(rb.velocity.x) < 0.1)
+        {
+            rb.velocity = new Vector2(0, rb.velocity.y);
+        }
+        
 
         //if jump button pressed longer, player jumps higher
         if (rb.velocity.y < 0)
@@ -222,6 +252,11 @@ public class PlayerController : Hittable
         bodyAnim.SetFloat("yVelocity", anim_yvel);
         feetAnim.SetFloat("yVelocity", anim_yvel);
 
+        wingAnim.SetBool("isCrouching", crouching);
+        headAnim.SetBool("isCrouching", crouching);
+        bodyAnim.SetBool("isCrouching", crouching);
+        //feetAnim.SetBool("isCrouching", crouching);
+
         //SET ANIMATION PARAMETERS FOR FEET
         if (onGround)
         {
@@ -237,7 +272,8 @@ public class PlayerController : Hittable
             bodyAnim.SetFloat("Speed", 0);
             feetAnim.SetFloat("Speed", 0);
         }
-            
+
+                      
 
 
         //FLIP CHARACTER THE DIRECTION THEY MOVE
@@ -319,6 +355,22 @@ public class PlayerController : Hittable
             flapCooldownTimer = flapCooldown;
         }
     }
+    public void Honk()
+    {
+        if (canHonk)
+        {
+            canHonk = false;
+            currentFlaps--;
+            wingAnim.SetTrigger("Honk");
+            headAnim.SetTrigger("Honk");
+            bodyAnim.SetTrigger("Honk");
+            feetAnim.SetTrigger("Honk");
+            honkCooldownTimer = honkCooldown;
+        }
+    }
+
+
+
     #endregion
 
 

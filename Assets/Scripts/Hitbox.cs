@@ -4,8 +4,8 @@ using UnityEngine;
 
 public enum knockbackType
 {
-    Fixed,                  //The direction of knockback pushes away in the same direction no matter the direction of the hitbox owner
-    Relative,               //The direction of knockback pushes away depending on the hitbox owner's direction
+    Relative,                //The direction of knockback pushes away depending on the hitbox owner's direction  
+    Fixed,                   //The direction of knockback pushes away in the same direction no matter the direction of the hitbox owner
     Centered                //The direction of knockback pushes away from the center of the hitbox
 }
 public class Hitbox : MonoBehaviour
