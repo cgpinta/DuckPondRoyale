@@ -17,9 +17,9 @@ MonoBehaviour:
   defense: 5
   speed: 100
   maxSpeed: 10
-  jumpHeight: 500
+  jumpHeight: 10
   flapCount: 2
-  flapHeight: 500
+  flapHeight: 5
   friction: 5
   flapCooldown: 0.2
   peckCooldown: 0.2

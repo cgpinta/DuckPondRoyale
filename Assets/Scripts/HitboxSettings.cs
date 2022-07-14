@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "HitboxSettings", menuName = "Duck Royale/New Hitbox Settings")]
-public class Attack : ScriptableObject
+public class HitboxSettings : ScriptableObject
 {
-    [SerializeField] float damage;
-    [SerializeField] float knockback;
-    [SerializeField] float hitstun;
-    [SerializeField] Vector2 direction;
+    [SerializeField] public float damage;
+    [SerializeField] public float knockback;
+    [SerializeField] public float hitstun;
+    [SerializeField] public Vector2 angle;
+    [SerializeField] public knockbackType type;
 }

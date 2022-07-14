@@ -10,26 +10,56 @@ public enum knockbackType
 }
 public class Hitbox : MonoBehaviour
 {
+    public HitboxSettings settings;
     [SerializeField] float damage;
     [SerializeField] float knockback;
     [SerializeField] float hitstun;
     [SerializeField] Vector2 angle;
-    [SerializeField] Hittable.knockbackType type;
+    [SerializeField] knockbackType type;
 
+    private void Start()
+    {
+        damage = settings.damage;
+        knockback = settings.knockback;
+        hitstun = settings.hitstun; 
+        angle = settings.angle;
+        type = settings.type;
+    }
+
+    private void Update()
+    {
+        if(settings == null) { return; }
+        if (damage != settings.damage) { damage = settings.damage; }
+        if (knockback != settings.knockback) { knockback = settings.knockback; }
+        if (hitstun != settings.hitstun) { hitstun = settings.hitstun; }
+        if (angle != settings.angle) { angle = settings.angle; }
+        if (type != settings.type) { type = settings.type; }
+    }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         Debug.Log("HIT");
         if (collision.gameObject.tag == "Hurtbox" && collision.gameObject.transform.root != this.gameObject.transform.root)
         {
+            float direction;
             Hurtbox hb = collision.GetComponent<Hurtbox>();
             Vector2 newAngle = new Vector2();
 
             switch (type)
             {
-                case Hittable.knockbackType.Relative:
-                    float direction = this.gameObject.transform.root.GetComponent<PlayerController>().direction;
+                case knockbackType.Relative:
+                    
+                    direction = this.gameObject.transform.root.GetComponent<PlayerController>().direction;
+                    Debug.Log(direction);
                     newAngle = new Vector2(angle.x * direction, angle.y);
+                    break;
+                case knockbackType.Centered:
+                    direction = this.gameObject.transform.root.GetComponent<PlayerController>().direction;
+                    Vector2 hypotenuse = this.gameObject.transform.root.position - collision.gameObject.transform.root.position;
+                    Vector2 horizontal = new Vector2(direction, 0);
+                    float angleDegree = Vector2.Angle(from: horizontal, to: hypotenuse);
+                    newAngle = (Vector2)(Quaternion.Euler(0, 0, angleDegree) * Vector2.right);
+
                     break;
                 default:
                     newAngle = angle;

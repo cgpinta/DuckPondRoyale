@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEditor.Animations;
 
 
 [CreateAssetMenu(fileName = "DuckBreed", menuName = "Duck Royale/New Duck Breed")]
@@ -39,7 +38,6 @@ public class DuckSettings : ScriptableObject
     [Header("Asthetics")]
     //[SerializeField] 
     GameObject duckObject;
-    [SerializeField] AnimatorController inGameAnimator;         //used in-game
     [SerializeField] Sprite inGameSprite;                       //used for SpriteRenderer
     [SerializeField] Sprite CSS;                                //used in CSS
     #endregion

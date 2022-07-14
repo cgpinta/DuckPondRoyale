@@ -36,7 +36,9 @@ public class PlayerController : Hittable
     [Header("Cooldowns")]
     public float flapCooldown;
     public float peckCooldown;
+    public float crouchPeckCooldown;
     public float honkCooldown;
+    public float crouchHonkCooldown;
     public float landingCooldown;
 
     [Header("Stats")]
@@ -174,8 +176,12 @@ public class PlayerController : Hittable
 
     void MovementCode()
     {
-        //rb.velocity += Vector2.right * movementVector.x * Time.deltaTime;
         //Basic sideways movement
+        if(onGround && (movementVector.x > 0 && rb.velocity.x < 0 || movementVector.x < 0 && rb.velocity.x > 0))
+        {
+            rb.velocity = new Vector2(0, rb.velocity.y);
+        }
+
         if (onGround)
         {
             if(Mathf.Abs(rb.velocity.x) < maxSpeed)
@@ -192,7 +198,7 @@ public class PlayerController : Hittable
         {
             rb.velocity = new Vector2(0, rb.velocity.y);
         }
-        
+
 
         //if jump button pressed longer, player jumps higher
         if (rb.velocity.y < 0)
@@ -206,7 +212,7 @@ public class PlayerController : Hittable
         //jump
         if (inputJump && onGround)
         {
-            rb.velocity = new Vector2(rb.velocity.x, jumpSpeed * Time.deltaTime);
+            rb.velocity = new Vector2(rb.velocity.x, jumpSpeed);
         }
 
 
@@ -337,7 +343,8 @@ public class PlayerController : Hittable
             headAnim.SetTrigger("Peck");
             bodyAnim.SetTrigger("Peck");
             feetAnim.SetTrigger("Peck");
-            peckCooldownTimer = peckCooldown;
+            if (crouching) { peckCooldownTimer = crouchPeckCooldown; }
+            else { peckCooldownTimer = peckCooldown; }
         }
     }
 
@@ -351,7 +358,7 @@ public class PlayerController : Hittable
             headAnim.SetTrigger("Flap");
             bodyAnim.SetTrigger("Flap");
             feetAnim.SetTrigger("Flap");
-            rb.velocity = new Vector2(rb.velocity.x, flapHeight * Time.deltaTime);
+            rb.velocity = new Vector2(rb.velocity.x, flapHeight);
             flapCooldownTimer = flapCooldown;
         }
     }
@@ -365,7 +372,8 @@ public class PlayerController : Hittable
             headAnim.SetTrigger("Honk");
             bodyAnim.SetTrigger("Honk");
             feetAnim.SetTrigger("Honk");
-            honkCooldownTimer = honkCooldown;
+            if (crouching) { honkCooldownTimer = crouchHonkCooldown; }
+            else { honkCooldownTimer = honkCooldown; }
         }
     }
 
@@ -381,24 +389,20 @@ public class PlayerController : Hittable
         if (hitstun > 0)
         {
             inHitstun = true;
+            hitstunCooldownTimer = hitstun;
         }
 
-        switch (type)
-        {
-            case knockbackType.Fixed:
-                rb.AddForce(direction * knockback);
-                break;
-            case knockbackType.Relative:
-                rb.AddForce(direction * knockback * movementVector);
-                break;
-            case knockbackType.Centered:
-                rb.AddForce(direction * knockback * movementVector);
-                break;
-        }
+        rb.velocity = direction * knockback * movementVector;
 
-        
-        
-        
+        //switch (type)
+        //{
+        //    case knockbackType.Fixed:
+        //        rb.AddForce(direction * knockback);
+        //        break;
+        //    default:
+        //        rb.velocity = (direction * knockback * movementVector);
+        //        break;
+        //}
     }
 
 

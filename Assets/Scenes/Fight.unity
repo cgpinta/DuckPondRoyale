@@ -274,6 +274,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d31557678f67a6a43ba7059ebfe0e694, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  settings: {fileID: 11400000, guid: 6daa2a218046acb4aa5aabe7bf72ea92, type: 2}
   damage: 0
   knockback: 500
   hitstun: 10
@@ -483,8 +484,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 476076223}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.71, y: -0.4, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 0.24, y: -4.66, z: 0}
+  m_LocalScale: {x: 9.078, y: 1.0305, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 12835290}
@@ -557,7 +558,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 10
+  orthographic size: 9.2383995
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -581,7 +582,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 519420028}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -10}
+  m_LocalPosition: {x: 0.028824652, y: 0.37, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -724,7 +725,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 610102066}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.6351, y: -3.7119, z: 0}
+  m_LocalPosition: {x: 0.24, y: -7.63, z: 0}
   m_LocalScale: {x: 48.1808, y: 4.736914, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1009,15 +1010,17 @@ MonoBehaviour:
   maxSpeed: 0
   jumpSpeed: 300
   flapCount: 5
-  flapHeight: 1000
+  flapHeight: 10
   friction: 5
   fallMultiplier: 8
   lowJumpMultiplier: 4
   walkingAnimSpeed: 0.1
   flapCooldown: 0.2
   peckCooldown: 0.2
-  honkCooldown: 0
-  landingCooldown: 0
+  crouchPeckCooldown: 0.1
+  honkCooldown: 1
+  crouchHonkCooldown: 0.2
+  landingCooldown: 0.2
 --- !u!70 &836431588
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -1063,7 +1066,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 836431586}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.0111753475, y: 2.09, z: 0.30577227}
+  m_LocalPosition: {x: 0.04, y: -2.51, z: 0.30577227}
   m_LocalScale: {x: 3, y: 3, z: 3}
   m_ConstrainProportionsScale: 1
   m_Children:
@@ -1309,6 +1312,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d31557678f67a6a43ba7059ebfe0e694, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  settings: {fileID: 11400000, guid: 0f6d4cc94462d0847a9990b2bd69a8af, type: 2}
   damage: 20
   knockback: 100
   hitstun: 0
@@ -1375,6 +1379,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d31557678f67a6a43ba7059ebfe0e694, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  settings: {fileID: 11400000, guid: 710092cb278d9184199157ca673b5409, type: 2}
   damage: 0
   knockback: 100
   hitstun: 25
@@ -1532,7 +1537,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1213954006}
-  - component: {fileID: 1213954007}
   m_Layer: 0
   m_Name: 'Hitbox: Crouched Honk'
   m_TagString: Untagged
@@ -1556,23 +1560,6 @@ Transform:
   m_Father: {fileID: 1453155100}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1213954007
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1213954005}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d31557678f67a6a43ba7059ebfe0e694, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  damage: 0
-  knockback: 80
-  hitstun: 25
-  angle: {x: 1, y: 0}
-  type: 1
 --- !u!1 &1241513823
 GameObject:
   m_ObjectHideFlags: 0
@@ -2236,6 +2223,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d31557678f67a6a43ba7059ebfe0e694, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  settings: {fileID: 11400000, guid: a67c81ba204d8ff449d507ad9b204756, type: 2}
   damage: 5
   knockback: 100
   hitstun: 0
@@ -2392,6 +2380,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d31557678f67a6a43ba7059ebfe0e694, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  settings: {fileID: 11400000, guid: 861d8b546576b234a9da09ef259e5473, type: 2}
   damage: 5
   knockback: 100
   hitstun: 0
