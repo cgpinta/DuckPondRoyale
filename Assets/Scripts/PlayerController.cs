@@ -12,6 +12,8 @@ public class PlayerController : Hittable
     public Transform tr;
     public Rigidbody2D rb;
     public CapsuleCollider2D cl;
+
+    Animators anims;
     public Animator wingAnim;
     public Animator headAnim;
     public Animator bodyAnim;
@@ -110,11 +112,16 @@ public class PlayerController : Hittable
         honkCooldown = duckSettings.honkCooldown;
         swimCooldown = duckSettings.swimCooldown;
         landingCooldown = duckSettings.landingCooldown;
+
+        anims = new Animators(wingAnim, headAnim, bodyAnim, feetAnim);
     }
 
     private void Update()
     {
-        Cooldowns();
+        if (pView.IsMine)
+        {
+            Cooldowns();
+        }
     }
 
     // FIXED UPDATE: updates in delta time
@@ -253,6 +260,28 @@ public class PlayerController : Hittable
 
     public void AnimationVariables()
     {
+        #region Set Bool Triggers to false if True
+        if (anims.Head.GetBool("PeckTrigger"))
+        {
+            anims.SetBoolForAll("PeckTrigger", false);
+            Debug.Log("Disabling Peck");
+        }
+        if (anims.Head.GetBool("HonkTrigger"))
+        {
+            anims.SetBoolForAll("HonkTrigger", false);
+            Debug.Log("Disabling Honk");
+        }
+        if (anims.Head.GetBool("FlapTrigger"))
+        {
+            anims.SetBoolForAll("FlapTrigger", false);
+        }
+        if (anims.Head.GetBool("SwimTrigger"))
+        {
+            anims.SetBoolForAll("SwimTrigger", false);
+
+        }
+        #endregion
+
         //--------ANIMATION STUFF------------//
 
         if (rb.velocity.x > 0.01 || rb.velocity.x < -0.01)
@@ -268,39 +297,18 @@ public class PlayerController : Hittable
         anim_xvel = anim_xvel * walkingAnimSpeed;
 
 
-        //Debug.Log(Mathf.Abs(anim_xvel));
-
-
-
-        //SET ANIMATION PARAMETERS FOR BODY
-
-        //bodyAnim.SetBool("isJumping", !onGround);
-        //bodyAnim.SetBool("isTurning", turning);
-
-        wingAnim.SetFloat("yVelocity", anim_yvel);
-        headAnim.SetFloat("yVelocity", anim_yvel);
-        bodyAnim.SetFloat("yVelocity", anim_yvel);
-        feetAnim.SetFloat("yVelocity", anim_yvel);
-
-        wingAnim.SetBool("isCrouching", crouching);
-        headAnim.SetBool("isCrouching", crouching);
-        bodyAnim.SetBool("isCrouching", crouching);
-        //feetAnim.SetBool("isCrouching", crouching);
+        //SET ANIMATION PARAMETERS FOR 
+        anims.SetFloatForAll("yVelocity", anim_yvel);
+        anims.SetBoolForAll("isCrouching", crouching);
 
         //SET ANIMATION PARAMETERS FOR FEET
         if (onGround)
         {
-            wingAnim.SetFloat("Speed", Mathf.Abs(anim_xvel));
-            headAnim.SetFloat("Speed", Mathf.Abs(anim_xvel));
-            bodyAnim.SetFloat("Speed", Mathf.Abs(anim_xvel));
-            feetAnim.SetFloat("Speed", Mathf.Abs(anim_xvel));
+            anims.SetFloatForAll("Speed", Mathf.Abs(anim_xvel));
         }
         else
         {
-            wingAnim.SetFloat("Speed", 0);
-            headAnim.SetFloat("Speed", 0);
-            bodyAnim.SetFloat("Speed", 0);
-            feetAnim.SetFloat("Speed", 0);
+            anims.SetFloatForAll("Speed", 0);
         }
 
                       
@@ -359,14 +367,11 @@ public class PlayerController : Hittable
 
     public void Peck(InputAction.CallbackContext context)
     {
-        if (canPeck)
+        if (canPeck && pView.IsMine)
         {
             canPeck = false;
             inputPeck = context.performed;
-            wingAnim.SetTrigger("Peck");
-            headAnim.SetTrigger("Peck");
-            bodyAnim.SetTrigger("Peck");
-            feetAnim.SetTrigger("Peck");
+            anims.SetBoolForAll("PeckTrigger", true);
             if (crouching) { peckCooldownTimer = crouchPeckCooldown; }
             else { peckCooldownTimer = peckCooldown; }
         }
@@ -374,48 +379,36 @@ public class PlayerController : Hittable
 
     public void Flap()
     {
-        if (canFlap)
+        if (canFlap && pView.IsMine)
         {
             canFlap = false;
             currentFlaps--;
-            wingAnim.SetTrigger("Flap");
-            headAnim.SetTrigger("Flap");
-            bodyAnim.SetTrigger("Flap");
-            feetAnim.SetTrigger("Flap");
+            anims.SetBoolForAll("FlapTrigger", true);
             rb.velocity = new Vector2(rb.velocity.x, flapHeight);
             flapCooldownTimer = flapCooldown;
         }
     }
     public void Honk()
     {
-        if (canHonk)
+        if (canHonk && pView.IsMine)
         {
             canHonk = false;
             currentFlaps--;
-            wingAnim.SetTrigger("Honk");
-            headAnim.SetTrigger("Honk");
-            bodyAnim.SetTrigger("Honk");
-            feetAnim.SetTrigger("Honk");
+            anims.SetBoolForAll("HonkTrigger", true);
             if (crouching) { honkCooldownTimer = crouchHonkCooldown; }
             else { honkCooldownTimer = honkCooldown; }
         }
     }
     public void Swim()
     {
-        if (canSwim)
+        if (canSwim && pView.IsMine)
         {
             canSwim = false;
-            //wingAnim.SetTrigger("Swim");
-            //headAnim.SetTrigger("Swim");
-            //bodyAnim.SetTrigger("Swim");
-            //feetAnim.SetTrigger("Swim");
+            anims.SetBoolForAll("SwimTrigger", true);
             rb.velocity = movementVector * swimSpeed;
             swimCooldownTimer = swimCooldown;
         }
     }
-
-
-
     #endregion
 
 
@@ -450,6 +443,44 @@ public class PlayerController : Hittable
             canControl = false;
             isDead = true;
             rb.velocity = Vector2.up * 100;
+        }
+    }
+
+    private class Animators
+    {
+        public Animator Wings;
+        public Animator Head;
+        public Animator Body;
+        public Animator Feet;
+
+        public Animators(Animator Wings, Animator Head, Animator Body, Animator Feet)
+        {
+            this.Wings = Wings;
+            this.Head = Head;
+            this.Body = Body;
+            this.Feet = Feet;
+        }
+
+        public void SetIntForAll(string Trigger, int Value)
+        {
+            Wings.SetInteger(Trigger, Value);
+            Head.SetInteger(Trigger, Value);
+            Body.SetInteger(Trigger, Value);
+            Feet.SetInteger(Trigger, Value);
+        }
+        public void SetFloatForAll(string Trigger, float Value)
+        {
+            Wings.SetFloat(Trigger, Value);
+            Head.SetFloat(Trigger, Value);
+            Body.SetFloat(Trigger, Value);
+            Feet.SetFloat(Trigger, Value);
+        }
+        public void SetBoolForAll(string Trigger, bool State)
+        {
+            Wings.SetBool(Trigger, State);
+            Head.SetBool(Trigger, State);
+            Body.SetBool(Trigger, State);
+            Feet.SetBool(Trigger, State);
         }
     }
 }
