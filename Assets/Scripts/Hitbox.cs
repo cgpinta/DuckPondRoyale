@@ -39,7 +39,7 @@ public class Hitbox : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         Debug.Log("HIT");
-        if (collision.gameObject.tag == "Hurtbox" && collision.gameObject.transform.root != this.gameObject.transform.root)
+        if (collision.gameObject.tag == "Hurtbox" && collision.gameObject.transform.root.gameObject.name != this.gameObject.transform.root.gameObject.name)
         {
             float direction;
             Hurtbox hb = collision.GetComponent<Hurtbox>();

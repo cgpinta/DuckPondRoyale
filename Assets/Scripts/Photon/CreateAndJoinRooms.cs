@@ -7,11 +7,13 @@ using TMPro;
 
 public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
 {
+    public TMP_InputField nicknameInput;
     public TMP_InputField createInput;
     public TMP_InputField joinInput;
 
     public void CreateRoom()
     {
+        PhotonNetwork.NickName = nicknameInput.text;
         PhotonNetwork.CreateRoom(createInput.text);
     }
 

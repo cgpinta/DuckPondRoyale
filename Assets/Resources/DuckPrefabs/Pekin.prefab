@@ -236,18 +236,18 @@ MonoBehaviour:
   - Type: 4
     SynchronizeType: 1
     Name: isCrouching
-  - Type: 4
+  - Type: 9
     SynchronizeType: 1
-    Name: PeckTrigger
-  - Type: 4
+    Name: Peck
+  - Type: 9
     SynchronizeType: 1
-    Name: FlapTrigger
-  - Type: 4
+    Name: Flap
+  - Type: 9
     SynchronizeType: 1
-    Name: HonkTrigger
-  - Type: 4
+    Name: Honk
+  - Type: 9
     SynchronizeType: 1
-    Name: SwimTrigger
+    Name: Swim
   m_SynchronizeLayers:
   - SynchronizeType: 0
     LayerIndex: 0
@@ -578,18 +578,18 @@ MonoBehaviour:
   - Type: 4
     SynchronizeType: 1
     Name: isCrouching
-  - Type: 4
+  - Type: 9
     SynchronizeType: 1
-    Name: PeckTrigger
-  - Type: 4
+    Name: Peck
+  - Type: 9
     SynchronizeType: 1
-    Name: FlapTrigger
-  - Type: 4
+    Name: Flap
+  - Type: 9
     SynchronizeType: 1
-    Name: HonkTrigger
-  - Type: 4
+    Name: Honk
+  - Type: 9
     SynchronizeType: 1
-    Name: SwimTrigger
+    Name: Swim
   m_SynchronizeLayers:
   - SynchronizeType: 0
     LayerIndex: 0
@@ -724,18 +724,18 @@ MonoBehaviour:
   - Type: 4
     SynchronizeType: 1
     Name: isCrouching
-  - Type: 4
+  - Type: 9
     SynchronizeType: 1
-    Name: FlapTrigger
-  - Type: 4
+    Name: Flap
+  - Type: 9
     SynchronizeType: 1
-    Name: PeckTrigger
-  - Type: 4
+    Name: Peck
+  - Type: 9
     SynchronizeType: 1
-    Name: HonkTrigger
-  - Type: 4
+    Name: Honk
+  - Type: 9
     SynchronizeType: 1
-    Name: SwimTrigger
+    Name: Swim
   m_SynchronizeLayers:
   - SynchronizeType: 0
     LayerIndex: 0
@@ -1152,6 +1152,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d951df4087dbf814f8a13526235ec0b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  nickname: 
   duckSettings: {fileID: 11400000, guid: e6386fb7edac35e498700eda630990c3, type: 2}
   tr: {fileID: 0}
   rb: {fileID: 0}
@@ -1695,18 +1696,18 @@ MonoBehaviour:
   - Type: 4
     SynchronizeType: 1
     Name: isCrouching
-  - Type: 4
+  - Type: 9
     SynchronizeType: 1
-    Name: FlapTrigger
-  - Type: 4
+    Name: Flap
+  - Type: 9
     SynchronizeType: 1
-    Name: PeckTrigger
-  - Type: 4
+    Name: Peck
+  - Type: 9
     SynchronizeType: 1
-    Name: HonkTrigger
-  - Type: 4
+    Name: Honk
+  - Type: 9
     SynchronizeType: 1
-    Name: SwimTrigger
+    Name: Swim
   m_SynchronizeLayers:
   - SynchronizeType: 0
     LayerIndex: 0

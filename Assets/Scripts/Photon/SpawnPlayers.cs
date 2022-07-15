@@ -15,7 +15,9 @@ public class SpawnPlayers : MonoBehaviour
     private void Start()
     {
         Vector2 randomPosition = new Vector2(Random.Range(minX, maxX), Random.Range(minY, maxY));
-        PhotonNetwork.Instantiate("DuckPrefabs/"+playerPrefab.name, randomPosition, Quaternion.identity);
+        GameObject newPlayer = PhotonNetwork.Instantiate("DuckPrefabs/"+playerPrefab.name, randomPosition, Quaternion.identity);
+        newPlayer.name = playerPrefab.name+": " +PhotonNetwork.NickName;
+
     }
 
 
