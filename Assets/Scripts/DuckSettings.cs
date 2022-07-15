@@ -12,6 +12,7 @@ public class DuckSettings : ScriptableObject
     [SerializeField] public float attack;
     [SerializeField] public float defense;
     [SerializeField] public float speed;
+    [SerializeField] public float swimSpeed;
     [SerializeField] public float maxSpeed;
     [SerializeField] public float jumpHeight;
     [SerializeField] public int flapCount;

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Photon.Pun;
 
 public class PlayerController : Hittable
 {
@@ -15,6 +16,8 @@ public class PlayerController : Hittable
     public Animator headAnim;
     public Animator bodyAnim;
     public Animator feetAnim;
+
+    PhotonView pView;
     #endregion
 
     #region VARIABLES
@@ -25,6 +28,7 @@ public class PlayerController : Hittable
     public float jumpSpeed;
     public int flapCount;
     public float flapHeight;
+    public float swimSpeed;
     public float friction;
 
     public float fallMultiplier = 2.5f;
@@ -39,7 +43,12 @@ public class PlayerController : Hittable
     public float crouchPeckCooldown;
     public float honkCooldown;
     public float crouchHonkCooldown;
+    public float swimCooldown;
     public float landingCooldown;
+
+    [Header("MoveDelay")]
+    public float postSwimMoveDelay;
+
 
     [Header("Stats")]
     float damage;
@@ -50,13 +59,14 @@ public class PlayerController : Hittable
     private bool inputJump, inputPeck;
     int currentFlaps;
     bool canControl, isDead;
-    bool canPeck, canFlap, canHonk;
+    bool canPeck, canFlap, canHonk, canSwim;
     float anim_xvel; //xvelocity that is sent to the animations
     float anim_yvel;
 
     float flapCooldownTimer;
     float peckCooldownTimer;
     float honkCooldownTimer;
+    float swimCooldownTimer;
     float landingCooldownTimer;
     float hitstunCooldownTimer;
 
@@ -72,7 +82,9 @@ public class PlayerController : Hittable
     {
         tr = GetComponent<Transform>();
         rb = GetComponent<Rigidbody2D>();
-        cl = GetComponent<CapsuleCollider2D>();        
+        cl = GetComponent<CapsuleCollider2D>();
+
+        pView = GetComponent<PhotonView>();
 
         rb.simulated = true;
         canControl = true;
@@ -85,6 +97,7 @@ public class PlayerController : Hittable
         speed = duckSettings.speed;
         maxSpeed = duckSettings.maxSpeed;
         jumpSpeed = duckSettings.jumpHeight;
+        swimSpeed = duckSettings.swimSpeed;
         flapCount = duckSettings.flapCount;
         flapHeight = duckSettings.flapHeight;
         friction = duckSettings.friction;
@@ -95,6 +108,7 @@ public class PlayerController : Hittable
         flapCooldown = duckSettings.flapCooldown;
         peckCooldown = duckSettings.peckCooldown;
         honkCooldown = duckSettings.honkCooldown;
+        swimCooldown = duckSettings.swimCooldown;
         landingCooldown = duckSettings.landingCooldown;
     }
 
@@ -106,11 +120,12 @@ public class PlayerController : Hittable
     // FIXED UPDATE: updates in delta time
     private void FixedUpdate()
     {
-        MovementCode();
-        StateAssignmentCode();
-        AnimationVariables();
-
-        
+        if (pView.IsMine)
+        {
+            MovementCode();
+            StateAssignmentCode();
+            AnimationVariables();
+        }
     }
 
     void Cooldowns()
@@ -142,6 +157,15 @@ public class PlayerController : Hittable
         else
         {
             canHonk = true;
+        }
+
+        if(swimCooldownTimer > 0)
+        {
+            swimCooldownTimer -= Time.deltaTime;
+        }
+        else
+        {
+            canSwim = true;
         }
     }
 
@@ -374,6 +398,19 @@ public class PlayerController : Hittable
             feetAnim.SetTrigger("Honk");
             if (crouching) { honkCooldownTimer = crouchHonkCooldown; }
             else { honkCooldownTimer = honkCooldown; }
+        }
+    }
+    public void Swim()
+    {
+        if (canSwim)
+        {
+            canSwim = false;
+            //wingAnim.SetTrigger("Swim");
+            //headAnim.SetTrigger("Swim");
+            //bodyAnim.SetTrigger("Swim");
+            //feetAnim.SetTrigger("Swim");
+            rb.velocity = movementVector * swimSpeed;
+            swimCooldownTimer = swimCooldown;
         }
     }
 
