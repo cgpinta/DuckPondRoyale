@@ -32,6 +32,7 @@ public class PlayerController : Hittable
     public float jumpSpeed;
     public int flapCount;
     public float flapHeight;
+    public int swimCount;
     public float swimSpeed;
     public float friction;
 
@@ -57,8 +58,8 @@ public class PlayerController : Hittable
     [Header("Stats")]
     float damage;
 
+    float swimInvincibility = GlobalVariables.getSwimInvincibility();
 
-    
     private Vector2 movementVector;
     private bool inputJump, inputPeck;
     int currentFlaps;
@@ -67,12 +68,7 @@ public class PlayerController : Hittable
     float anim_xvel; //xvelocity that is sent to the animations
     float anim_yvel;
 
-    float flapCooldownTimer;
-    float peckCooldownTimer;
-    float honkCooldownTimer;
-    float swimCooldownTimer;
-    float landingCooldownTimer;
-    float hitstunCooldownTimer;
+    Dictionary<string, Timer> Timers = new Dictionary<string, Timer>();
 
     bool jumping, crouching, turning, isFalling, onGround, inHitstun;
     int againstWall;
@@ -80,6 +76,15 @@ public class PlayerController : Hittable
     float attack;
     float defense;
     #endregion
+
+    string flap = "flap";
+    string peck = "peck";
+    string honk = "honk";
+    string swim = "swim";
+    string landing = "landing";
+    string hitstun = "hitstun";
+    string invincible = "invincibility";
+
 
     // START: is called before the first frame update
     void Start()
@@ -96,34 +101,36 @@ public class PlayerController : Hittable
         onGround = false;
         canPeck = true;
         inHitstun = false;
-
+       
         damage = 0;
-        speed = duckSettings.speed;
-        maxSpeed = duckSettings.maxSpeed;
-        jumpSpeed = duckSettings.jumpHeight;
-        swimSpeed = duckSettings.swimSpeed;
-        flapCount = duckSettings.flapCount;
-        flapHeight = duckSettings.flapHeight;
-        friction = duckSettings.friction;
+        speed = duckSettings.Speed;
+        maxSpeed = duckSettings.MaxSpeed;
+        jumpSpeed = duckSettings.JumpHeight;
+        swimSpeed = duckSettings.SwimSpeed;
+        flapCount = duckSettings.FlapCount;
+        flapHeight = duckSettings.FlapHeight;
+        friction = duckSettings.Friction;
 
-        attack = duckSettings.attack;
-        defense = duckSettings.defense;
+        attack = duckSettings.Attack;
+        defense = duckSettings.Defense;
 
-        flapCooldown = duckSettings.flapCooldown;
-        peckCooldown = duckSettings.peckCooldown;
-        honkCooldown = duckSettings.honkCooldown;
-        swimCooldown = duckSettings.swimCooldown;
-        landingCooldown = duckSettings.landingCooldown;
+        flapCooldown = duckSettings.FlapCooldown;
+        peckCooldown = duckSettings.PeckCooldown;
+        honkCooldown = duckSettings.HonkCooldown;
+        swimCooldown = duckSettings.SwimCooldown;
+        landingCooldown = duckSettings.LandingCooldown;
+
+        Timers.Add(flap, new Timer());
+        Timers.Add(peck, new Timer());
+        Timers.Add(honk, new Timer());
+        Timers.Add(swim, new Timer());
+        Timers.Add(landing, new Timer());
+        Timers.Add(hitstun, new Timer());
+        Timers.Add(invincible, new Timer());
+
+        
 
         anims = new AnimatorHolder(wingAnim, headAnim, bodyAnim, feetAnim);
-    }
-
-    private void Update()
-    {
-        if (pView.IsMine)
-        {
-            Cooldowns();
-        }
     }
 
     // FIXED UPDATE: updates in delta time
@@ -134,47 +141,6 @@ public class PlayerController : Hittable
             MovementCode();
             StateAssignmentCode();
             AnimationVariables();
-        }
-    }
-
-    void Cooldowns()
-    {
-        if(flapCooldownTimer > 0)
-        {
-            //Debug.Log("flap timer: "+flapCooldownTimer);
-            flapCooldownTimer -= Time.deltaTime;
-        }
-        else
-        {
-            canFlap = true;
-        }
-
-        if(peckCooldownTimer > 0)
-        {
-            //Debug.Log("peck timer: " + peckCooldownTimer);
-            peckCooldownTimer -= Time.deltaTime;
-        }
-        else
-        {
-            canPeck = true;
-        }
-
-        if(honkCooldownTimer > 0)
-        {
-            honkCooldownTimer -= Time.deltaTime;
-        }
-        else
-        {
-            canHonk = true;
-        }
-
-        if(swimCooldownTimer > 0)
-        {
-            swimCooldownTimer -= Time.deltaTime;
-        }
-        else
-        {
-            canSwim = true;
         }
     }
 
@@ -262,28 +228,6 @@ public class PlayerController : Hittable
 
     public void AnimationVariables()
     {
-        #region Set Bool Triggers to false if True
-        //if (anims.Head.GetBool("PeckTrigger"))
-        //{
-        //    anims.SetBoolForAll("PeckTrigger", false);
-        //    Debug.Log("Disabling Peck");
-        //}
-        //if (anims.Head.GetBool("HonkTrigger"))
-        //{
-        //    anims.SetBoolForAll("HonkTrigger", false);
-        //    Debug.Log("Disabling Honk");
-        //}
-        //if (anims.Head.GetBool("FlapTrigger"))
-        //{
-        //    anims.SetBoolForAll("FlapTrigger", false);
-        //}
-        //if (anims.Head.GetBool("SwimTrigger"))
-        //{
-        //    anims.SetBoolForAll("SwimTrigger", false);
-
-        //}
-        #endregion
-
         //--------ANIMATION STUFF------------//
 
         if (rb.velocity.x > 0.01 || rb.velocity.x < -0.01)
@@ -374,8 +318,8 @@ public class PlayerController : Hittable
             canPeck = false;
             inputPeck = context.performed;
             anims.SetTriggerForAll("Peck");
-            if (crouching) { peckCooldownTimer = crouchPeckCooldown; }
-            else { peckCooldownTimer = peckCooldown; }
+            if (crouching) { Timers[peck].setTimer(crouchPeckCooldown); }
+            else { Timers[peck].setTimer(peckCooldown); }
         }
     }
 
@@ -387,7 +331,7 @@ public class PlayerController : Hittable
             currentFlaps--;
             anims.SetTriggerForAll("Flap");
             rb.velocity = new Vector2(rb.velocity.x, flapHeight);
-            flapCooldownTimer = flapCooldown;
+            Timers[flap].setTimer(flapCooldown);
         }
     }
     public void Honk()
@@ -397,8 +341,8 @@ public class PlayerController : Hittable
             canHonk = false;
             currentFlaps--;
             anims.SetTriggerForAll("Honk");
-            if (crouching) { honkCooldownTimer = crouchHonkCooldown; }
-            else { honkCooldownTimer = honkCooldown; }
+            if (crouching) { Timers[honk].setTimer(crouchHonkCooldown); }
+            else { Timers[honk].setTimer(honkCooldown); }
         }
     }
     public void Swim()
@@ -408,7 +352,7 @@ public class PlayerController : Hittable
             canSwim = false;
             anims.SetTriggerForAll("Swim");
             rb.velocity = movementVector * swimSpeed;
-            swimCooldownTimer = swimCooldown;
+            Timers[swim].setTimer(swimCooldown);
         }
     }
     #endregion
@@ -417,24 +361,16 @@ public class PlayerController : Hittable
 
     public override void GetHit(float damage, float knockback, float hitstun, Vector2 direction, knockbackType type)
     {
-        this.damage += damage;
-        if (hitstun > 0)
+        if (!Timers[invincible].isInProgress())
         {
-            inHitstun = true;
-            hitstunCooldownTimer = hitstun;
+            this.damage += damage;
+            if (hitstun > 0)
+            {
+                Timers[this.hitstun].setTimer(hitstun);
+            }
+
+            rb.velocity = direction * knockback * movementVector * this.damage;
         }
-
-        rb.velocity = direction * knockback * movementVector;
-
-        //switch (type)
-        //{
-        //    case knockbackType.Fixed:
-        //        rb.AddForce(direction * knockback);
-        //        break;
-        //    default:
-        //        rb.velocity = (direction * knockback * movementVector);
-        //        break;
-        //}
     }
 
 

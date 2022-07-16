@@ -12,7 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae8d96cf979e1714c9ddac56e79df386, type: 3}
   m_Name: Pekin
   m_EditorClassIdentifier: 
-  health: 5
   attack: 5
   defense: 5
   speed: 100
@@ -25,7 +24,7 @@ MonoBehaviour:
   flapCooldown: 0.2
   peckCooldown: 0.2
   honkCooldown: 1
-  swimCooldown: 0
+  swimCooldown: 1
   throwCooldown: 0.2
   landingCooldown: 0.2
   breedName: Pekin
