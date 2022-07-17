@@ -4,35 +4,39 @@ using UnityEngine;
 
 public class Timer : MonoBehaviour
 {
-    float timer = 0;
-    float oldtimer = 0;
-    bool inProgress = false;
+    float timer;
+    float oldtimer;
+    private bool inProgress;
+    public bool InProgress => inProgress;
 
-    // Update is called once per frame
-    void FixedUpdate()
+    public Timer()
+    {
+        timer = 0;
+        oldtimer = 0;
+        inProgress = false;
+    }
+
+    public void setTimer(float amount)
+    {
+        timer = amount;
+        inProgress = true;
+        Debug.Log("set timer: " + timer);
+    }
+    public void updateTimer(float deltaTime)
     {
         if (timer > 0)
         {
             oldtimer = timer;
             //Debug.Log("flap timer: "+flapCooldownTimer);
             timer -= Time.deltaTime;
+            Debug.Log("timer: " + timer);
         }
-        if(oldtimer > 0 && timer < 0)
+        if (oldtimer > 0 && timer < 0)
         {
             oldtimer = 0;
             timer = 0;
             inProgress = false;
+            Debug.Log("set to false");
         }
-    }
-
-
-    public void setTimer(float amount)
-    {
-        timer = amount;
-        inProgress = true;
-    }
-    public bool isInProgress()
-    {
-        return inProgress;
     }
 }

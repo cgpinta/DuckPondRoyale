@@ -19,12 +19,12 @@ MonoBehaviour:
   maxSpeed: 10
   jumpHeight: 10
   flapCount: 2
-  flapHeight: 5
+  flapHeight: 10
   friction: 5
   flapCooldown: 0.2
   peckCooldown: 0.2
   honkCooldown: 1
-  swimCooldown: 1
+  swimCooldown: 0.2
   throwCooldown: 0.2
   landingCooldown: 0.2
   breedName: Pekin

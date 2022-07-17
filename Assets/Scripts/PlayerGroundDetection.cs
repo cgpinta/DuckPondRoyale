@@ -11,7 +11,7 @@ public class PlayerGroundDetection : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        Debug.Log("entered");
+        //Debug.Log("entered");
         if (!collision.isTrigger)
         {
             colliders.Add(collision);

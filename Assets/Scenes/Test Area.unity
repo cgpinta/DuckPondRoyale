@@ -176,7 +176,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 9.2383995
+  orthographic size: 12
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -445,6 +445,10 @@ PrefabInstance:
     - target: {fileID: 3540748880086125274, guid: 27ee53f0ca4271042a66a8e209f2d449, type: 3}
       propertyPath: m_Name
       value: Pekin
+      objectReference: {fileID: 0}
+    - target: {fileID: 3540748880086125275, guid: 27ee53f0ca4271042a66a8e209f2d449, type: 3}
+      propertyPath: postSwimInvincibility
+      value: 0.2
       objectReference: {fileID: 0}
     - target: {fileID: 3540748880086125278, guid: 27ee53f0ca4271042a66a8e209f2d449, type: 3}
       propertyPath: m_RootOrder
