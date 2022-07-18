@@ -6,7 +6,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "DuckBreed", menuName = "Duck Royale/New Duck Breed")]
 public class DuckSettings : ScriptableObject
 {
-    [Header("Stats")]
+    [Header("Stats")] 
     [SerializeField] private float attack;
     public float Attack => attack;
     [SerializeField] private float defense;

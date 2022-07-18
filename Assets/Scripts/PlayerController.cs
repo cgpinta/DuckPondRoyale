@@ -123,14 +123,14 @@ public class PlayerController : Hittable
         swimCooldown = duckSettings.SwimCooldown;
         landingCooldown = duckSettings.LandingCooldown;
 
-        Timers.Add(flap, new Timer());
-        Timers.Add(peck, new Timer());
-        Timers.Add(honk, new Timer());
-        Timers.Add(swim, new Timer());
-        Timers.Add(landing, new Timer());
-        Timers.Add(hitstun, new Timer());
-        Timers.Add(invincible, new Timer());
-        Timers.Add(cantControl, new Timer());
+        Timers.Add(flap, new Timer(flap));
+        Timers.Add(peck, new Timer(peck));
+        Timers.Add(honk, new Timer(honk));
+        Timers.Add(swim, new Timer(swim));
+        Timers.Add(landing, new Timer(landing));
+        Timers.Add(hitstun, new Timer(hitstun));
+        Timers.Add(invincible, new Timer(invincible));
+        Timers.Add(cantControl, new Timer(cantControl));
 
         
 
@@ -185,7 +185,10 @@ public class PlayerController : Hittable
             currentFlaps = flapCount;
             swimming = false;
             canSwim = true;
-            Timers[swim].setTimer(0);
+            if (Timers[swim].InProgress)
+            {
+                Timers[swim].setTimer(0);
+            }
         }
         foreach (KeyValuePair<string, Timer> timer in Timers)
         {
@@ -393,7 +396,9 @@ public class PlayerController : Hittable
                 Timers[this.hitstun].setTimer(hitstun);
             }
 
-            rb.velocity = direction * knockback * this.damage;
+            rb.velocity = direction.normalized * knockback * (this.damage/5);
+            Debug.Log("Player is hit: "+direction.normalized + " " + knockback + " " + this.damage/5+ " = " + rb.velocity);
+            Timers[invincible].setTimer(0.01f);
         }
     }
 

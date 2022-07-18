@@ -2,12 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Timer : MonoBehaviour
+public class Timer
 {
     float timer;
     float oldtimer;
     private bool inProgress;
     public bool InProgress => inProgress;
+
+    string name;
 
     public Timer()
     {
@@ -16,11 +18,19 @@ public class Timer : MonoBehaviour
         inProgress = false;
     }
 
+    public Timer(string name)
+    {
+        timer = 0;
+        oldtimer = 0;
+        inProgress = false;
+        this.name = name;
+    }
+
     public void setTimer(float amount)
     {
         timer = amount;
         inProgress = true;
-        Debug.Log("set timer: " + timer);
+        Debug.Log(name+" set timer: " + timer);
     }
     public void updateTimer(float deltaTime)
     {
@@ -29,7 +39,7 @@ public class Timer : MonoBehaviour
             oldtimer = timer;
             //Debug.Log("flap timer: "+flapCooldownTimer);
             timer -= Time.deltaTime;
-            Debug.Log("timer: " + timer);
+            //Debug.Log("timer: " + timer);
         }
         if (oldtimer > 0 && timer < 0)
         {

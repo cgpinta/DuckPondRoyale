@@ -14,6 +14,6 @@ public class Hurtbox : MonoBehaviour
 
     public void GetHit(float damage, float knockback, float hitstun, Vector2 direction, knockbackType type)
     {
-        hittable.GetHit(damage, knockback, hitstun, direction, (Hittable.knockbackType)type);
+        hittable.GetHit(damage, knockback, hitstun, direction, type);
     }
 }

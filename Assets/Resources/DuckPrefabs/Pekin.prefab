@@ -1167,6 +1167,7 @@ MonoBehaviour:
   jumpSpeed: 300
   flapCount: 5
   flapHeight: 10
+  swimCount: 0
   swimSpeed: 0
   friction: 5
   fallMultiplier: 8
@@ -1179,7 +1180,7 @@ MonoBehaviour:
   crouchHonkCooldown: 0.2
   swimCooldown: 0
   landingCooldown: 0.2
-  postSwimMoveDelay: 0
+  postSwimInvincibility: 0
 --- !u!114 &3540748880086125279
 MonoBehaviour:
   m_ObjectHideFlags: 0

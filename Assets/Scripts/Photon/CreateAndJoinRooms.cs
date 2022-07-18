@@ -13,7 +13,6 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
 
     public void CreateRoom()
     {
-        PhotonNetwork.NickName = nicknameInput.text;
         PhotonNetwork.CreateRoom(createInput.text);
     }
 
@@ -24,6 +23,7 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
 
     public override void OnJoinedRoom()
     {
+        PhotonNetwork.LocalPlayer.NickName = nicknameInput.text;
         PhotonNetwork.LoadLevel("Fight");
     }
 }
