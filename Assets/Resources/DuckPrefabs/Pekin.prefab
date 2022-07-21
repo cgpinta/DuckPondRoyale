@@ -61,12 +61,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d31557678f67a6a43ba7059ebfe0e694, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  settings: {fileID: 11400000, guid: 861d8b546576b234a9da09ef259e5473, type: 2}
-  damage: 5
-  knockback: 100
-  hitstun: 0
-  angle: {x: 1, y: 0}
-  type: 1
+  settings: {fileID: 0}
+  editMode: 0
+  showGizmo: 0
+  hitboxShapes: 0
+  capsuleDirection: 0
+  center: {x: 0, y: 0}
+  size: {x: 0, y: 0}
+  circleRadius: 0
+  hitboxAngle: 0
 --- !u!1 &3540748879002766637
 GameObject:
   m_ObjectHideFlags: 0
@@ -292,10 +295,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3540748879251800199}
-  - component: {fileID: 3540748879251800312}
+  - component: {fileID: 936843981359982362}
   - component: {fileID: 3540748879251800313}
+  - component: {fileID: 1867618827662297656}
   m_Layer: 0
-  m_Name: Neck
+  m_Name: Peck
   m_TagString: Hitbox
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -316,22 +320,28 @@ Transform:
   m_Father: {fileID: 3540748880248873333}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!70 &3540748879251800312
-CapsuleCollider2D:
+--- !u!114 &936843981359982362
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3540748879251800198}
-  m_Enabled: 0
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: -0.63, y: -0.04}
-  m_Size: {x: 1.13, y: 0.43}
-  m_Direction: 1
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 51024df8932b4a449bf2ac48587ae9bc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hitboxes:
+  - {fileID: 3540748879251800313}
+  settings: {fileID: 11400000, guid: a67c81ba204d8ff449d507ad9b204756, type: 2}
+  editMode: 0
+  active: 0
+  damage: 5
+  knockback: 10
+  hitstun: 1
+  angle: {x: 1, y: 3}
+  type: 0
 --- !u!114 &3540748879251800313
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -344,12 +354,36 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d31557678f67a6a43ba7059ebfe0e694, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  settings: {fileID: 11400000, guid: a67c81ba204d8ff449d507ad9b204756, type: 2}
-  damage: 5
-  knockback: 100
-  hitstun: 0
-  angle: {x: 1, y: 1}
-  type: 1
+  settings: {fileID: 11400000, guid: 6f89ebd2831e6534a8cb167fa2701b52, type: 2}
+  editMode: 0
+  showGizmo: 1
+  hitboxShapes: 0
+  capsuleDirection: 0
+  center: {x: -2.43, y: -2.63}
+  size: {x: 3.25, y: 0.9}
+  circleRadius: 0
+  hitboxAngle: 0
+--- !u!114 &1867618827662297656
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3540748879251800198}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d31557678f67a6a43ba7059ebfe0e694, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  settings: {fileID: 11400000, guid: c7b7ed32ace3cba4fa8bfe9550b4d379, type: 2}
+  editMode: 0
+  showGizmo: 1
+  hitboxShapes: 1
+  capsuleDirection: 0
+  center: {x: -3.45, y: -2.62}
+  size: {x: 0.67, y: 0.76}
+  circleRadius: 0.44
+  hitboxAngle: 0
 --- !u!1 &3540748879270324765
 GameObject:
   m_ObjectHideFlags: 0
@@ -968,73 +1002,6 @@ Transform:
   m_Father: {fileID: 3540748879528118052}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &3540748880056256947
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 3540748880056256948}
-  - component: {fileID: 3540748880056256950}
-  - component: {fileID: 3540748880056256949}
-  m_Layer: 0
-  m_Name: Beak Sweetspot
-  m_TagString: Hitbox
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &3540748880056256948
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3540748880056256947}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 3540748880248873333}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!70 &3540748880056256950
-CapsuleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3540748880056256947}
-  m_Enabled: 0
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: -0.63, y: -0.04}
-  m_Size: {x: 1.13, y: 0.43}
-  m_Direction: 1
---- !u!114 &3540748880056256949
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3540748880056256947}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d31557678f67a6a43ba7059ebfe0e694, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  settings: {fileID: 11400000, guid: 0f6d4cc94462d0847a9990b2bd69a8af, type: 2}
-  damage: 20
-  knockback: 100
-  hitstun: 0
-  angle: {x: 1, y: 1}
-  type: 1
 --- !u!1 &3540748880086125274
 GameObject:
   m_ObjectHideFlags: 0
@@ -1465,12 +1432,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d31557678f67a6a43ba7059ebfe0e694, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  settings: {fileID: 11400000, guid: 710092cb278d9184199157ca673b5409, type: 2}
-  damage: 0
-  knockback: 100
-  hitstun: 25
-  angle: {x: 1, y: 0}
-  type: 1
+  settings: {fileID: 11400000, guid: 733b1cefd090ed545aece93fe08a28a0, type: 2}
+  editMode: 0
+  showGizmo: 0
+  hitboxShapes: 0
+  capsuleDirection: 0
+  center: {x: 0, y: 0}
+  size: {x: 0, y: 0}
+  circleRadius: 0
+  hitboxAngle: 0
 --- !u!1 &3540748880248873332
 GameObject:
   m_ObjectHideFlags: 0
@@ -1500,7 +1470,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3540748879251800199}
-  - {fileID: 3540748880056256948}
   m_Father: {fileID: 3540748879528118052}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1962,9 +1931,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d31557678f67a6a43ba7059ebfe0e694, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  settings: {fileID: 11400000, guid: 6daa2a218046acb4aa5aabe7bf72ea92, type: 2}
-  damage: 0
-  knockback: 500
-  hitstun: 10
-  angle: {x: 1, y: 0}
-  type: 1
+  settings: {fileID: 0}
+  editMode: 0
+  showGizmo: 0
+  hitboxShapes: 0
+  capsuleDirection: 0
+  center: {x: 0, y: 0}
+  size: {x: 0, y: 0}
+  circleRadius: 0
+  hitboxAngle: 0

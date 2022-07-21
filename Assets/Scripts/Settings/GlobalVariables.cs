@@ -7,6 +7,7 @@ public static class GlobalVariables
     static float swimInvincibility = 1;
     public static float getSwimInvincibility(){  return swimInvincibility;  }
 
+
     //public enum knockbackType
     //{
     //    Fixed,                  //The direction of knockback pushes away in the same direction no matter the direction of the hitbox owner

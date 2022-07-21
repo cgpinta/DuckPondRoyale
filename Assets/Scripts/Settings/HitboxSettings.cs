@@ -2,12 +2,40 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "HitboxSettings", menuName = "Duck Royale/New Hitbox Settings")]
+[CreateAssetMenu(fileName = "HitboxSettings", menuName = "Duck Royale/Attack/New Hitbox Settings")]
 public class HitboxSettings : ScriptableObject
 {
     [SerializeField] public float damage;
+    public float Damage => damage;
     [SerializeField] public float knockback;
+    public float Knockback => knockback;
     [SerializeField] public float hitstun;
+    public float Hitstun => hitstun;
     [SerializeField] public Vector2 angle;
+    public Vector2 Angle => angle;
     [SerializeField] public knockbackType type;
+    public knockbackType Type => type;
+
+    [SerializeField] hitboxShape hitboxShapes;
+    public hitboxShape HitboxShapes => hitboxShapes;
+    [SerializeField] CapsuleDirection2D capsuleDirection;
+    public CapsuleDirection2D CapsuleDirection => capsuleDirection;
+    [SerializeField] Vector2 center;
+    public Vector2 Center => center;
+    [SerializeField] Vector2 size;
+    public Vector2 Size => size;
+    [SerializeField] float circleRadius;
+    public float CircleRadius => circleRadius;
+    [SerializeField] float hitboxAngle;
+    public float HitboxAngle => hitboxAngle;
+
+    public void setSettings(hitboxShape shape, CapsuleDirection2D capsuleDirection, Vector2 center, Vector2 size, float circleRadius, float hitboxAngle)
+    {
+        hitboxShapes = shape;
+        this.capsuleDirection = capsuleDirection;
+        this.center = center;
+        this.size = size;
+        this.circleRadius = circleRadius;
+        this.hitboxAngle = hitboxAngle;
+    }
 }
