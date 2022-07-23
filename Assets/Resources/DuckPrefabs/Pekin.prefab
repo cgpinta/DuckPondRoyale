@@ -79,7 +79,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d31557678f67a6a43ba7059ebfe0e694, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
+  owner: {fileID: 0}
   settings: {fileID: 11400000, guid: 6f89ebd2831e6534a8cb167fa2701b52, type: 2}
   editMode: 0
   priority: 0
@@ -374,7 +374,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d31557678f67a6a43ba7059ebfe0e694, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
+  owner: {fileID: 0}
   settings: {fileID: 11400000, guid: 6f89ebd2831e6534a8cb167fa2701b52, type: 2}
   editMode: 0
   priority: 0
@@ -1457,7 +1457,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d31557678f67a6a43ba7059ebfe0e694, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
+  owner: {fileID: 0}
   settings: {fileID: 11400000, guid: 733b1cefd090ed545aece93fe08a28a0, type: 2}
   editMode: 0
   priority: 0
@@ -1981,7 +1981,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d31557678f67a6a43ba7059ebfe0e694, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
+  owner: {fileID: 0}
   settings: {fileID: 11400000, guid: 733b1cefd090ed545aece93fe08a28a0, type: 2}
   editMode: 0
   priority: 0

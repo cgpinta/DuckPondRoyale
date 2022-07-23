@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,6 +6,6 @@ using UnityEngine;
 [RequireComponent(typeof(Collider2D))]
 public abstract class Hittable : MonoBehaviour
 {
+    [PunRPC]
     public abstract void GetHit(float damage, float knockback, float hitstun, Vector2 direction, knockbackType type);
-    public abstract void GetHit(Hitbox hitbox);
 }

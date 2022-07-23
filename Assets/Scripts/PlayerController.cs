@@ -383,7 +383,7 @@ public class PlayerController : Hittable
         }
     }
     #endregion
-
+    [PunRPC]
     public override void GetHit(float damage, float knockback, float hitstun, Vector2 direction, knockbackType type)
     {
         if (pView.IsMine)
@@ -396,31 +396,16 @@ public class PlayerController : Hittable
                     Timers[this.hitstun].setTimer(hitstun);
                 }
 
-                rb.velocity = direction.normalized * knockback * (this.damage / 5);
-                Debug.Log(this.gameObject.name + " Player is hit: " + direction.normalized + " " + knockback + " " + this.damage / 5 + " = " + rb.velocity);
+                //rb.velocity = direction.normalized * knockback * (this.damage / 5);
+                rb.velocity = direction.normalized * knockback;
+                Debug.Log(this.gameObject.name + " Player is hit: " 
+                          + "Direction: " + direction.normalized 
+                          + " Kb:" + knockback 
+                          + " dmg/5: " + this.damage / 5 + " = " + rb.velocity);
                 Timers[invincible].setTimer(0.01f);
             }
         }
     }
-
-    //public override void GetHit(Hitbox hitbox)
-    //{
-    //    if (pView.IsMine)
-    //    {
-    //        if (!Timers[invincible].InProgress)
-    //        {
-    //            this.damage += damage;
-    //            if (hitbox.hi > 0)
-    //            {
-    //                Timers[this.hitstun].setTimer(hitstun);
-    //            }
-
-    //            rb.velocity = direction.normalized * knockback * (this.damage / 5);
-    //            Debug.Log(this.gameObject.name + " Player is hit: " + direction.normalized + " " + knockback + " " + this.damage / 5 + " = " + rb.velocity);
-    //            Timers[invincible].setTimer(0.01f);
-    //        }
-    //    }
-    //}
 
 
     private void OnTriggerEnter2d(Collider2D collider)

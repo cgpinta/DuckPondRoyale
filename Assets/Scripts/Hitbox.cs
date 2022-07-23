@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,7 +18,7 @@ public enum hitboxShape
 public class Hitbox : MonoBehaviour
 {
     //[DisplayWithoutEdit()]
-    public PlayerController player;
+    public PlayerController owner;
     public HitboxSettings settings;
     Attack attack;
 
@@ -57,12 +58,15 @@ public class Hitbox : MonoBehaviour
         angle = settings.Angle;
         circleRadius = settings.CircleRadius;
         hitboxAngle = settings.HitboxAngle;
+        knockback = settings.Knockback;
+        damage = settings.Damage;
+        hitstun = settings.Hitstun;
         attack = this.gameObject.GetComponent<Attack>();
 
         centerTransform = center + offset;
 
-        player = this.transform.root.gameObject.GetComponent<PlayerController>();
-        direction = player.direction;
+        owner = this.transform.root.gameObject.GetComponent<PlayerController>();
+        direction = owner.direction;
     }
 
     private void OnValidate()
@@ -116,7 +120,7 @@ public class Hitbox : MonoBehaviour
 
     public List<Hittable> renderHitbox(bool showGizmos)
     {
-        direction = player.direction;
+        direction = owner.direction;
         centerTransform = new Vector2(this.transform.position.x + (center.x * direction), this.transform.position.y + center.y);
         List<Collider2D> colliders = new List<Collider2D>();
         showGizmo = showGizmos;
@@ -173,8 +177,15 @@ public class Hitbox : MonoBehaviour
                 newAngle = angle;
                 break;
         }
-        Debug.Log("Angle:" + newAngle + ", " + angle);
-        hittable.GetHit(damage, knockback, hitstun, newAngle, type);
+        Debug.Log("Sending[KB:"+knockback+", Angle:"+angle+"] to enemy");
+        PhotonView pView = hittable.gameObject.GetComponent<PhotonView>();
+        
+        pView.RPC("GetHit", RpcTarget.All, damage, knockback, hitstun, newAngle, type);
+
+
+
+
+        //hittable.GetHit(damage, knockback, hitstun, newAngle, type);
     }
 
         //private List<Collider2D> removeDuplicateColliders(List<Collider2D> opposingColliders)
