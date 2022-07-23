@@ -26,7 +26,7 @@ public class PlayerController : Hittable
 
     #region VARIABLES
     [Header("Movement")]
-    public float direction;
+    public int direction;
     public float speed;
     public float maxSpeed;
     public float jumpSpeed;
@@ -59,7 +59,7 @@ public class PlayerController : Hittable
 
     float swimInvincibility = GlobalVariables.getSwimInvincibility();
 
-    private Vector2 movementVector;
+    public Vector2 movementVector;
     private bool inputJump, inputPeck;
     int currentFlaps;
     bool canControl, isDead;
@@ -285,14 +285,14 @@ public class PlayerController : Hittable
 
 
         //FLIP CHARACTER THE DIRECTION THEY MOVE
-        if (anim_xvel > 0)
+        if (direction > 0)
         {
             if (turning && !jumping)
                 tr.rotation = Quaternion.Euler(tr.rotation.x, 0, tr.rotation.z);
             else
                 tr.rotation = Quaternion.Euler(tr.rotation.x, 180, tr.rotation.z);
         }
-        else if (anim_xvel < 0)
+        else if (direction < 0)
         {
             if (turning && !jumping)
                 tr.rotation = Quaternion.Euler(tr.rotation.x, 180, tr.rotation.z);
@@ -315,7 +315,7 @@ public class PlayerController : Hittable
     #endregion
 
     #region INPUT METHODS
-    public void Direction(InputAction.CallbackContext context)
+    private void Direction(InputAction.CallbackContext context)
     {
         if (!Timers[cantControl].InProgress)
         {
@@ -323,7 +323,7 @@ public class PlayerController : Hittable
         }
         
     }
-    public void Jump(InputAction.CallbackContext context)
+    private void Jump(InputAction.CallbackContext context)
     {
         inputJump = context.performed;
         //Debug.Log("trying to jump"+onGround);
@@ -339,7 +339,7 @@ public class PlayerController : Hittable
         }
     }
 
-    public void Peck(InputAction.CallbackContext context)
+    private void Peck(InputAction.CallbackContext context)
     {
         if (!Timers[peck].InProgress && pView.IsMine)
         {
@@ -350,7 +350,7 @@ public class PlayerController : Hittable
         }
     }
 
-    public void Flap()
+    private void Flap()
     {
         if (!Timers[flap].InProgress && pView.IsMine)
         {
@@ -360,7 +360,7 @@ public class PlayerController : Hittable
             Timers[flap].setTimer(flapCooldown);
         }
     }
-    public void Honk()
+    private void Honk()
     {
         if (!Timers[honk].InProgress && pView.IsMine)
         {
@@ -370,7 +370,7 @@ public class PlayerController : Hittable
             else { Timers[honk].setTimer(honkCooldown); }
         }
     }
-    public void Swim()
+    private void Swim()
     {
         if (canSwim && pView.IsMine)
         {
@@ -384,23 +384,43 @@ public class PlayerController : Hittable
     }
     #endregion
 
-
-
     public override void GetHit(float damage, float knockback, float hitstun, Vector2 direction, knockbackType type)
     {
-        if (!Timers[invincible].InProgress)
+        if (pView.IsMine)
         {
-            this.damage += damage;
-            if (hitstun > 0)
+            if (!Timers[invincible].InProgress)
             {
-                Timers[this.hitstun].setTimer(hitstun);
-            }
+                this.damage += damage;
+                if (hitstun > 0)
+                {
+                    Timers[this.hitstun].setTimer(hitstun);
+                }
 
-            rb.velocity = direction.normalized * knockback * (this.damage/5);
-            Debug.Log("Player is hit: "+direction.normalized + " " + knockback + " " + this.damage/5+ " = " + rb.velocity);
-            Timers[invincible].setTimer(0.01f);
+                rb.velocity = direction.normalized * knockback * (this.damage / 5);
+                Debug.Log(this.gameObject.name + " Player is hit: " + direction.normalized + " " + knockback + " " + this.damage / 5 + " = " + rb.velocity);
+                Timers[invincible].setTimer(0.01f);
+            }
         }
     }
+
+    //public override void GetHit(Hitbox hitbox)
+    //{
+    //    if (pView.IsMine)
+    //    {
+    //        if (!Timers[invincible].InProgress)
+    //        {
+    //            this.damage += damage;
+    //            if (hitbox.hi > 0)
+    //            {
+    //                Timers[this.hitstun].setTimer(hitstun);
+    //            }
+
+    //            rb.velocity = direction.normalized * knockback * (this.damage / 5);
+    //            Debug.Log(this.gameObject.name + " Player is hit: " + direction.normalized + " " + knockback + " " + this.damage / 5 + " = " + rb.velocity);
+    //            Timers[invincible].setTimer(0.01f);
+    //        }
+    //    }
+    //}
 
 
     private void OnTriggerEnter2d(Collider2D collider)

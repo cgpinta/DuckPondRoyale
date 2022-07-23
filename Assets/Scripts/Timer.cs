@@ -29,7 +29,14 @@ public class Timer
     public void setTimer(float amount)
     {
         timer = amount;
-        inProgress = true;
+        if(timer > 0)
+        {
+            inProgress = true;
+        }
+        else
+        {
+            inProgress = false;
+        }
         Debug.Log(name+" set timer: " + timer);
     }
     public void updateTimer(float deltaTime)

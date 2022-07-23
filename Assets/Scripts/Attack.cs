@@ -7,19 +7,14 @@ public class Attack : MonoBehaviour
 {
     [SerializeField]List<Hitbox> hitboxes;
 
-    public AttackSettings settings;
-
     [SerializeField] bool editMode;
     [SerializeField] bool active;
-    [Header("Properties")]
-    [SerializeField] Vector2 offset;
-    public Vector2 Offset => offset;
-
-
+    [SerializeField] bool oldactive;
+    [SerializeField] bool showGizmos;
+    List<int> instanceIDs = new List<int>();
 
     private void Start()
     {
-        offset = settings.offset;
         
     }
 
@@ -27,17 +22,42 @@ public class Attack : MonoBehaviour
     {
         if (active)
         {
-            renderHitbox();
+            if (!oldactive)
+            {
+                instanceIDs.Clear();
+            }
+            List<Collider2D> colliders = new List<Collider2D>();
+            
+            foreach (var hitbox in hitboxes)
+            {
+                hitbox.currentHit = hitbox.renderHitbox(showGizmos);
+                foreach(Hittable hittable in hitbox.currentHit)
+                {
+                    if (!instanceIDs.Contains(hittable.GetInstanceID()))
+                    {
+                        instanceIDs.Add(hittable.GetInstanceID());
+                        hitbox.Hit(hittable);
+                    }
+                }
+            }
         }
+        oldactive = active;
     }
-
-    private void OnValidate()
+    private List<Collider2D> removeDuplicateColliders(List<Collider2D> opposingColliders)
     {
-        if (editMode)
+        List<int> instanceIDs = new List<int>();
+        foreach (Collider2D collider in opposingColliders)
         {
-            if (settings == null) { return; }
-            settings.setSettings(offset);
+            if (!instanceIDs.Contains(collider.gameObject.transform.root.gameObject.GetInstanceID()))
+            {
+                instanceIDs.Add(collider.gameObject.transform.root.gameObject.GetInstanceID());
+            }
+            else
+            {
+                opposingColliders.Remove(collider);
+            }
         }
+        return opposingColliders;
     }
 
     private void drawHitbox()
@@ -61,26 +81,6 @@ public class Attack : MonoBehaviour
             }
         }
         return highPrioHB;
-    }
-
-    private void cleanupList(List<Collider2D> colliders)
-    {
-        for(int i=0; i < colliders.Count; i++)
-        {
-
-        }
-
-        foreach (Hitbox hitbox in hitboxes)
-        {
-            List<Collider2D> currHitboxList = hitbox.renderHitbox();
-            removeDuplicateColliders(currHitboxList);
-            colliders.AddRange(currHitboxList);
-        }
-        removeDuplicateColliders(colliders);
-        foreach (Collider2D collider in colliders)
-        {
-            Hit(collider);
-        }
     }
 
     //private List<Collider2D> removeDuplicateColliders(List<Collider2D> opposingColliders)
@@ -131,4 +131,5 @@ public class Attack : MonoBehaviour
     //    Debug.Log("Angle:" + newAngle + ", " + angle);
     //    hb.GetHit(damage, knockback, hitstun, newAngle, type);
     //}
+    
 }

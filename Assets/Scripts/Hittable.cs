@@ -6,4 +6,5 @@ using UnityEngine;
 public abstract class Hittable : MonoBehaviour
 {
     public abstract void GetHit(float damage, float knockback, float hitstun, Vector2 direction, knockbackType type);
+    public abstract void GetHit(Hitbox hitbox);
 }
