@@ -177,10 +177,11 @@ public class Hitbox : MonoBehaviour
                 newAngle = angle;
                 break;
         }
+
         Debug.Log("Sending[KB:"+knockback+", Angle:"+angle+"] to enemy");
-        PhotonView pView = hittable.gameObject.GetComponent<PhotonView>();
+        PhotonView pView = hittable.gameObject.GetComponent<PhotonView>();          //pView = the opposing players view
         
-        pView.RPC("GetHit", RpcTarget.All, damage, knockback, hitstun, newAngle, type);
+        pView.RPC("GetHit", RpcTarget.All, damage, knockback, hitstun, newAngle, type); //call GetHit on the opposing player
 
 
 

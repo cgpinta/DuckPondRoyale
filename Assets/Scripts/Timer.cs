@@ -4,56 +4,24 @@ using UnityEngine;
 
 public class Timer
 {
-    float timer;
-    float oldtimer;
-    private bool inProgress;
-    public bool InProgress => inProgress;
+    float endTime;
 
-    string name;
-
-    public Timer()
-    {
-        timer = 0;
-        oldtimer = 0;
-        inProgress = false;
-    }
-
-    public Timer(string name)
-    {
-        timer = 0;
-        oldtimer = 0;
-        inProgress = false;
-        this.name = name;
-    }
+    //public Timer()
+    //{
+    //    endTime = -1;
+    //}
 
     public void setTimer(float amount)
     {
-        timer = amount;
-        if(timer > 0)
-        {
-            inProgress = true;
-        }
-        else
-        {
-            inProgress = false;
-        }
-        Debug.Log(name+" set timer: " + timer);
+        endTime = Time.time + amount;
     }
-    public void updateTimer(float deltaTime)
+
+    public bool isInProgress()
     {
-        if (timer > 0)
+        if(Time.time > endTime)
         {
-            oldtimer = timer;
-            //Debug.Log("flap timer: "+flapCooldownTimer);
-            timer -= Time.deltaTime;
-            //Debug.Log("timer: " + timer);
+            return false;
         }
-        if (oldtimer > 0 && timer < 0)
-        {
-            oldtimer = 0;
-            timer = 0;
-            inProgress = false;
-            Debug.Log("set to false");
-        }
+        return true;
     }
 }
