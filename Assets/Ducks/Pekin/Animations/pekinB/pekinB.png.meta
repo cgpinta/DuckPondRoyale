@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: d88d2acaf50b7a64d8af680739930c7c
+guid: fae53f9f216ef3e45bb8f5ce332d3da4
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -80,7 +80,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: pekinW00
+      name: pekinB00
       rect:
         serializedVersion: 2
         x: 1
@@ -94,14 +94,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 1862150c84956ea70800000000000000
-      internalID: 8855863886269720193
+      spriteID: 70e17ebbf506370f0800000000000000
+      internalID: -1120445917994476025
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: pekinW01
+      name: pekinB01
       rect:
         serializedVersion: 2
         x: 38
@@ -115,14 +115,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 89d27dc039c478140800000000000000
-      internalID: 4721826928780586392
+      spriteID: 84cb2801499feb5c0800000000000000
+      internalID: -4197643388335244216
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: pekinW02
+      name: pekinB02
       rect:
         serializedVersion: 2
         x: 75
@@ -136,14 +136,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 3fcdd60a754820cf0800000000000000
-      internalID: -287521914309714701
+      spriteID: 2c517aff55f13ccd0800000000000000
+      internalID: -2539151310685006398
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: pekinW03
+      name: pekinB03
       rect:
         serializedVersion: 2
         x: 112
@@ -157,14 +157,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 4fe85f6fd0d2d5fe0800000000000000
-      internalID: -1198752387809571084
+      spriteID: 1e6c27c8873298870800000000000000
+      internalID: 8685512357020092129
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: pekinW04
+      name: pekinB04
       rect:
         serializedVersion: 2
         x: 149
@@ -178,14 +178,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 9acdf5ab55e564200800000000000000
-      internalID: 163922158737677481
+      spriteID: 034c79c730debd040800000000000000
+      internalID: 4673589637558027312
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: pekinW05
+      name: pekinB05
       rect:
         serializedVersion: 2
         x: 1
@@ -199,14 +199,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: a6b191be9fd298e70800000000000000
-      internalID: 9117869472002677610
+      spriteID: 898b894d32820be50800000000000000
+      internalID: 6822997569822046360
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: pekinW06
+      name: pekinB06
       rect:
         serializedVersion: 2
         x: 38
@@ -220,14 +220,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 5acbe1883f99e42d0800000000000000
-      internalID: -3292525006321435483
+      spriteID: a6817dacc516e8f30800000000000000
+      internalID: 4579704922250352746
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: pekinW07
+      name: pekinB07
       rect:
         serializedVersion: 2
         x: 75
@@ -241,14 +241,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: d3b5ff0cdb954ec90800000000000000
-      internalID: -7141484437581112515
+      spriteID: b71c37fdc4c7d7550800000000000000
+      internalID: 6160216534920970619
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: pekinW08
+      name: pekinB08
       rect:
         serializedVersion: 2
         x: 112
@@ -262,14 +262,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 61e626c5eb3173950800000000000000
-      internalID: 6428628701409340950
+      spriteID: 887619113a8224170800000000000000
+      internalID: 8161130155588282248
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: pekinW09
+      name: pekinB09
       rect:
         serializedVersion: 2
         x: 149
@@ -283,14 +283,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 2f7227ae5d38948c0800000000000000
-      internalID: -4014532638039463950
+      spriteID: 7e0ac5c35a706fcf0800000000000000
+      internalID: -218979125617188633
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: pekinW10
+      name: pekinB10
       rect:
         serializedVersion: 2
         x: 1
@@ -304,14 +304,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 8651233b5a96e8c10800000000000000
-      internalID: 2057698240151819624
+      spriteID: bcfe16efef367bc50800000000000000
+      internalID: 6680918519068094411
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: pekinW11
+      name: pekinB11
       rect:
         serializedVersion: 2
         x: 38
@@ -325,14 +325,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: f58c6c4ee1408ebb0800000000000000
-      internalID: -4906667263286392737
+      spriteID: d989870af6f4f8ea0800000000000000
+      internalID: -5868384448588244835
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: pekinW12
+      name: pekinB12
       rect:
         serializedVersion: 2
         x: 75
@@ -346,14 +346,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 66f60e2a83b06d480800000000000000
-      internalID: -8874893677808291994
+      spriteID: 32159280be4e6c700800000000000000
+      internalID: 560386901759578403
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: pekinW13
+      name: pekinB13
       rect:
         serializedVersion: 2
         x: 112
@@ -367,14 +367,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 4d814be01272c8a50800000000000000
-      internalID: 6524632983087093972
+      spriteID: 2c03a0e2e568f6620800000000000000
+      internalID: 2769580034913611970
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: pekinW14
+      name: pekinB14
       rect:
         serializedVersion: 2
         x: 149
@@ -395,7 +395,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: pekinW15
+      name: pekinB15
       rect:
         serializedVersion: 2
         x: 1
@@ -416,7 +416,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: pekinW16
+      name: pekinB16
       rect:
         serializedVersion: 2
         x: 38
@@ -437,7 +437,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: pekinW17
+      name: pekinB17
       rect:
         serializedVersion: 2
         x: 75
@@ -458,7 +458,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: pekinW18
+      name: pekinB18
       rect:
         serializedVersion: 2
         x: 112
@@ -479,7 +479,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: pekinW19
+      name: pekinB19
       rect:
         serializedVersion: 2
         x: 149
@@ -500,7 +500,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: pekinW20
+      name: pekinB20
       rect:
         serializedVersion: 2
         x: 1
@@ -521,7 +521,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: pekinW21
+      name: pekinB21
       rect:
         serializedVersion: 2
         x: 38
@@ -542,7 +542,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: pekinW22
+      name: pekinB22
       rect:
         serializedVersion: 2
         x: 75
@@ -563,7 +563,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: pekinW23
+      name: pekinB23
       rect:
         serializedVersion: 2
         x: 112
@@ -584,7 +584,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: pekinW24
+      name: pekinB24
       rect:
         serializedVersion: 2
         x: 149
@@ -605,7 +605,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: pekinW25
+      name: pekinB25
       rect:
         serializedVersion: 2
         x: 1
@@ -626,7 +626,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: pekinW26
+      name: pekinB26
       rect:
         serializedVersion: 2
         x: 38
@@ -647,7 +647,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: pekinW27
+      name: pekinB27
       rect:
         serializedVersion: 2
         x: 75
@@ -668,7 +668,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: pekinW28
+      name: pekinB28
       rect:
         serializedVersion: 2
         x: 112
@@ -689,7 +689,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: pekinW29
+      name: pekinB29
       rect:
         serializedVersion: 2
         x: 149
@@ -710,7 +710,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: pekinW30
+      name: pekinB30
       rect:
         serializedVersion: 2
         x: 1
@@ -731,7 +731,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: pekinW31
+      name: pekinB31
       rect:
         serializedVersion: 2
         x: 38
@@ -752,7 +752,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: pekinW32
+      name: pekinB32
       rect:
         serializedVersion: 2
         x: 75
@@ -783,39 +783,39 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      pekinW25: 0
-      pekinW00: 8855863886269720193
-      pekinW30: 0
-      pekinW13: 6524632983087093972
-      pekinW17: 0
-      pekinW05: 9117869472002677610
-      pekinW23: 0
-      pekinW14: 0
-      pekinW01: 4721826928780586392
-      pekinW11: -4906667263286392737
-      pekinW21: 0
-      pekinW16: 0
-      pekinW31: 0
-      pekinW10: 2057698240151819624
-      pekinW26: 0
-      pekinW06: -3292525006321435483
-      pekinW04: 163922158737677481
-      pekinW09: -4014532638039463950
-      pekinW15: 0
-      pekinW32: 0
-      pekinW29: 0
-      pekinW08: 6428628701409340950
-      pekinW18: 0
-      pekinW28: 0
-      pekinW19: 0
-      pekinW02: -287521914309714701
-      pekinW20: 0
-      pekinW22: 0
-      pekinW24: 0
-      pekinW03: -1198752387809571084
-      pekinW12: -8874893677808291994
-      pekinW27: 0
-      pekinW07: -7141484437581112515
+      pekinB19: 0
+      pekinB04: 4673589637558027312
+      pekinB10: 6680918519068094411
+      pekinB05: 6822997569822046360
+      pekinB12: 560386901759578403
+      pekinB06: 4579704922250352746
+      pekinB17: 0
+      pekinB26: 0
+      pekinB13: 2769580034913611970
+      pekinB32: 0
+      pekinB28: 0
+      pekinB00: -1120445917994476025
+      pekinB09: -218979125617188633
+      pekinB15: 0
+      pekinB23: 0
+      pekinB16: 0
+      pekinB18: 0
+      pekinB25: 0
+      pekinB22: 0
+      pekinB21: 0
+      pekinB31: 0
+      pekinB14: 0
+      pekinB02: -2539151310685006398
+      pekinB08: 8161130155588282248
+      pekinB30: 0
+      pekinB03: 8685512357020092129
+      pekinB11: -5868384448588244835
+      pekinB20: 0
+      pekinB29: 0
+      pekinB27: 0
+      pekinB07: 6160216534920970619
+      pekinB24: 0
+      pekinB01: -4197643388335244216
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

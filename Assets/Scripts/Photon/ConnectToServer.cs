@@ -12,13 +12,11 @@ public class ConnectToServer : MonoBehaviourPunCallbacks
 
     public void StartConnection()
     {
-        if(nicknameField.text.Length < 1)
-        {
-            return;
-        }
+        if(nicknameField.text.Length < 1){ return; }
         
         PhotonNetwork.NickName = nicknameField.text;
         connectButtonText.text = "Connecting...";
+        PhotonNetwork.AutomaticallySyncScene = true;
         PhotonNetwork.ConnectUsingSettings();
     }
 

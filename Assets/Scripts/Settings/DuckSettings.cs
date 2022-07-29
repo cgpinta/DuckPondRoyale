@@ -1,11 +1,16 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 
 [CreateAssetMenu(fileName = "DuckBreed", menuName = "Duck Royale/New Duck Breed")]
+[Serializable]
 public class DuckSettings : ScriptableObject
 {
+    [SerializeField] private int id;
+    public int ID => id;
     [Header("Stats")] 
     [SerializeField] private float attack;
     public float Attack => attack;
@@ -53,7 +58,8 @@ public class DuckSettings : ScriptableObject
 
     [Header("Asthetics")]
     //[SerializeField] 
-    GameObject duckObject;
-    [SerializeField] Sprite inGameSprite;                       //used for SpriteRenderer
-    [SerializeField] Sprite CSS;                                //used in CSS
+    [SerializeField] GameObject duckObject;
+    public GameObject DuckObject => duckObject;
+    [SerializeField] Sprite css;                                //used in CSS
+    public Sprite CSS => css;
 }

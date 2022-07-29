@@ -57,7 +57,7 @@ public class PlayerController : Hittable
     [Header("Stats")]
     float damage;
 
-    float swimInvincibility = GlobalVariables.getSwimInvincibility();
+    float swimInvincibility;
 
     public Vector2 movementVector;
     private bool inputJump, inputPeck;

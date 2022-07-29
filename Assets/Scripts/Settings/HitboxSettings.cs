@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "HitboxSettings", menuName = "Duck Royale/Attack/New Hitbox Settings")]
+[CreateAssetMenu(fileName = "HitboxSettings", menuName = "Duck Royale/New Hitbox Settings")]
 public class HitboxSettings : ScriptableObject
 {
     [SerializeField] public float damage;

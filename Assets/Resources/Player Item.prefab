@@ -417,3 +417,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerName: {fileID: 1477002265832371803}
+  backgroundImage: {fileID: 0}
+  highlightColor: {r: 0.8113208, g: 0.17986828, b: 0.17986828, a: 0}
+  selectedCharacterIcon: {fileID: 7903682653439717105}

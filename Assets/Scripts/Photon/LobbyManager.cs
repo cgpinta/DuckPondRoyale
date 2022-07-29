@@ -5,26 +5,37 @@ using UnityEngine.UI;
 using Photon.Pun;
 using Photon.Realtime;
 using TMPro;
+using System;
 
 public class LobbyManager : MonoBehaviourPunCallbacks
 {
     
 
+    [Header("Lobby Panel")]
     public GameObject lobbyPanel;
+    public Transform roomPanelContextTR;            //transform of context object inside the room list in the lobby panel
     public TMP_InputField createInput;
+    Timer roomListUpdateCooldown = new Timer();
+    float timeBetweenRLUpdates = 1.5f;
 
+    [Header("Room Panel")]
     public GameObject roomPanel;
     public TMP_Text roomName;
     public RoomItem roomItemPrefab;
     List<RoomItem> roomItems = new List<RoomItem>();
-    public Transform contentObject;
+    public int minPlayerCount;
 
-    Timer roomListUpdateCooldown = new Timer();
-    float timeBetweenRLUpdates = 1.5f;
+    
 
     public List<PlayerItem> playerItems = new List<PlayerItem>();
     public PlayerItem playerItemPrefab;
     public Transform playerItemParent;
+
+    public List<Color32> playerOrderColors = new List<Color32>();
+
+    public CharacterList characterList;
+
+    public GameObject startButton;
 
     private void Start()
     {
@@ -32,12 +43,28 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         lobbyPanel.SetActive(true);
     }
 
+    private void Update()
+    {
+        if (PhotonNetwork.IsMasterClient && PhotonNetwork.CurrentRoom.PlayerCount >= minPlayerCount)
+        {
+            startButton.SetActive(true);
+        }
+        else
+        {
+            startButton.SetActive(false);
+        }
+    }
+
+    public List<DuckSettings> GetCharacters()
+    {
+        return characterList.getList;
+    }
 
     public void OnClickCreate()
     {
         if(createInput.text.Length > 0)
         {
-            PhotonNetwork.CreateRoom(createInput.text, new RoomOptions() { MaxPlayers = 10});
+            PhotonNetwork.CreateRoom(createInput.text, new RoomOptions() { MaxPlayers = 10, BroadcastPropsChangeToAll = true});
         }
     }
 
@@ -74,7 +101,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
         foreach(RoomInfo room in list)                  //add updated list to list of rooms
         {
-            RoomItem newRoom = Instantiate(roomItemPrefab, contentObject);
+            RoomItem newRoom = Instantiate(roomItemPrefab, roomPanelContextTR);
             newRoom.SetRoomName(room.Name);
             roomItems.Add(newRoom);
         }
@@ -115,6 +142,14 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         {
             PlayerItem newPlayerItem = Instantiate(playerItemPrefab, playerItemParent);
             newPlayerItem.SetPlayerInfo(player.Value);
+
+
+
+            if(player.Value == PhotonNetwork.LocalPlayer)
+            {
+                newPlayerItem.ApplyLocalChanges();
+            }
+
             playerItems.Add(newPlayerItem);
         }
 
@@ -128,5 +163,19 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     public override void OnPlayerLeftRoom(Player otherPlayer)
     {
         UpdatePlayerList();
+    }
+
+    public event Action<Player, DuckSettings> SetPlayerChar;
+    public void OnClickSetPlayerChar(DuckSettings settings)
+    {
+        if (SetPlayerChar != null)
+        {
+            SetPlayerChar(PhotonNetwork.LocalPlayer, settings);
+        }
+    }
+
+    public void OnClickStartButton()
+    {
+        PhotonNetwork.LoadLevel("Fight");
     }
 }
