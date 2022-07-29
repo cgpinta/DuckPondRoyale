@@ -6,14 +6,14 @@ public class CSSBoard : MonoBehaviour
 {
     
     public CSSIcon CSSIconPrefab;
-    public LobbyManager LobbyManager;
+    public List<DuckSettings> characters;
 
     // Start is called before the first frame update
     void Start()
     {
-        LobbyManager = FindObjectOfType<LobbyManager>();
+        characters = FindObjectOfType<LobbyManager>().characterList.getList;
 
-        foreach(DuckSettings character in LobbyManager.GetCharacters())
+        foreach(DuckSettings character in characters)
         {
             CSSIcon newIcon = Instantiate(CSSIconPrefab, this.transform);
             newIcon.settings = character;

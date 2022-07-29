@@ -55,7 +55,7 @@ public class PlayerItem : MonoBehaviourPunCallbacks
 
     public override void OnPlayerPropertiesUpdate(Player targetPlayer, ExitGames.Client.Photon.Hashtable changedProps)
     {
-        if(targetPlayer == player)
+        if(player == targetPlayer)
         {
             UpdatePlayerItem(player);
             
@@ -66,13 +66,12 @@ public class PlayerItem : MonoBehaviourPunCallbacks
     {
         if (player.CustomProperties.ContainsKey("SelectedChar"))
         {
-            DuckSettings temp = LobbyManager.GetCharacters()[(int)playerProperties["SelectedChar"]];
-            selectedCharacterIcon.sprite = temp.CSS;
+            selectedCharacterIcon.sprite = LobbyManager.characterList.getList[(int)playerProperties["SelectedChar"]].CSS;
             playerProperties["SelectedChar"] = player.CustomProperties["SelectedChar"];
         }
         else
         {
-            playerProperties["SelectedChar"] = -1;
+            playerProperties["SelectedChar"] = 0;
         }
     }
 }

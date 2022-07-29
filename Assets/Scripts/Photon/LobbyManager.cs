@@ -55,11 +55,6 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         }
     }
 
-    public List<DuckSettings> GetCharacters()
-    {
-        return characterList.getList;
-    }
-
     public void OnClickCreate()
     {
         if(createInput.text.Length > 0)

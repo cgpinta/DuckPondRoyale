@@ -2442,7 +2442,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CSSIconPrefab: {fileID: 6603779275060368315, guid: c16134bc9cc851647bcaba556ef522bf, type: 3}
-  LobbyManager: {fileID: 0}
+  characters: []
 --- !u!1 &2034988781
 GameObject:
   m_ObjectHideFlags: 0

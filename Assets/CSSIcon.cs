@@ -27,5 +27,6 @@ public class CSSIcon : MonoBehaviour
     public void onClickSetPlayerChar()
     {
         LobbyManager.OnClickSetPlayerChar(settings);
+        LobbyManager.OnClickSetPlayerChar(settings);
     }
 }
