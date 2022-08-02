@@ -22,8 +22,10 @@ public class Hitbox : MonoBehaviour
     public HitboxSettings settings;
     Attack attack;
 
-    [SerializeField] bool editMode;
-    bool showGizmo;
+    [SerializeField] bool updateValues;
+    [SerializeField] bool active;
+    bool oldactive;
+    public bool showGizmo;
     //[SerializeField] bool active;
 
     [Header("Stats")]
@@ -42,11 +44,13 @@ public class Hitbox : MonoBehaviour
     [SerializeField] float circleRadius;
     [SerializeField] float hitboxAngle;
 
-    Vector2 offset;
+    Vector2 offset = new Vector2(0,0);
     Vector2 centerTransform;
     int direction;
 
     public List<Hittable> currentHit;
+
+    List<int> instanceIDs = new List<int>();
 
 
     private void Start()
@@ -69,22 +73,52 @@ public class Hitbox : MonoBehaviour
         direction = owner.direction;
     }
 
+    private void Update()
+    {
+        direction = -owner.direction;
+        centerTransform = new Vector2(this.transform.position.x + (center.x * direction), this.transform.position.y + center.y);
+        if (active)
+        {
+            if (!oldactive)
+            {
+                instanceIDs.Clear();
+            }
+            List<Collider2D> colliders = new List<Collider2D>();
+
+            List<Hittable> currentHit = renderHitbox(showGizmo);
+            foreach (Hittable hittable in currentHit)
+            {
+                if (!instanceIDs.Contains(hittable.GetInstanceID()))
+                {
+                    instanceIDs.Add(hittable.GetInstanceID());
+                    Hit(hittable);
+                }
+            }
+        }
+        oldactive = active;
+    }
+
     private void OnValidate()
     {
-        if (editMode)
+        if (updateValues)
         {
             if (settings == null) { return; }
-            settings.setSettings(hitboxShapes, capsuleDirection, centerTransform, size, circleRadius, hitboxAngle);
-        }
-        centerTransform = center + offset;
+            
 
-        hitboxShapes = settings.HitboxShapes;
-        capsuleDirection = settings.CapsuleDirection;
-        center = settings.Center;
-        size = settings.Size;
-        angle = settings.Angle;
-        circleRadius = settings.CircleRadius;
-        hitboxAngle = settings.HitboxAngle;
+            hitboxShapes = settings.HitboxShapes;
+            capsuleDirection = settings.CapsuleDirection;
+            center = settings.Center;
+            size = settings.Size;
+            angle = settings.Angle;
+            circleRadius = settings.CircleRadius;
+            hitboxAngle = settings.HitboxAngle;
+            centerTransform = center + offset;
+
+            damage = settings.Damage;
+            knockback = settings.Knockback;
+            hitstun = settings.Hitstun;
+        }
+        
     }
 
     private void OnDrawGizmos()
@@ -115,12 +149,12 @@ public class Hitbox : MonoBehaviour
                 colliders = Physics2D.OverlapCircleAll(centerTransform, circleRadius).ToList();
                 break;
         }
-        Debug.Log(colliders.ToArray().ToString());
+        //Debug.Log(colliders.ToArray().ToString());
     }
 
     public List<Hittable> renderHitbox(bool showGizmos)
     {
-        direction = owner.direction;
+        direction = -owner.direction;
         centerTransform = new Vector2(this.transform.position.x + (center.x * direction), this.transform.position.y + center.y);
         List<Collider2D> colliders = new List<Collider2D>();
         showGizmo = showGizmos;
@@ -146,7 +180,7 @@ public class Hitbox : MonoBehaviour
             }
         }
 
-        showGizmo = false;
+        //showGizmo = false;
         return thoseHit;
     }
 
@@ -179,9 +213,17 @@ public class Hitbox : MonoBehaviour
         }
 
         Debug.Log("Sending[KB:"+knockback+", Angle:"+angle+"] to enemy");
-        PhotonView pView = hittable.gameObject.GetComponent<PhotonView>();          //pView = the opposing players view
-        
-        pView.RPC("GetHit", RpcTarget.All, damage, knockback, hitstun, newAngle, type); //call GetHit on the opposing player
+
+
+        if (PhotonNetwork.IsConnected)
+        {
+            PhotonView pView = hittable.gameObject.GetComponent<PhotonView>();          //pView = the opposing players view
+            pView.RPC("GetHit", RpcTarget.All, damage, knockback, hitstun, newAngle, type); //call GetHit on the opposing player
+        }
+        else
+        {
+            hittable.GetHit(damage, knockback, hitstun, newAngle, type);
+        }
 
 
 

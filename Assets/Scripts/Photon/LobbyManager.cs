@@ -16,7 +16,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     public Transform roomPanelContextTR;            //transform of context object inside the room list in the lobby panel
     public TMP_InputField createInput;
     Timer roomListUpdateCooldown = new Timer();
-    float timeBetweenRLUpdates = 1.5f;
+    float timeBetweenRLUpdates = 0.5f;
 
     [Header("Room Panel")]
     public GameObject roomPanel;
@@ -25,23 +25,37 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     List<RoomItem> roomItems = new List<RoomItem>();
     public int minPlayerCount;
 
-    
 
+    [Header("Players")]
     public List<PlayerItem> playerItems = new List<PlayerItem>();
     public PlayerItem playerItemPrefab;
     public Transform playerItemParent;
 
     public List<Color32> playerOrderColors = new List<Color32>();
 
-    public CharacterList characterList;
+    [Header("Stages")]
 
+    [Header("Lists")]
+    public CharacterList characterList;
+    public StageList stageList;
+
+    [Header("Other")]
     public GameObject startButton;
+
+
+    string tempRoomListUpdateName = "~~joiningRoom"; //name used for temp room to refresh room list
+
+
+    public event Action RoomLoaded;
 
     private void Start()
     {
         roomPanel.SetActive(false);
         lobbyPanel.SetActive(true);
+        PhotonNetwork.CreateRoom(tempRoomListUpdateName);    //join a temp room to immediately leave so that OnRoomListUpdate is called
     }
+
+    
 
     private void Update()
     {
@@ -54,6 +68,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
             startButton.SetActive(false);
         }
     }
+
 
     public void OnClickCreate()
     {
@@ -70,12 +85,14 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
     public override void OnJoinedRoom()
     {
-        
+        if(PhotonNetwork.CurrentRoom.Name == tempRoomListUpdateName) { PhotonNetwork.LeaveRoom(); return; }    //join a temp room to immediately leave so that OnRoomListUpdate is called
         lobbyPanel.SetActive(false);
         roomPanel.SetActive(true);
         roomName.text = PhotonNetwork.CurrentRoom.Name;
         UpdatePlayerList();
+        RoomLoaded();
     }
+
 
     public override void OnRoomListUpdate(List<RoomInfo> roomList)
     {
@@ -96,11 +113,14 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
         foreach(RoomInfo room in list)                  //add updated list to list of rooms
         {
+            if(room.PlayerCount < 1) { continue; }
             RoomItem newRoom = Instantiate(roomItemPrefab, roomPanelContextTR);
             newRoom.SetRoomName(room.Name);
+            newRoom.SetPlayerCount(room.PlayerCount, room.MaxPlayers);
             roomItems.Add(newRoom);
         }
     }
+    
 
     public void JoinRoom(string roomName)
     {
@@ -122,6 +142,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     {
         PhotonNetwork.JoinLobby();
     }
+
 
     void UpdatePlayerList()
     {
@@ -166,6 +187,15 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         if (SetPlayerChar != null)
         {
             SetPlayerChar(PhotonNetwork.LocalPlayer, settings);
+        }
+    }
+
+    public event Action<StageSettings> SetRoomStage;
+    public void OnClickSetStage(StageSettings settings)
+    {
+        if (SetRoomStage != null)
+        {
+            SetRoomStage(settings);
         }
     }
 

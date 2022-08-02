@@ -36,18 +36,44 @@ public class DuckSettings : ScriptableObject
     public float Friction => friction;
 
     [Header("Cooldowns")]
-    [SerializeField] private float flapCooldown;
-    public float FlapCooldown => flapCooldown;
-    [SerializeField] private float peckCooldown;
-    public float PeckCooldown => peckCooldown;
-    [SerializeField] private float honkCooldown;
-    public float HonkCooldown => honkCooldown;
-    [SerializeField] private float swimCooldown;
-    public float SwimCooldown => swimCooldown;
-    [SerializeField] private float throwCooldown;
-    public float ThrowCooldown => throwCooldown;
-    [SerializeField] private float landingCooldown;
-    public float LandingCooldown => landingCooldown;
+    [SerializeField] private float flapLag;
+    [SerializeField] private float peckLag;
+    [SerializeField] private float directionalPeckLag;
+    [SerializeField] private float crouchPeckLag;
+    [SerializeField] private float honkLag;
+    [SerializeField] private float crouchHonkLag;
+    [SerializeField] private float aerialLag;
+    [SerializeField] private float swimLag;
+    [SerializeField] private float throwLag;
+    [SerializeField] private float sheildLag;
+    [SerializeField] private float landingLag;
+
+
+    [SerializeField] private float chargedPeckLag;
+    [SerializeField] private float chargedDirectionalPeckLag;
+    [SerializeField] private float chargedCrouchPeckLag;
+    [SerializeField] private float chargedHonkLag;
+    [SerializeField] private float chargedCrouchHonkLag;
+    
+
+    public float FlapLag => flapLag;
+    public float PeckLag => peckLag;
+    public float DirectionalPeckLag => directionalPeckLag;
+    public float CrouchPeckLag => crouchPeckLag;
+    public float HonkLag => honkLag;
+    public float CrouchHonkLag => crouchHonkLag;
+    public float AerialLag => aerialLag;
+    public float SwimLag => swimLag;
+    public float ThrowLag => throwLag;
+    public float SheildLag => sheildLag;
+    public float LandingLag => landingLag;
+
+
+    public float ChargedPeckLag => chargedPeckLag;
+    public float ChargedDirectionalPeckLag => chargedDirectionalPeckLag;
+    public float ChargedCrouchPeckLag => chargedCrouchPeckLag;
+    public float ChargedHonkLag => chargedHonkLag;
+    public float ChargedCrouchHonkLag => chargedCrouchHonkLag;
 
     [Header("Info")]
     [SerializeField] string breedName;
@@ -62,4 +88,5 @@ public class DuckSettings : ScriptableObject
     public GameObject DuckObject => duckObject;
     [SerializeField] Sprite css;                                //used in CSS
     public Sprite CSS => css;
+
 }

@@ -38,7 +38,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 267.39996, y: 157.9}
+  m_AnchoredPosition: {x: 453.8, y: -41.85}
   m_SizeDelta: {x: 907.6, y: 83.700005}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &6561908678381840034
@@ -110,6 +110,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   roomName: {fileID: 2455820678244464798}
+  playerCount: {fileID: 4698027593416707147}
 --- !u!1 &6059282565802471796
 GameObject:
   m_ObjectHideFlags: 0
@@ -122,7 +123,7 @@ GameObject:
   - component: {fileID: 4513195463224837613}
   - component: {fileID: 4698027593416707147}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: Player Count
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

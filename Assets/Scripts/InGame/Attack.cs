@@ -7,15 +7,15 @@ public class Attack : MonoBehaviour
 {
     [SerializeField]List<Hitbox> hitboxes;
 
-    [SerializeField] bool editMode;
+    //[SerializeField] bool editMode;
     [SerializeField] bool active;
-    [SerializeField] bool oldactive;
+    bool oldactive;
     [SerializeField] bool showGizmos;
     List<int> instanceIDs = new List<int>();
 
     private void Start()
     {
-        
+        hitboxes = GetComponentsInChildren<Hitbox>().ToList();
     }
 
     private void Update()
@@ -65,6 +65,25 @@ public class Attack : MonoBehaviour
         foreach(Hitbox hitbox in hitboxes)
         {
             hitbox.drawHitbox();
+        }
+    }
+
+    private void OnValidate()
+    {
+        hitboxes = GetComponentsInChildren<Hitbox>().ToList();
+        if (showGizmos)
+        {
+            foreach(Hitbox hitbox in hitboxes)
+            {
+                hitbox.showGizmo = true;
+            }
+        }
+        else
+        {
+            foreach (Hitbox hitbox in hitboxes)
+            {
+                hitbox.showGizmo = false;
+            }
         }
     }
 

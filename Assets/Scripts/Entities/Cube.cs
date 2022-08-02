@@ -10,7 +10,7 @@ public class Cube : Hittable
     public override void GetHit(float damage, float knockback, float hitstun, Vector2 direction, knockbackType type)
     {
         //this.damage += damage;
-        rb.AddForce(direction * knockback);
+        rb.velocity = (direction * knockback);
         Debug.Log("Cube: OW!");
     }
 }

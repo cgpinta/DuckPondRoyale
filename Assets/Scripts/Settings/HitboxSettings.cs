@@ -5,15 +5,15 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "HitboxSettings", menuName = "Duck Royale/New Hitbox Settings")]
 public class HitboxSettings : ScriptableObject
 {
-    [SerializeField] public float damage;
+    [SerializeField] private float damage;
     public float Damage => damage;
-    [SerializeField] public float knockback;
+    [SerializeField] private float knockback;
     public float Knockback => knockback;
-    [SerializeField] public float hitstun;
+    [SerializeField] private float hitstun;
     public float Hitstun => hitstun;
-    [SerializeField] public Vector2 angle;
+    [SerializeField] private Vector2 angle;
     public Vector2 Angle => angle;
-    [SerializeField] public knockbackType type;
+    [SerializeField] private knockbackType type;
     public knockbackType Type => type;
 
     [SerializeField] hitboxShape hitboxShapes;

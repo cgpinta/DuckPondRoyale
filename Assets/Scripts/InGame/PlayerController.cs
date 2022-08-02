@@ -43,14 +43,22 @@ public class PlayerController : Hittable
     public float walkingAnimSpeed;
 
     [Header("Cooldowns")]
-    public float flapCooldown;
-    public float peckCooldown;
-    public float crouchPeckCooldown;
-    public float honkCooldown;
-    public float crouchHonkCooldown;
-    public float swimCooldown;
-    public float landingCooldown;
+    public float flapLag;
+    public float peckLag;
+    public float crouchPeckLag;
+    public float honkLag;
+    public float crouchHonkLag;
+    public float swimLag;
+    public float shieldLag;
+    public float aerialLag;
+    public float landingLag;
     public float postSwimInvincibility;
+
+    public float chargedPeckLag;
+    public float chargedDirectionalPeckLag;
+    public float chargedCrouchedPeckLag;
+    public float chargedHonkLag;
+    public float chargedCrouchHonkLag;
     
 
 
@@ -69,12 +77,20 @@ public class PlayerController : Hittable
 
     //Dictionary<string, Timer> Timers = new Dictionary<string, Timer>();
 
-    bool jumping, crouching, turning, swimming, isFalling, onGround, inHitstun;
+    bool jumping, crouching, turning, swimming, isFalling, onGround, inHitstun, canMove;
     bool pressingHonk;
     int againstWall;
 
     float attack;
     float defense;
+
+    float attackChargeTime;
+    float chargeThreshold = 0.2f;
+    float maxChargeMultiplier = 4;
+    float inputDeadzone = 0.6f;
+
+
+    float frameLength = 1f/60;
     #endregion
 
 
@@ -82,15 +98,18 @@ public class PlayerController : Hittable
     Timer peckTimer = new Timer();
     Timer honkTimer = new Timer();
     Timer swimTimer = new Timer();
+    Timer shieldTimer = new Timer();
     Timer landingTimer = new Timer();
     Timer hitstunTimer = new Timer();
     Timer invincibleTimer = new Timer();
     Timer cantControlTimer = new Timer();
+    Timer attackChargeTimer = new Timer(true);
 
 
     // START: is called before the first frame update
     void Start()
     {
+
         tr = GetComponent<Transform>();
         rb = GetComponent<Rigidbody2D>();
         cl = GetComponent<CapsuleCollider2D>();
@@ -118,13 +137,20 @@ public class PlayerController : Hittable
         attack = duckSettings.Attack;
         defense = duckSettings.Defense;
 
-        flapCooldown = duckSettings.FlapCooldown;
-        peckCooldown = duckSettings.PeckCooldown;
-        honkCooldown = duckSettings.HonkCooldown;
-        swimCooldown = duckSettings.SwimCooldown;
-        landingCooldown = duckSettings.LandingCooldown;
+        flapLag = duckSettings.FlapLag * frameLength;
+        peckLag = duckSettings.PeckLag * frameLength;
+        aerialLag = duckSettings.AerialLag * frameLength;
+        honkLag = duckSettings.HonkLag * frameLength;
+        swimLag = duckSettings.SwimLag * frameLength;
+        landingLag = duckSettings.LandingLag * frameLength;
+
+        chargedHonkLag = duckSettings.ChargedHonkLag * frameLength;
+
+        Debug.Log("landing lag: "+duckSettings.LandingLag+" * "+frameLength+" = "+ landingLag);
 
         anims = new AnimatorHolder(wingAnim, headAnim, bodyAnim, feetAnim);
+
+        direction = -1;
     }
 
     private void Update()
@@ -140,7 +166,7 @@ public class PlayerController : Hittable
     // FIXED UPDATE: updates in delta time
     private void FixedUpdate()
     {
-        if (pView.IsMine)
+        if (pView.IsMine && canMove)
         {
             MovementCode();
             
@@ -150,7 +176,7 @@ public class PlayerController : Hittable
     //whenever a state variable is set, it is set in here
     void StateAssignmentCode()
     {
-        if(onGround && movementVector.y < 0)
+        if(onGround && movementVector.y < -inputDeadzone)
         {
             crouching = true;
         }
@@ -181,6 +207,15 @@ public class PlayerController : Hittable
             }
         }
         swimming = swimTimer.isInProgress();
+        
+        if (!attackChargeTimer.isInProgress() && !landingTimer.isInProgress() && !hitstunTimer.isInProgress())
+        {
+            canMove = true;
+        }
+        else
+        {
+            canMove = false;
+        }
     }
 
     void MovementCode()
@@ -219,7 +254,7 @@ public class PlayerController : Hittable
             rb.velocity += Vector2.up * Physics2D.gravity.y * (lowJumpMultiplier - 1) * Time.deltaTime;
         }
         //jump
-        if (inputJump && onGround)
+        if (inputJump && onGround && canMove)
         {
             rb.velocity = new Vector2(rb.velocity.x, jumpSpeed);
         }
@@ -256,7 +291,22 @@ public class PlayerController : Hittable
         //SET ANIMATION PARAMETERS FOR 
         anims.SetFloatForAll("yVelocity", anim_yvel);
         anims.SetBoolForAll("isCrouching", crouching);
+        anims.SetBoolForAll("onGround", onGround);
+        
 
+        if(movementVector.y > inputDeadzone)
+        {
+            anims.SetFloatForAll("inputY", 1);
+        }
+        else if(movementVector.y < -inputDeadzone)
+        {
+            anims.SetFloatForAll("inputY", -1);
+        }
+        else
+        {
+            anims.SetFloatForAll("inputY", 0);
+        }
+            
         //SET ANIMATION PARAMETERS FOR FEET
         if (onGround)
         {
@@ -267,7 +317,7 @@ public class PlayerController : Hittable
             anims.SetFloatForAll("Speed", 0);
         }
 
-                      
+            
 
 
         //FLIP CHARACTER THE DIRECTION THEY MOVE
@@ -296,6 +346,11 @@ public class PlayerController : Hittable
     }
     public void setOnGround(bool newValue)
     {
+        if (newValue && !onGround)
+        {
+            landingTimer.setTimer(landingLag);
+        }
+
         onGround = newValue;
     }
     #endregion
@@ -319,7 +374,7 @@ public class PlayerController : Hittable
             //Debug.Log("jumping");
 
         }
-        else if (context.performed && !onGround && currentFlaps > 0)
+        else if (context.performed && !onGround && currentFlaps > 0 && canMove)
         {
             Flap();
         }
@@ -327,14 +382,82 @@ public class PlayerController : Hittable
 
     private void Peck(InputAction.CallbackContext context)
     {
-        if (!peckTimer.isInProgress() && pView.IsMine)
+        if (!peckTimer.isInProgress() && !(attackChargeTimer.getType() != "peck" && attackChargeTimer.isInProgress()) && pView.IsMine)
         {
-            inputPeck = context.performed;
-            anims.SetTriggerForAll("Peck");
-            if (crouching) { peckTimer.setTimer(crouchPeckCooldown); }
-            else { peckTimer.setTimer(peckCooldown); }
+            if (context.started && !attackChargeTimer.isInProgress())
+            {
+                attackChargeTime = 0;
+                anims.Head.SetBool("AttackCharging", true);
+                attackChargeTimer.startWatch("peck");
+            }
+            if (context.canceled)
+            {
+                anims.Head.SetBool("AttackCharging", false);
+                attackChargeTime = attackChargeTimer.stopWatch();
+            }
+
+            if (attackChargeTime > 0)
+            {
+                PeckAttack(peckLag, crouchPeckLag, aerialLag);
+            }
         }
     }
+
+    public void PeckAttack(float lag, float crouchLag, float dirLag)
+    {
+        anims.SetTriggerForAll("Peck");
+        if (crouching) { 
+            peckTimer.setTimer(crouchLag); 
+        }
+        else if(movementVector.y > inputDeadzone || movementVector.y < -inputDeadzone){ 
+            peckTimer.setTimer(dirLag); 
+        }
+        else
+        {
+            peckTimer.setTimer(lag);
+        }
+    }
+
+
+    private void Honk(InputAction.CallbackContext context)
+    {
+        if (!honkTimer.isInProgress() && !(attackChargeTimer.getType() != "honk" && attackChargeTimer.isInProgress()) && pView.IsMine)
+        {
+            if (context.started && !attackChargeTimer.isInProgress())
+            {
+                attackChargeTime = 0;
+                anims.Head.SetBool("AttackCharging", true);
+                attackChargeTimer.startWatch("honk");
+
+            }
+            if (context.canceled)
+            {
+                anims.Head.SetBool("AttackCharging", false);
+                attackChargeTime = attackChargeTimer.stopWatch();
+            }
+
+            if (attackChargeTime > 0 && attackChargeTime <= chargeThreshold)
+            {
+                HonkAttack(honkLag, crouchHonkLag, "Honk");
+            }
+            else if(attackChargeTime > chargeThreshold)
+            {
+                HonkAttack(chargedHonkLag, crouchHonkLag, "ChargedHonk");
+            }
+        }
+    }
+
+    public void HonkAttack(float lag, float crouchLag, string honkType)
+    {
+        anims.Head.SetTrigger(honkType);
+        if (crouching) { 
+            honkTimer.setTimer(crouchLag); 
+        }
+        else { 
+            honkTimer.setTimer(lag);
+        }
+    }
+
 
     private void Flap()
     {
@@ -343,32 +466,24 @@ public class PlayerController : Hittable
             currentFlaps--;
             anims.SetTriggerForAll("Flap");
             rb.velocity = new Vector2(rb.velocity.x, flapHeight);
-            flapTimer.setTimer(flapCooldown);
+            flapTimer.setTimer(flapLag);
         }
     }
-    private void Honk()
-    {
-        if (!honkTimer.isInProgress() && pView.IsMine)
-        {
-            currentFlaps--;
-            anims.SetTriggerForAll("Honk");
-            if (crouching) { honkTimer.setTimer(crouchHonkCooldown); }
-            else { honkTimer.setTimer(honkCooldown); }
-        }
-    }
+    
     private void Swim()
     {
-        if (canSwim && pView.IsMine)
+        if (canSwim && pView.IsMine && canMove)
         {
             canSwim = false;
             anims.SetTriggerForAll("Swim");
-            rb.velocity = movementVector * swimSpeed;
-            swimTimer.setTimer(swimCooldown);
+            rb.velocity = new Vector2(direction, 1) * swimSpeed;
+            swimTimer.setTimer(swimLag);
             invincibleTimer.setTimer(postSwimInvincibility);
-            cantControlTimer.setTimer(swimCooldown);
+            cantControlTimer.setTimer(swimLag);
         }
     }
     #endregion
+
     [PunRPC]
     public override void GetHit(float damage, float knockback, float hitstun, Vector2 direction, knockbackType type)
     {
@@ -380,6 +495,10 @@ public class PlayerController : Hittable
                 if (hitstun > 0)
                 {
                     hitstunTimer.setTimer(hitstun);
+                }
+                else
+                {
+                    hitstunTimer.setTimer(0.5f);
                 }
 
                 //rb.velocity = direction.normalized * knockback * (this.damage / 5);
