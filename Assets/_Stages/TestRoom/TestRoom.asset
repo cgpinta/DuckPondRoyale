@@ -9,9 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 671363ca9b751e647a33d52081eeac03, type: 3}
-  m_Name: Stage List
+  m_Script: {fileID: 11500000, guid: 13f2d20ea37cffe41ae8204dcc30349b, type: 3}
+  m_Name: TestRoom
   m_EditorClassIdentifier: 
-  list:
-  - {fileID: 11400000, guid: ab738f7e115c9e1459f12537950404f0, type: 2}
-  - {fileID: 11400000, guid: d617307e7c495014a92933a00aea87a3, type: 2}
+  id: -1
+  sceneName: TestRoom
+  sss: {fileID: 21300000, guid: 8a85c7977b4bbc247a0373d0358e4269, type: 3}

@@ -34,6 +34,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     public List<Color32> playerOrderColors = new List<Color32>();
 
     [Header("Stages")]
+    public string selectedStageName;
 
     [Header("Lists")]
     public CharacterList characterList;
@@ -50,6 +51,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
     private void Start()
     {
+        selectedStageName = stageList.getList[0].name;
         roomPanel.SetActive(false);
         lobbyPanel.SetActive(true);
         PhotonNetwork.CreateRoom(tempRoomListUpdateName);    //join a temp room to immediately leave so that OnRoomListUpdate is called
@@ -193,6 +195,8 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     public event Action<StageSettings> SetRoomStage;
     public void OnClickSetStage(StageSettings settings)
     {
+        selectedStageName = settings.name;
+        Debug.Log("Stage set to: " + selectedStageName);
         if (SetRoomStage != null)
         {
             SetRoomStage(settings);
@@ -201,6 +205,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
     public void OnClickStartButton()
     {
-        PhotonNetwork.LoadLevel("Fight");
+        Debug.Log("Now loading stage: " + selectedStageName);
+        PhotonNetwork.LoadLevel(selectedStageName);
     }
 }

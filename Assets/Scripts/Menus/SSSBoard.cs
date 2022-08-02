@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 
-public class SSSBoard : MonoBehaviour
+public class SSSBoard : MonoBehaviourPunCallbacks
 {
 
     public SSSIcon SSSIconPrefab;
@@ -15,21 +15,27 @@ public class SSSBoard : MonoBehaviour
     void Start()
     {
         lobbyManager = FindObjectOfType<LobbyManager>();
-        lobbyManager.RoomLoaded += displaySSS;
+        //lobbyManager.RoomLoaded += displaySSS;
+
+        stages = FindObjectOfType<LobbyManager>().stageList.getList;
+
+        foreach (StageSettings stage in stages)
+        {
+            SSSIcon newIcon = Instantiate(SSSIconPrefab, this.transform);
+            newIcon.settings = stage;
+            newIcon.GetPropertiesFromSettings();
+        }
     }
 
-    public void displaySSS()
+    public override void OnJoinedRoom()
     {
         if (PhotonNetwork.IsMasterClient)
         {
-            stages = FindObjectOfType<LobbyManager>().stageList.getList;
-
-            foreach (StageSettings stage in stages)
-            {
-                SSSIcon newIcon = Instantiate(SSSIconPrefab, this.transform);
-                newIcon.settings = stage;
-                newIcon.GetPropertiesFromSettings();
-            }
+            this.gameObject.SetActive(true);
+        }
+        else
+        {
+            this.gameObject.SetActive(false);
         }
     }
 }
