@@ -15,12 +15,16 @@ public class PlayerSpawner : MonoBehaviour
 
     private void Start()
     {
-        spawnPoints = GetComponentsInChildren<Transform>();
+        if (PhotonNetwork.IsConnected)
+        {
+            spawnPoints = GetComponentsInChildren<Transform>();
 
-        int spawnPointRand = Random.Range(0, spawnPoints.Length);
-        Transform spawnPoint = spawnPoints[spawnPointRand];
-        string newPlayer = chars.getList[(int)PhotonNetwork.LocalPlayer.CustomProperties["SelectedChar"]].name;
-        PhotonNetwork.Instantiate("DuckPrefabs/" + newPlayer, spawnPoint.position, Quaternion.identity);
+            int spawnPointRand = Random.Range(0, spawnPoints.Length);
+            Transform spawnPoint = spawnPoints[spawnPointRand];
+            string newPlayer = chars.getList[(int)PhotonNetwork.LocalPlayer.CustomProperties["SelectedChar"]].name;
+            PhotonNetwork.Instantiate("DuckPrefabs/" + newPlayer, spawnPoint.position, Quaternion.identity);
+        }
+        
 
         //Vector2 randomPosition = new Vector2(Random.Range(minX, maxX), Random.Range(minY, maxY));
         //GameObject newPlayer = PhotonNetwork.Instantiate("DuckPrefabs/"+playerPrefab.name, randomPosition, Quaternion.identity);

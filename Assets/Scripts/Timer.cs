@@ -8,7 +8,7 @@ public class Timer
 
 
     bool isStopWatch;
-    float startTime;
+    private float startTime;
     string moveType;
 
     public Timer() {}
@@ -42,7 +42,7 @@ public class Timer
         {
             float sTime = startTime;
             startTime = 0;
-            return Time.time - startTime;
+            return Time.time - sTime;
         }
         return 0;
     }
