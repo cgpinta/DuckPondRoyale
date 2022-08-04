@@ -35,6 +35,7 @@ public class SSSBoard : MonoBehaviourPunCallbacks
         }
         else
         {
+            Debug.Log("ROOM JOINED SSSBOARD");
             this.gameObject.SetActive(false);
         }
     }

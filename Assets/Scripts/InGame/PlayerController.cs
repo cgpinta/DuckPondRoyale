@@ -68,7 +68,8 @@ public class PlayerController : Hittable
     float swimInvincibility;
 
     public Vector2 movementVector;
-    private bool inputJump, inputPeck;
+    private bool inputJump, inputPeck, inputHonk;
+    bool inAttack;
     int currentFlaps;
     bool canControl, isDead;
     bool canPeck, canFlap, canHonk, canSwim;
@@ -90,11 +91,11 @@ public class PlayerController : Hittable
     float chargeThreshold = 0.2f;
     float maxChargeMultiplier = 4;
     float inputDeadzone = 0.6f;
+    float inAttackGravityMultiplier = 0.5f;
 
 
     float frameLength = 1f/60;
     #endregion
-
 
     Timer flapTimer = new Timer();
     Timer peckTimer = new Timer();
@@ -126,6 +127,7 @@ public class PlayerController : Hittable
         inHitstun = false;
         swimming = false;
         canSwim = true;
+        inAttack = false;
        
         damage = 0;
         speed = duckSettings.Speed;
@@ -218,6 +220,16 @@ public class PlayerController : Hittable
         {
             canMove = false;
         }
+
+        if (hitstunTimer.isInProgress())
+        {
+            anims.SetBoolForAll("InHitstun", true);
+        }
+        else
+        {
+            anims.SetBoolForAll("InHitstun", false);
+        }
+
     }
 
     void MovementCode()
@@ -244,8 +256,16 @@ public class PlayerController : Hittable
         }
         else
         {
+            if (Mathf.Abs(rb.velocity.x) < maxSpeed)
+            {
+                rb.velocity = new Vector2(-rb.velocity.x, rb.velocity.y);
+            }
             rb.velocity += Vector2.right * maxSpeed * movementVector.x * Time.deltaTime;
         }
+
+
+
+
 
         if(Mathf.Abs(rb.velocity.x) < 0.1)
         {
@@ -253,20 +273,31 @@ public class PlayerController : Hittable
         }
 
 
+
+        float gravityMultipler = 1;
+        if (inAttack)
+        {
+            gravityMultipler = inAttackGravityMultiplier;
+        }
+
         //if jump button pressed longer, player jumps higher
         if (rb.velocity.y < 0)
         {
-            rb.velocity += Vector2.up * Physics2D.gravity.y * (fallMultiplier - 1) * Time.deltaTime;
+            rb.velocity += Vector2.up * Physics2D.gravity.y * (fallMultiplier - 1) * Time.deltaTime * gravityMultipler;
         }
         else if (rb.velocity.y > 0 && !inputJump)
         {
-            rb.velocity += Vector2.up * Physics2D.gravity.y * (lowJumpMultiplier - 1) * Time.deltaTime;
+            rb.velocity += Vector2.up * Physics2D.gravity.y * (lowJumpMultiplier - 1) * Time.deltaTime * gravityMultipler;
         }
         //jump
         if (inputJump && onGround && canMove)
         {
             rb.velocity = new Vector2(rb.velocity.x, jumpSpeed);
+            jumping = false;
         }
+
+
+
 
 
         if(movementVector.x > 0)
@@ -277,7 +308,6 @@ public class PlayerController : Hittable
         {
             direction = -1;
         }
-
     }
 
     public void AnimationVariables()
@@ -347,6 +377,11 @@ public class PlayerController : Hittable
                     tr.rotation = Quaternion.Euler(tr.rotation.x, 0, tr.rotation.z);
             }
         }
+
+        if (inputHonk && attackChargeTimer.getWatch() > chargeThreshold)
+        {
+            anims.Head.SetBool("HonkCharging", true);
+        }
     }
 
     #region ONGROUND METHODS
@@ -379,7 +414,7 @@ public class PlayerController : Hittable
     {
         inputJump = context.performed;
         //Debug.Log("trying to jump"+onGround);
-        if (context.performed && onGround)
+        if (context.started && onGround)
         {
             jumping = true;
             //Debug.Log("jumping");
@@ -397,12 +432,14 @@ public class PlayerController : Hittable
         {
             if (context.started && !attackChargeTimer.isInProgress())
             {
+                inAttack = true;
                 attackChargeTime = -1;
                 anims.Head.SetBool("AttackCharging", true);
                 attackChargeTimer.startWatch("peck");
             }
             if (context.canceled)
             {
+                inAttack = false;
                 anims.Head.SetBool("AttackCharging", false);
                 attackChargeTime = attackChargeTimer.stopWatch();
             }
@@ -436,20 +473,25 @@ public class PlayerController : Hittable
         {
             if (context.started && !attackChargeTimer.isInProgress())
             {
+                inAttack = true;
                 attackChargeTime = -1;
                 attackChargeTimer.startWatch("honk");
-
+                Debug.Log("honk input started");
+                inputHonk = true;
             }
+
+
             if (context.canceled)
             {
+                inAttack = false;
                 anims.Head.SetBool("HonkCharging", false);
                 attackChargeTime = attackChargeTimer.stopWatch();
+                Debug.Log("honk input stopped");
+                inputHonk = false;
             }
 
-            if(attackChargeTimer.getWatch() > chargeThreshold)
-            {
-                anims.Head.SetBool("HonkCharging", true);
-            }
+            
+            Debug.Log("Honk Charging: "+anims.Head.GetBool("HonkCharging"));
 
             if (attackChargeTime >= 0f && attackChargeTime <= chargeThreshold)
             {

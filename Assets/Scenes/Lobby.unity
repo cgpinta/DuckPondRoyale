@@ -1692,6 +1692,8 @@ MonoBehaviour:
   playerItemPrefab: {fileID: 6605360256424425707, guid: ad937e8fad8788a449cb5553276384f1, type: 3}
   playerItemParent: {fileID: 980215721}
   playerOrderColors: []
+  stageListObject: {fileID: 880303920}
+  selectedStageName: 
   characterList: {fileID: 11400000, guid: 82d3d9234a1337545bb86f0f08698361, type: 2}
   stageList: {fileID: 11400000, guid: 6e1593944cab14944b7e2c41c11ff040, type: 2}
   startButton: {fileID: 790629404}

@@ -34,6 +34,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     public List<Color32> playerOrderColors = new List<Color32>();
 
     [Header("Stages")]
+    public GameObject stageListObject;
     public string selectedStageName;
 
     [Header("Lists")]
@@ -64,10 +65,12 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         if (PhotonNetwork.IsMasterClient && PhotonNetwork.CurrentRoom.PlayerCount >= minPlayerCount)
         {
             startButton.SetActive(true);
+            stageListObject.SetActive(true);
         }
         else
         {
             startButton.SetActive(false);
+            stageListObject.SetActive(false);
         }
     }
 

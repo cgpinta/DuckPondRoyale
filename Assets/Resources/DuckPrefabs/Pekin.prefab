@@ -108,6 +108,7 @@ GameObject:
   - component: {fileID: 2420139045643934938}
   - component: {fileID: 182897396899207301}
   - component: {fileID: 81276599589919831}
+  - component: {fileID: 8465966511815324057}
   m_Layer: 0
   m_Name: Rigid Collision
   m_TagString: Untagged
@@ -169,7 +170,7 @@ BoxCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2995861538257818184}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 6200000, guid: 8999c0b9ee675264ba955df0315ad309, type: 2}
   m_IsTrigger: 0
@@ -188,6 +189,22 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.31, y: 0.12}
   m_EdgeRadius: 0
+--- !u!70 &8465966511815324057
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2995861538257818184}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: -0.03, y: -0.44}
+  m_Size: {x: 0.31, y: 0.12}
+  m_Direction: 1
 --- !u!1 &3540748878950375094
 GameObject:
   m_ObjectHideFlags: 0
@@ -796,6 +813,9 @@ MonoBehaviour:
   - Type: 9
     SynchronizeType: 1
     Name: ChargedHonk
+  - Type: 4
+    SynchronizeType: 0
+    Name: HonkCharging
   m_SynchronizeLayers:
   - SynchronizeType: 0
     LayerIndex: 0
@@ -1211,7 +1231,7 @@ Transform:
   m_GameObject: {fileID: 3540748880086125274}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0.04, y: -2.51, z: 0.30577227}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 3540748880883408940}
