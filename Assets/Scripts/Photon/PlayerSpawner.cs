@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using Photon.Pun;
 using Photon.Realtime;
 using TMPro;
@@ -25,6 +26,7 @@ public class PlayerSpawner : MonoBehaviour
     Player localPlayer;              //the local player
     ExitGames.Client.Photon.Hashtable currentPlayerProperties = new ExitGames.Client.Photon.Hashtable();
 
+    List<GameObject> playerObjects = new List<GameObject>();
 
     
 
@@ -36,6 +38,7 @@ public class PlayerSpawner : MonoBehaviour
 
     public event Action<Player> PlayerLoaded;
     public event Action SpawnPlayers;
+    public event Action ActivateAllPlayerInput;
 
     private void Start()
     {
@@ -77,6 +80,7 @@ public class PlayerSpawner : MonoBehaviour
                 {
                     countdownTextBox.gameObject.SetActive(false);
                     countingDown = false;
+                    ActivateAllPlayerInput();
                 }
                 else if(countdownNextNumber + 1 == countdownText.Count)
                 {
@@ -141,7 +145,9 @@ public class PlayerSpawner : MonoBehaviour
     {
         string chosenChar = chars.getList[(int)PhotonNetwork.LocalPlayer.CustomProperties["SelectedChar"]].name;
         Vector3 spawnPoint = spawnPoints[(int)PhotonNetwork.LocalPlayer.CustomProperties["CurrentSpawnPoint"]].position;
-        PhotonNetwork.Instantiate("DuckPrefabs/" + chosenChar, spawnPoint, Quaternion.identity);
+        GameObject currentPlayerObj = PhotonNetwork.Instantiate("DuckPrefabs/" + chosenChar, spawnPoint, Quaternion.identity);
+        currentPlayerObj.GetComponent<PlayerInput>().DeactivateInput();
+        playerObjects.Add(currentPlayerObj);
         StartCountdown();
     }
 

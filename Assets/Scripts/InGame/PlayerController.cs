@@ -11,9 +11,11 @@ public class PlayerController : Hittable
     #region INITIALIZE OBJECTS
     [Header("Components")]
     public DuckSettings duckSettings;
-    public Transform tr;
-    public Rigidbody2D rb;
-    public CapsuleCollider2D cl;
+    Transform tr;
+    Rigidbody2D rb;
+    CapsuleCollider2D cl;
+    [SerializeField] GameObject sprite;
+    PlayerSpawner pspawner;
 
     AnimatorHolder anims;
     public Animator wingAnim;
@@ -63,7 +65,7 @@ public class PlayerController : Hittable
 
 
     [Header("Stats")]
-    float damage;
+    public float damage;
 
     float swimInvincibility;
 
@@ -112,6 +114,9 @@ public class PlayerController : Hittable
     // START: is called before the first frame update
     void Start()
     {
+        pspawner = FindObjectOfType<PlayerSpawner>();
+        pspawner.ActivateAllPlayerInput += ActivateInput;
+
 
         tr = GetComponent<Transform>();
         rb = GetComponent<Rigidbody2D>();
@@ -365,16 +370,16 @@ public class PlayerController : Hittable
             if (direction > 0)
             {
                 if (turning && !jumping)
-                    tr.rotation = Quaternion.Euler(tr.rotation.x, 0, tr.rotation.z);
+                    sprite.transform.rotation = Quaternion.Euler(sprite.transform.rotation.x, 0, sprite.transform.rotation.z);
                 else
-                    tr.rotation = Quaternion.Euler(tr.rotation.x, 180, tr.rotation.z);
+                    sprite.transform.rotation = Quaternion.Euler(sprite.transform.rotation.x, 180, sprite.transform.rotation.z);
             }
             else if (direction < 0)
             {
                 if (turning && !jumping)
-                    tr.rotation = Quaternion.Euler(tr.rotation.x, 180, tr.rotation.z);
+                    sprite.transform.rotation = Quaternion.Euler(sprite.transform.rotation.x, 180, sprite.transform.rotation.z);
                 else
-                    tr.rotation = Quaternion.Euler(tr.rotation.x, 0, tr.rotation.z);
+                    sprite.transform.rotation = Quaternion.Euler(sprite.transform.rotation.x, 0, sprite.transform.rotation.z);
             }
         }
 
@@ -570,6 +575,10 @@ public class PlayerController : Hittable
         }
     }
 
+    private void ActivateInput()
+    {
+        this.GetComponent<PlayerInput>().ActivateInput();
+    }
 
     private void OnTriggerEnter2d(Collider2D collider)
     {

@@ -66,7 +66,8 @@ public class PlayerItem : MonoBehaviourPunCallbacks
     {
         if (player.CustomProperties.ContainsKey("SelectedChar"))
         {
-            selectedCharacterIcon.sprite = LobbyManager.characterList.getList[(int)playerProperties["SelectedChar"]].CSS;
+            //if(player.CustomProperties.)
+            selectedCharacterIcon.sprite = LobbyManager.characterList.getList[(int)player.CustomProperties["SelectedChar"]].CSS;
             playerProperties["SelectedChar"] = player.CustomProperties["SelectedChar"];
         }
         else
