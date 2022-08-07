@@ -54,13 +54,16 @@ public class PlayerSpawner : MonoBehaviour
         countingDown = false;
         if (PhotonNetwork.IsConnected)
         {
+            
             localPlayer = PhotonNetwork.LocalPlayer;
-            spawnPoints = GetComponentsInChildren<Transform>();
+            spawnPoints = GameObject.Find("SpawnPoints").GetComponentsInChildren<Transform>();
             isSpawnPointTaken = new bool[spawnPoints.Length];
 
             currentPlayerProperties["HasLoadedStage"] = true;
             localPlayer.SetCustomProperties(currentPlayerProperties);
-            PlayerLoaded(localPlayer);
+            //PlayerLoaded(localPlayer);
+            SetPlayerSpawnpoint(localPlayer);
+            SpawnSelf();
 
         }
         else
@@ -105,34 +108,7 @@ public class PlayerSpawner : MonoBehaviour
         {
             loadedPlayerList.Add(player);
             
-            currentPlayerProperties = player.CustomProperties;
 
-            if (!player.CustomProperties.ContainsKey("CurrentSpawnPoint"))
-            {
-                if (numSpawnPointsTaken < spawnPoints.Length - 1)
-                {
-                    int spawnPointRand = Random.Range(0, spawnPoints.Length);
-                    while (isSpawnPointTaken[spawnPointRand])
-                    {
-                        spawnPointRand = Random.Range(0, spawnPoints.Length);
-                    }
-                    currentPlayerProperties["CurrentSpawnPoint"] = spawnPointRand;
-                    isSpawnPointTaken[spawnPointRand] = true;
-                    numSpawnPointsTaken++;
-                }
-                else
-                {
-                    for (int i = 0; i < spawnPoints.Length; i++)
-                    {
-                        if (!isSpawnPointTaken[i])
-                        {
-                            currentPlayerProperties["CurrentSpawnPoint"] = i;
-                            break;
-                        }
-                    }
-                }
-            }
-            player.SetCustomProperties(currentPlayerProperties);
 
             if (loadedPlayerList.Count == PhotonNetwork.CurrentRoom.PlayerCount)
             {
@@ -140,6 +116,40 @@ public class PlayerSpawner : MonoBehaviour
             }
         }
     }
+
+
+    private void SetPlayerSpawnpoint(Player player)
+    {
+        currentPlayerProperties = player.CustomProperties;
+
+        if (!player.CustomProperties.ContainsKey("CurrentSpawnPoint"))
+        {
+            if (numSpawnPointsTaken < spawnPoints.Length - 1)
+            {
+                int spawnPointRand = Random.Range(0, spawnPoints.Length);
+                while (isSpawnPointTaken[spawnPointRand])
+                {
+                    spawnPointRand = Random.Range(0, spawnPoints.Length);
+                }
+                currentPlayerProperties["CurrentSpawnPoint"] = spawnPointRand;
+                isSpawnPointTaken[spawnPointRand] = true;
+                numSpawnPointsTaken++;
+            }
+            else
+            {
+                for (int i = 0; i < spawnPoints.Length; i++)
+                {
+                    if (!isSpawnPointTaken[i])
+                    {
+                        currentPlayerProperties["CurrentSpawnPoint"] = i;
+                        break;
+                    }
+                }
+            }
+        }
+        player.SetCustomProperties(currentPlayerProperties);
+    }
+
 
     private void SpawnSelf()
     {
