@@ -4,16 +4,19 @@ using UnityEngine;
 using TMPro;
 using Photon.Pun;
 
-public class InGameUI : MonoBehaviour
+public class PlayerDamageUI : MonoBehaviour
 {
     Camera mainCamera;
 
     Canvas canvas;
 
     [SerializeField] TMP_Text damageText;
+    string oldDamageText;
     [SerializeField] TMP_Text playerName;
     [SerializeField] PlayerController pController;
     [SerializeField] PhotonView pView;
+
+    ExitGames.Client.Photon.Hashtable currentPlayerProperties = new ExitGames.Client.Photon.Hashtable();
 
     // Start is called before the first frame update
     void Start()

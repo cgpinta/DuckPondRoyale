@@ -19,7 +19,7 @@ MonoBehaviour:
   type: 0
   hitboxShapes: 1
   capsuleDirection: 0
-  center: {x: 0, y: 0}
+  center: {x: -1.66, y: -0.44}
   size: {x: 0, y: 0}
-  circleRadius: 3.73
+  circleRadius: 0.37
   hitboxAngle: 0

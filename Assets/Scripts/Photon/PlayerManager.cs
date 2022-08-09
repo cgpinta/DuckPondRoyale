@@ -7,14 +7,23 @@ using Photon.Realtime;
 using TMPro;
 using System;
 using Random = UnityEngine.Random;
+using ExitGames.Client.Photon;
 
-public class PlayerSpawner : MonoBehaviour
+public class PlayerManager : MonoBehaviour
 {
     public CharacterList chars;
 
+
+    private const byte SpawnPlayers = 1;
+
     [Header("Stage UI")]
     public TMP_Text countdownTextBox;
+    public GameObject PlayerHUDPrefab;
+    public Transform PlayerHUDTransform;
 
+    bool playersLoaded = false;
+
+    int lifeCount = 3;
 
     Timer countdownTimer = new Timer(true);
     Animator countdownAnimator;
@@ -28,7 +37,7 @@ public class PlayerSpawner : MonoBehaviour
 
     List<GameObject> playerObjects = new List<GameObject>();
 
-    
+    Dictionary<int, Player> playerList = new Dictionary<int, Player>();
 
     #region Variables for player spawning
     bool[] isSpawnPointTaken;
@@ -37,8 +46,8 @@ public class PlayerSpawner : MonoBehaviour
     #endregion
 
     public event Action<Player> PlayerLoaded;
-    public event Action SpawnPlayers;
     public event Action ActivateAllPlayerInput;
+    public Action<Player> PlayerDied;
 
     private void Start()
     {
@@ -47,9 +56,6 @@ public class PlayerSpawner : MonoBehaviour
         countdownText.Add("GOOSE!");
         countdownAnimator = countdownTextBox.gameObject.GetComponent<Animator>();
 
-
-        PlayerLoaded += CheckIfAllPlayersLoaded;
-        SpawnPlayers += SpawnSelf;
         countdownTextBox.gameObject.SetActive(false);
         countingDown = false;
         if (PhotonNetwork.IsConnected)
@@ -61,10 +67,7 @@ public class PlayerSpawner : MonoBehaviour
 
             currentPlayerProperties["HasLoadedStage"] = true;
             localPlayer.SetCustomProperties(currentPlayerProperties);
-            //PlayerLoaded(localPlayer);
             SetPlayerSpawnpoint(localPlayer);
-            SpawnSelf();
-
         }
         else
         {
@@ -75,6 +78,11 @@ public class PlayerSpawner : MonoBehaviour
     public event Action IntroCountdownEnded;
     private void FixedUpdate()
     {
+        if (!playersLoaded)
+        {
+            playersLoaded = CheckIfAllPlayersLoaded();
+            return;
+        }
         if (countingDown)
         {
             if (countdownTimer.getWatch() > countdownNextNumber)
@@ -83,6 +91,7 @@ public class PlayerSpawner : MonoBehaviour
                 {
                     countdownTextBox.gameObject.SetActive(false);
                     countingDown = false;
+                    LoadHUD();
                     ActivateAllPlayerInput();
                 }
                 else if(countdownNextNumber + 1 == countdownText.Count)
@@ -102,19 +111,37 @@ public class PlayerSpawner : MonoBehaviour
         }
     }
 
-    private void CheckIfAllPlayersLoaded(Player player)
+    void LoadHUD()
+    {
+        playerList = PhotonNetwork.CurrentRoom.Players;
+        foreach (KeyValuePair<int, Player> player in playerList)
+        {
+            GameObject HUD = Instantiate(PlayerHUDPrefab, PlayerHUDTransform);
+            PlayerHUDItem HUDitem = HUD.GetComponent<PlayerHUDItem>();
+            HUDitem.numLives = lifeCount;
+            HUDitem.owner = player.Value;
+
+        }
+    }
+
+    private bool CheckIfAllPlayersLoaded()
     {
         if (PhotonNetwork.IsMasterClient)
         {
-            loadedPlayerList.Add(player);
-            
-
-
-            if (loadedPlayerList.Count == PhotonNetwork.CurrentRoom.PlayerCount)
+            loadedPlayerList.Clear();
+            foreach (KeyValuePair<int, Player> player in PhotonNetwork.CurrentRoom.Players)
             {
-                SpawnPlayers();
+                if (!player.Value.CustomProperties.ContainsKey("HasLoadedStage"))
+                {
+                    return false;
+                }
             }
+
+            PhotonNetwork.RaiseEvent(SpawnPlayers, null, RaiseEventOptions.Default, SendOptions.SendUnreliable);
+            SpawnSelf(new EventData { Code = SpawnPlayers }) ;
+            return true;
         }
+        return true;
     }
 
 
@@ -147,16 +174,37 @@ public class PlayerSpawner : MonoBehaviour
                 }
             }
         }
+        //currentPlayerProperties["damage"] = ;
         player.SetCustomProperties(currentPlayerProperties);
     }
 
-
-    private void SpawnSelf()
+    private void OnEnable()
     {
+        PhotonNetwork.NetworkingClient.EventReceived += SpawnSelf;
+    }
+
+    private void OnDisable()
+    {
+        PhotonNetwork.NetworkingClient.EventReceived -= SpawnSelf;
+    }
+    private void SpawnSelf(EventData obj)
+    {
+        if(obj.Code != SpawnPlayers)
+        {
+            return;
+        }
         string chosenChar = chars.getList[(int)PhotonNetwork.LocalPlayer.CustomProperties["SelectedChar"]].name;
         Vector3 spawnPoint = spawnPoints[(int)PhotonNetwork.LocalPlayer.CustomProperties["CurrentSpawnPoint"]].position;
+        
         GameObject currentPlayerObj = PhotonNetwork.Instantiate("DuckPrefabs/" + chosenChar, spawnPoint, Quaternion.identity);
         currentPlayerObj.GetComponent<PlayerInput>().DeactivateInput();
+        currentPlayerObj.GetComponent<PlayerController>().lives = lifeCount;
+
+        //GameObject HUD = Instantiate(PlayerHUDPrefab, PlayerHUDTransform);
+        //PlayerHUDItem HUDitem = HUD.GetComponent<PlayerHUDItem>();
+        //HUDitem.numLives = lifeCount;
+        //HUDitem.owner = localPlayer;
+
         playerObjects.Add(currentPlayerObj);
         StartCountdown();
     }

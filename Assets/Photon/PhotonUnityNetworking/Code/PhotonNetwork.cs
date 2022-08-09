@@ -105,6 +105,11 @@ namespace Photon.Pun
         /// </summary>
         public static readonly int MAX_VIEW_IDS = 1000; // VIEW & PLAYER LIMIT CAN BE EASILY CHANGED, SEE DOCS
 
+        public static void RaiseEvent(byte spawnPlayers, object value, RaiseEventOptions default1, RaiseEventOptions default2)
+        {
+            throw new NotImplementedException();
+        }
+
 
         /// <summary>Name of the PhotonServerSettings file (used to load and by PhotonEditor to save new files).</summary>
         public const string ServerSettingsFileName = "PhotonServerSettings";

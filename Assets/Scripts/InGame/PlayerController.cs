@@ -3,10 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Photon.Pun;
+using Photon.Realtime;
+using System;
 
-public class PlayerController : Hittable
+public class PlayerController : Hittable, IPunObservable
 {
     public string nickname;
+
+
 
     #region INITIALIZE OBJECTS
     [Header("Components")]
@@ -15,7 +19,8 @@ public class PlayerController : Hittable
     Rigidbody2D rb;
     CapsuleCollider2D cl;
     [SerializeField] GameObject sprite;
-    PlayerSpawner pspawner;
+    PlayerManager pManager;
+    [SerializeField] PlayerInput pInput;
 
     AnimatorHolder anims;
     public Animator wingAnim;
@@ -66,6 +71,7 @@ public class PlayerController : Hittable
 
     [Header("Stats")]
     public float damage;
+    public int lives;
 
     float swimInvincibility;
 
@@ -111,12 +117,17 @@ public class PlayerController : Hittable
     Timer attackChargeTimer = new Timer(true);
 
 
+    
+
+
     // START: is called before the first frame update
     void Start()
     {
-        pspawner = FindObjectOfType<PlayerSpawner>();
-        pspawner.ActivateAllPlayerInput += ActivateInput;
-
+        pManager = FindObjectOfType<PlayerManager>();
+        if(pManager != null)
+        {
+            pManager.ActivateAllPlayerInput += ActivateInput;
+        }
 
         tr = GetComponent<Transform>();
         rb = GetComponent<Rigidbody2D>();
@@ -229,10 +240,14 @@ public class PlayerController : Hittable
         if (hitstunTimer.isInProgress())
         {
             anims.SetBoolForAll("InHitstun", true);
+            if(pInput != null)
+                pInput.enabled = false;
         }
         else
         {
             anims.SetBoolForAll("InHitstun", false);
+            if (pInput != null)
+                pInput.enabled = true;
         }
 
     }
@@ -547,6 +562,9 @@ public class PlayerController : Hittable
     }
     #endregion
 
+
+
+    public event Action UpdateDamage;
     [PunRPC]
     public override void GetHit(float damage, float knockback, float hitstun, Vector2 direction, knockbackType type)
     {
@@ -565,7 +583,7 @@ public class PlayerController : Hittable
                 }
 
                 //rb.velocity = direction.normalized * knockback * (this.damage / 5);
-                rb.velocity = direction.normalized * knockback;
+                rb.velocity = direction.normalized * knockback * (this.damage / 5);
                 Debug.Log(this.gameObject.name + " Player is hit: " 
                           + "Direction: " + direction.normalized 
                           + " Kb:" + knockback 
@@ -580,13 +598,35 @@ public class PlayerController : Hittable
         this.GetComponent<PlayerInput>().ActivateInput();
     }
 
+
+    
     private void OnTriggerEnter2d(Collider2D collider)
     {
         if (collider.CompareTag("Death"))
         {
-            canControl = false;
-            isDead = true;
-            rb.velocity = Vector2.up * 100;
+            pManager.PlayerDied(this.pView.Owner);
+            //PhotonNetwork.RaiseEvent();
+            Died();
+        }
+    }
+
+
+    public void Died()
+    {
+        lives--;
+    }
+
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        if (stream.IsWriting)
+        {
+            stream.SendNext(sprite.transform.rotation);
+            stream.SendNext(damage);
+        }
+        else
+        {
+            this.sprite.transform.rotation = (Quaternion)stream.ReceiveNext();
+            this.damage = (float)stream.ReceiveNext();
         }
     }
 }

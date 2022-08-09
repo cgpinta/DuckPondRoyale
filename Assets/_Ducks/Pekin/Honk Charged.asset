@@ -14,12 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damage: 0
   knockback: 8
-  hitstun: 2
+  hitstun: 3
   angle: {x: 1, y: 0}
-  type: 0
+  type: 2
   hitboxShapes: 1
   capsuleDirection: 0
-  center: {x: 0, y: 0}
+  center: {x: -1.32, y: 0.29}
   size: {x: 0, y: 0}
-  circleRadius: 5.38
+  circleRadius: 0.63
   hitboxAngle: 0

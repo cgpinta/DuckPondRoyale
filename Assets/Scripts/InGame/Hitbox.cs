@@ -67,7 +67,7 @@ public class Hitbox : MonoBehaviour
         hitstun = settings.Hitstun;
         attack = this.gameObject.GetComponent<Attack>();
 
-        centerTransform = center + offset;
+        centerTransform = center;
 
         owner = this.transform.root.gameObject.GetComponent<PlayerController>();
         direction = owner.direction;
@@ -103,7 +103,7 @@ public class Hitbox : MonoBehaviour
         if (updateValues)
         {
             if (settings == null) { return; }
-            
+
 
             hitboxShapes = settings.HitboxShapes;
             capsuleDirection = settings.CapsuleDirection;
@@ -112,22 +112,23 @@ public class Hitbox : MonoBehaviour
             angle = settings.Angle;
             circleRadius = settings.CircleRadius;
             hitboxAngle = settings.HitboxAngle;
-            centerTransform = center + offset;
+            centerTransform = center;
 
             damage = settings.Damage;
             knockback = settings.Knockback;
             hitstun = settings.Hitstun;
         }
-        
+        centerTransform = offset + center;
     }
-
     private void OnDrawGizmos()
     {
         if (showGizmo)
         {
             if(hitboxShapes == hitboxShape.Box)
             {
+                //Gizmos.matrix = this.transform.localToWorldMatrix;
                 Gizmos.DrawWireCube(centerTransform, size);
+                //this.transform.rotation = Quaternion.Euler(0,0,hitboxAngle);
             }
             if(hitboxShapes == hitboxShape.Circle)
             {
