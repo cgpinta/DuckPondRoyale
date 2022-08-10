@@ -185,6 +185,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f231c4fb786f3946a6b90b886c48677, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_SendPointerHoverToParent: 1
   m_HorizontalAxis: Horizontal
   m_VerticalAxis: Vertical
   m_SubmitButton: Submit
@@ -582,6 +583,38 @@ PrefabInstance:
     - target: {fileID: 5867102818142921496, guid: d6956703deb08204ab3353281e4f2ddb, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5867102820147563105, guid: d6956703deb08204ab3353281e4f2ddb, type: 3}
+      propertyPath: m_Size.x
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 5867102820147563105, guid: d6956703deb08204ab3353281e4f2ddb, type: 3}
+      propertyPath: m_Offset.x
+      value: -32
+      objectReference: {fileID: 0}
+    - target: {fileID: 5867102820147563107, guid: d6956703deb08204ab3353281e4f2ddb, type: 3}
+      propertyPath: m_Size.y
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 5867102820147563107, guid: d6956703deb08204ab3353281e4f2ddb, type: 3}
+      propertyPath: m_Offset.y
+      value: 21
+      objectReference: {fileID: 0}
+    - target: {fileID: 5867102820147563108, guid: d6956703deb08204ab3353281e4f2ddb, type: 3}
+      propertyPath: m_Size.y
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 5867102820147563108, guid: d6956703deb08204ab3353281e4f2ddb, type: 3}
+      propertyPath: m_Offset.y
+      value: -21
+      objectReference: {fileID: 0}
+    - target: {fileID: 5867102820147563109, guid: d6956703deb08204ab3353281e4f2ddb, type: 3}
+      propertyPath: m_Size.x
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 5867102820147563109, guid: d6956703deb08204ab3353281e4f2ddb, type: 3}
+      propertyPath: m_Offset.x
+      value: 32
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d6956703deb08204ab3353281e4f2ddb, type: 3}

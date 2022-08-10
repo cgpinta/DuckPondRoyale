@@ -47,7 +47,7 @@ public class PlayerManager : MonoBehaviour
 
     public event Action<Player> PlayerLoaded;
     public event Action ActivateAllPlayerInput;
-    public Action<Player> PlayerDied;
+    public Action<Player, PlayerController> PlayerDied;
 
     private void Start()
     {
@@ -55,6 +55,8 @@ public class PlayerManager : MonoBehaviour
         countdownText.Add("Duck");
         countdownText.Add("GOOSE!");
         countdownAnimator = countdownTextBox.gameObject.GetComponent<Animator>();
+
+        PlayerDied += UpdatePlayerAfterDeath;
 
         countdownTextBox.gameObject.SetActive(false);
         countingDown = false;
@@ -66,6 +68,8 @@ public class PlayerManager : MonoBehaviour
             isSpawnPointTaken = new bool[spawnPoints.Length];
 
             currentPlayerProperties["HasLoadedStage"] = true;
+            currentPlayerProperties["Lives"] = lifeCount;
+            currentPlayerProperties["Winner"] = false;
             localPlayer.SetCustomProperties(currentPlayerProperties);
             SetPlayerSpawnpoint(localPlayer);
         }
@@ -198,12 +202,6 @@ public class PlayerManager : MonoBehaviour
         
         GameObject currentPlayerObj = PhotonNetwork.Instantiate("DuckPrefabs/" + chosenChar, spawnPoint, Quaternion.identity);
         currentPlayerObj.GetComponent<PlayerInput>().DeactivateInput();
-        currentPlayerObj.GetComponent<PlayerController>().lives = lifeCount;
-
-        //GameObject HUD = Instantiate(PlayerHUDPrefab, PlayerHUDTransform);
-        //PlayerHUDItem HUDitem = HUD.GetComponent<PlayerHUDItem>();
-        //HUDitem.numLives = lifeCount;
-        //HUDitem.owner = localPlayer;
 
         playerObjects.Add(currentPlayerObj);
         StartCountdown();
@@ -217,5 +215,31 @@ public class PlayerManager : MonoBehaviour
         countdownTextBox.gameObject.SetActive(true);
         countdownTimer.startWatch("countdown");
         countdownAnimator.SetTrigger("Count");
+    }
+
+    public void UpdatePlayerAfterDeath(Player player, PlayerController controller)
+    {
+        currentPlayerProperties = player.CustomProperties;
+        int tempLives = (int)currentPlayerProperties["Lives"] - 1;
+        currentPlayerProperties["Lives"] = tempLives;
+        Debug.Log("Old lives:"+ (tempLives+1)+", New Lives:" + currentPlayerProperties["Lives"]);
+        if((int)player.CustomProperties["Lives"] > 0)
+        {
+            if (PhotonNetwork.IsConnected)
+            {
+                //PhotonView pView = controller.gameObject.GetComponent<PhotonView>();          //pView = the opposing players view
+                //pView.RPC("Respawn", RpcTarget.All, new Vector2(spawnPoints[0].position.x, spawnPoints[0].position.y)); //call GetHit on the opposing player
+                //controller.enabled = true;
+                controller.Respawn(spawnPoints[0].position);
+
+            }
+            //controller.Respawn(spawnPoints[0].position);
+        }
+        else
+        {
+            currentPlayerProperties["Winner"] = false;
+            Destroy(controller.gameObject);
+        }
+        PhotonNetwork.SetPlayerCustomProperties(currentPlayerProperties);
     }
 }

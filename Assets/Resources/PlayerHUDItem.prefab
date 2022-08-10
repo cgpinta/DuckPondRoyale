@@ -54,7 +54,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerName: {fileID: 1176885425953655421}
   characterList: {fileID: 11400000, guid: 82d3d9234a1337545bb86f0f08698361, type: 2}
-  ownerController: {fileID: 0}
+  pManager: {fileID: 0}
   charIcon: {fileID: 3850950775279534101}
   playerDeadColor:
     serializedVersion: 2
@@ -129,7 +129,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: a9561ee1d2c88544d92d5efa05c5aaa9, type: 3}
+  m_Sprite: {fileID: 21300000, guid: ee1164c83cd68084a919ff73425ab45d, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1

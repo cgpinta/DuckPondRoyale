@@ -15,8 +15,8 @@ MonoBehaviour:
   damage: 0
   knockback: 8
   hitstun: 3
-  angle: {x: 1, y: 0}
-  type: 2
+  angle: {x: 1, y: 3}
+  type: 0
   hitboxShapes: 1
   capsuleDirection: 0
   center: {x: -1.32, y: 0.29}

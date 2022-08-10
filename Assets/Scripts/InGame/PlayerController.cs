@@ -71,7 +71,6 @@ public class PlayerController : Hittable, IPunObservable
 
     [Header("Stats")]
     public float damage;
-    public int lives;
 
     float swimInvincibility;
 
@@ -90,6 +89,7 @@ public class PlayerController : Hittable, IPunObservable
     bool jumping, crouching, turning, swimming, isFalling, onGround, inHitstun, canMove;
     bool oldOnGround;
     bool pressingHonk;
+
     int againstWall;
 
     float attack;
@@ -190,7 +190,7 @@ public class PlayerController : Hittable, IPunObservable
         {
             MovementCode();
         }
-
+        //Debug.Log("position:"+tr.position);
     }
 
     //whenever a state variable is set, it is set in here
@@ -583,7 +583,7 @@ public class PlayerController : Hittable, IPunObservable
                 }
 
                 //rb.velocity = direction.normalized * knockback * (this.damage / 5);
-                rb.velocity = direction.normalized * knockback * (this.damage / 5);
+                rb.velocity = direction.normalized * knockback * ((this.damage + 1)/ 10);
                 Debug.Log(this.gameObject.name + " Player is hit: " 
                           + "Direction: " + direction.normalized 
                           + " Kb:" + knockback 
@@ -598,22 +598,27 @@ public class PlayerController : Hittable, IPunObservable
         this.GetComponent<PlayerInput>().ActivateInput();
     }
 
+    //private void OnTriggerEnter2D(Collider2D collision)
+    //{
+    //    //Debug.Log("Player in death collider trigger");
+    //    if (collision.tag == "Death")
+    //    {
+    //        tr.position = new Vector2(0, -100000);
+    //        isDead = true; 
+    //        Debug.Log("Player in death trigger. is Dead:"+isDead);
+    //        pManager.PlayerDied(this.pView.Owner, this);
+    //        //this.enabled = false;
+    //    }
+    //}
 
-    
-    private void OnTriggerEnter2d(Collider2D collider)
+    //[PunRPC]
+    public void Respawn(Vector3 spawnPoint)
     {
-        if (collider.CompareTag("Death"))
-        {
-            pManager.PlayerDied(this.pView.Owner);
-            //PhotonNetwork.RaiseEvent();
-            Died();
-        }
-    }
-
-
-    public void Died()
-    {
-        lives--;
+        damage = 0;
+        tr.position = spawnPoint;
+        rb.velocity = Vector3.zero;
+        Debug.Log("Player reset to:" +spawnPoint);
+        isDead = false;
     }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
