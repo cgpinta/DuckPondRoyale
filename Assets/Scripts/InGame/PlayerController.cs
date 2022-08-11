@@ -17,7 +17,7 @@ public class PlayerController : Hittable, IPunObservable
     public DuckSettings duckSettings;
     Transform tr;
     Rigidbody2D rb;
-    CapsuleCollider2D cl;
+    public CapsuleCollider2D footCollider;
     [SerializeField] GameObject sprite;
     PlayerManager pManager;
     [SerializeField] PlayerInput pInput;
@@ -46,6 +46,11 @@ public class PlayerController : Hittable, IPunObservable
     public float fallMultiplier = 2.5f;
     public float lowJumpMultiplier = 2f;
 
+    public PhysicsMaterial2D matFriction;
+    public PhysicsMaterial2D matLowFriction;
+    public PhysicsMaterial2D matNoFriction;
+    public PhysicsMaterial2D matBouncy;
+
     [Header("Animation")]
     public float walkingAnimSpeed;
 
@@ -71,6 +76,7 @@ public class PlayerController : Hittable, IPunObservable
 
     [Header("Stats")]
     public float damage;
+    public float onGroundSlowDown;
 
     float swimInvincibility;
 
@@ -123,6 +129,7 @@ public class PlayerController : Hittable, IPunObservable
     // START: is called before the first frame update
     void Start()
     {
+        anims = new AnimatorHolder(wingAnim, headAnim, bodyAnim, feetAnim);
         pManager = FindObjectOfType<PlayerManager>();
         if(pManager != null)
         {
@@ -132,9 +139,10 @@ public class PlayerController : Hittable, IPunObservable
 
         tr = GetComponent<Transform>();
         rb = GetComponent<Rigidbody2D>();
-        cl = GetComponent<CapsuleCollider2D>();
-
+        footCollider.sharedMaterial = matFriction;
         pView = GetComponent<PhotonView>();
+
+        onGroundSlowDown = 0.955f;
 
         rb.simulated = true;
         canControl = true;
@@ -169,14 +177,23 @@ public class PlayerController : Hittable, IPunObservable
 
         Debug.Log("landing lag: "+duckSettings.LandingLag+" * "+frameLength+" = "+ landingLag);
 
-        anims = new AnimatorHolder(wingAnim, headAnim, bodyAnim, feetAnim);
+        
 
         direction = -1;
+
     }
 
     private void Update()
     {
-        if (pView.IsMine)
+        if (PhotonNetwork.IsConnected)
+        {
+            if (pView.IsMine)
+            {
+                StateAssignmentCode();
+                AnimationVariables();
+            }
+        }
+        else
         {
             StateAssignmentCode();
             AnimationVariables();
@@ -187,7 +204,14 @@ public class PlayerController : Hittable, IPunObservable
     // FIXED UPDATE: updates in delta time
     private void FixedUpdate()
     {
-        if (pView.IsMine)
+        if (PhotonNetwork.IsConnected)
+        {
+            if (pView.IsMine)
+            {
+                MovementCode();
+            }
+        }
+        else
         {
             MovementCode();
         }
@@ -197,7 +221,7 @@ public class PlayerController : Hittable, IPunObservable
     //whenever a state variable is set, it is set in here
     void StateAssignmentCode()
     {
-        if(onGround && movementVector.y < -inputDeadzone)
+        if(onGround && movementVector.y < -inputDeadzone && !landingTimer.isInProgress())
         {
             crouching = true;
         }
@@ -220,14 +244,8 @@ public class PlayerController : Hittable, IPunObservable
         if (onGround)
         {
             currentFlaps = flapCount;
-            swimming = false;
-            canSwim = true;
-            if (swimTimer.isInProgress())
-            {
-                swimTimer.setTimer(0);
-            }
         }
-        swimming = swimTimer.isInProgress();
+        canSwim = !swimTimer.isInProgress();
         
         if (!attackChargeTimer.isInProgress() && !landingTimer.isInProgress() && !hitstunTimer.isInProgress())
         {
@@ -240,16 +258,20 @@ public class PlayerController : Hittable, IPunObservable
 
         if (hitstunTimer.isInProgress())
         {
+
             anims.SetBoolForAll("InHitstun", true);
             if(pInput != null)
                 pInput.enabled = false;
         }
         else
         {
+
             anims.SetBoolForAll("InHitstun", false);
             if (pInput != null)
                 pInput.enabled = true;
         }
+
+        Debug.Log("canSwim:"+canSwim);
 
     }
 
@@ -270,18 +292,25 @@ public class PlayerController : Hittable, IPunObservable
 
         if (onGround)
         {
-            if(Mathf.Abs(movementVector.x) > inputDeadzone)
+            if(Mathf.Abs(rb.velocity.x) < maxSpeed)
             {
-                rb.velocity += Vector2.right * speed * movementVector.x * Time.deltaTime;
+                if (Mathf.Abs(movementVector.x) > inputDeadzone)
+                {
+                    rb.velocity += Vector2.right * speed * movementVector.x * Time.deltaTime;
+                }
+                else
+                {
+                    rb.velocity = new Vector2(rb.velocity.x / onGroundSlowDown, rb.velocity.y) * Time.deltaTime;
+                }
             }
         }
         else
         {
-            if (Mathf.Abs(rb.velocity.x) < maxSpeed)
-            {
-                rb.velocity = new Vector2(-rb.velocity.x, rb.velocity.y);
-            }
-            rb.velocity += Vector2.right * maxSpeed * movementVector.x * Time.deltaTime;
+            //if (Mathf.Abs(rb.velocity.x) < maxSpeed)
+            //{
+            //    rb.velocity = new Vector2(-rb.velocity.x, rb.velocity.y);
+            //}
+            rb.velocity += Vector2.right * speed * movementVector.x * Time.deltaTime;
         }
 
 
@@ -292,7 +321,10 @@ public class PlayerController : Hittable, IPunObservable
         {
             rb.velocity = new Vector2(0, rb.velocity.y);
         }
-
+        if (Mathf.Abs(rb.velocity.y) < 0.1)
+        {
+            rb.velocity = new Vector2(rb.velocity.x, 0);
+        }
 
 
         float gravityMultipler = 1;
@@ -328,6 +360,15 @@ public class PlayerController : Hittable, IPunObservable
         else if(movementVector.x < 0)
         {
             direction = -1;
+        }
+
+        if (anims.Head.GetCurrentAnimatorClipInfo(0)[0].clip.name.Contains("Swim"))
+        {
+            footCollider.sharedMaterial = matLowFriction;
+        }
+        else
+        {
+            footCollider.sharedMaterial = matFriction;
         }
     }
 
@@ -428,6 +469,10 @@ public class PlayerController : Hittable, IPunObservable
         if (!cantControlTimer.isInProgress())
         {
             movementVector = context.ReadValue<Vector2>();
+        }
+        else
+        {
+            movementVector = Vector2.zero;
         }
         
     }
@@ -555,10 +600,30 @@ public class PlayerController : Hittable, IPunObservable
         {
             canSwim = false;
             anims.SetTriggerForAll("Swim");
-            rb.velocity = new Vector2(direction, 0.5f) * swimSpeed;
-            swimTimer.setTimer(swimLag);
+            if(Mathf.Abs(movementVector.y) > 0.5)
+            {
+                int verticalDirection = (int)(Mathf.Abs(movementVector.y) / movementVector.y);
+
+
+                rb.velocity = new Vector2(direction, 0.5f * verticalDirection) * swimSpeed;
+            }
+            else
+            {
+                rb.velocity = new Vector2(direction, 0.5f * movementVector.y) * swimSpeed;
+            }
+            if (!onGround)
+            {
+                swimTimer.setTimer(swimLag);
+                cantControlTimer.setTimer(swimLag);
+            }
+            else
+            {
+                swimTimer.setTimer(swimLag*.5f);
+                cantControlTimer.setTimer(swimLag*.5f);
+            }
+            
             invincibleTimer.setTimer(postSwimInvincibility);
-            cantControlTimer.setTimer(swimLag);
+            
         }
     }
     #endregion

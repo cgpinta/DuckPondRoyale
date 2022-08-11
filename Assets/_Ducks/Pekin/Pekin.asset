@@ -17,7 +17,7 @@ MonoBehaviour:
   defense: 5
   speed: 20
   swimSpeed: 15
-  maxSpeed: 5
+  maxSpeed: 20
   jumpHeight: 10
   flapCount: 2
   flapHeight: 5
@@ -29,7 +29,7 @@ MonoBehaviour:
   honkLag: 15
   crouchHonkLag: 15
   aerialLag: 15
-  swimLag: 15
+  swimLag: 60
   throwLag: 15
   sheildLag: 15
   landingLag: 15

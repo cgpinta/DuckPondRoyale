@@ -24,6 +24,7 @@ public class Timer
         if (!isStopWatch)
         {
             endTime = Time.time + amount;
+            startTime = Time.time;
         }
     }
 
@@ -50,6 +51,14 @@ public class Timer
     public float getWatch()
     {
         if (isStopWatch)
+        {
+            return Time.time - startTime;
+        }
+        return 0;
+    }
+    public float getTimer()
+    {
+        if (!isStopWatch)
         {
             return Time.time - startTime;
         }

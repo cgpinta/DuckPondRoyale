@@ -25,8 +25,10 @@ public class PlayerDamageUI : MonoBehaviour
         mainCamera = FindObjectOfType<Camera>();
 
         canvas.worldCamera = mainCamera;
-
-        playerName.text = pView.Owner.NickName;
+        if (PhotonNetwork.IsConnected)
+        {
+            playerName.text = pView.Owner.NickName;
+        }
     }
 
     // Update is called once per frame
