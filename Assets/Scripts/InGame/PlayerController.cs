@@ -127,6 +127,7 @@ public class PlayerController : Hittable, IPunObservable
         if(pManager != null)
         {
             pManager.ActivateAllPlayerInput += ActivateInput;
+            pManager.PlayerDied += Died;
         }
 
         tr = GetComponent<Transform>();
@@ -598,18 +599,10 @@ public class PlayerController : Hittable, IPunObservable
         this.GetComponent<PlayerInput>().ActivateInput();
     }
 
-    //private void OnTriggerEnter2D(Collider2D collision)
-    //{
-    //    //Debug.Log("Player in death collider trigger");
-    //    if (collision.tag == "Death")
-    //    {
-    //        tr.position = new Vector2(0, -100000);
-    //        isDead = true; 
-    //        Debug.Log("Player in death trigger. is Dead:"+isDead);
-    //        pManager.PlayerDied(this.pView.Owner, this);
-    //        //this.enabled = false;
-    //    }
-    //}
+    private void Died(Player player, PlayerController controller)
+    {
+        //this.gameObject.SetActive(false);
+    }
 
     //[PunRPC]
     public void Respawn(Vector3 spawnPoint)

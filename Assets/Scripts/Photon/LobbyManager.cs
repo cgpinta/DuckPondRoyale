@@ -55,7 +55,10 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         selectedStageName = stageList.getList[0].name;
         roomPanel.SetActive(false);
         lobbyPanel.SetActive(true);
-        PhotonNetwork.CreateRoom(tempRoomListUpdateName);    //join a temp room to immediately leave so that OnRoomListUpdate is called
+        if (!PhotonNetwork.IsConnected)
+        {
+            PhotonNetwork.CreateRoom(tempRoomListUpdateName);    //join a temp room to immediately leave so that OnRoomListUpdate is called
+        }
     }
 
     

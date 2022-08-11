@@ -71,6 +71,4 @@ public class PlayerHUDItem : MonoBehaviour
             updateLifeCount();
         }
     }
-
-    
 }

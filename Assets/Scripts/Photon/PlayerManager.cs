@@ -12,7 +12,7 @@ using ExitGames.Client.Photon;
 public class PlayerManager : MonoBehaviour
 {
     public CharacterList chars;
-
+    public GameObject spawnpointParent;
 
     private const byte SpawnPlayers = 1;
 
@@ -20,6 +20,10 @@ public class PlayerManager : MonoBehaviour
     public TMP_Text countdownTextBox;
     public GameObject PlayerHUDPrefab;
     public Transform PlayerHUDTransform;
+    public Canvas PlayerHUDCanvas;
+
+    [Header("Win Screen")]
+    public GameObject WinScreen;
 
     bool playersLoaded = false;
 
@@ -35,7 +39,7 @@ public class PlayerManager : MonoBehaviour
     Player localPlayer;              //the local player
     ExitGames.Client.Photon.Hashtable currentPlayerProperties = new ExitGames.Client.Photon.Hashtable();
 
-    List<GameObject> playerObjects = new List<GameObject>();
+    GameObject localPlayerObject;
 
     Dictionary<int, Player> playerList = new Dictionary<int, Player>();
 
@@ -48,9 +52,14 @@ public class PlayerManager : MonoBehaviour
     public event Action<Player> PlayerLoaded;
     public event Action ActivateAllPlayerInput;
     public Action<Player, PlayerController> PlayerDied;
+    public Action<Player> PlayerWon;
 
     private void Start()
     {
+        Camera cam = Camera.main;
+        PlayerHUDCanvas.worldCamera = cam;
+        WinScreen.SetActive(false);
+
         countdownText.Add("Duck");
         countdownText.Add("Duck");
         countdownText.Add("GOOSE!");
@@ -64,7 +73,7 @@ public class PlayerManager : MonoBehaviour
         {
             
             localPlayer = PhotonNetwork.LocalPlayer;
-            spawnPoints = GameObject.Find("SpawnPoints").GetComponentsInChildren<Transform>();
+            spawnPoints = spawnpointParent.GetComponentsInChildren<Transform>();
             isSpawnPointTaken = new bool[spawnPoints.Length];
 
             currentPlayerProperties["HasLoadedStage"] = true;
@@ -203,7 +212,7 @@ public class PlayerManager : MonoBehaviour
         GameObject currentPlayerObj = PhotonNetwork.Instantiate("DuckPrefabs/" + chosenChar, spawnPoint, Quaternion.identity);
         currentPlayerObj.GetComponent<PlayerInput>().DeactivateInput();
 
-        playerObjects.Add(currentPlayerObj);
+        localPlayerObject = currentPlayerObj;
         StartCountdown();
     }
 
@@ -230,6 +239,7 @@ public class PlayerManager : MonoBehaviour
                 //PhotonView pView = controller.gameObject.GetComponent<PhotonView>();          //pView = the opposing players view
                 //pView.RPC("Respawn", RpcTarget.All, new Vector2(spawnPoints[0].position.x, spawnPoints[0].position.y)); //call GetHit on the opposing player
                 //controller.enabled = true;
+                //controller.gameObject.SetActive(true);
                 controller.Respawn(spawnPoints[0].position);
 
             }
@@ -239,7 +249,55 @@ public class PlayerManager : MonoBehaviour
         {
             currentPlayerProperties["Winner"] = false;
             Destroy(controller.gameObject);
+            Player winner = AreAllPlayersDead();
+            if (winner != null)
+            {
+                //PhotonNetwork.RaiseEvent(2, null, RaiseEventOptions.Default, SendOptions.SendUnreliable);
+                //PlayerWon(winner);
+                if(localPlayer == winner)
+                {
+                    Destroy(localPlayerObject);
+                }
+                WinScreen.SetActive(true);
+                WinScreen.GetComponent<WinScreen>().DisplayWinDetails(winner);
+            }
         }
         PhotonNetwork.SetPlayerCustomProperties(currentPlayerProperties);
+    }
+
+
+    public Player AreAllPlayersDead()
+    {
+        Player winner = null;
+        int numOfPlayersAlive = 0;
+        foreach (KeyValuePair<int, Player> player in PhotonNetwork.CurrentRoom.Players)
+        {
+            if ((int)player.Value.CustomProperties["Lives"] > 0)
+            {
+                numOfPlayersAlive++;
+                winner = player.Value;
+            }
+            if(numOfPlayersAlive > 1)
+            {
+                return null;
+            }
+        }
+        return winner;
+    }
+
+    public void ResetPlayerProperties()
+    {
+        foreach(KeyValuePair<int, Player> player in PhotonNetwork.CurrentRoom.Players)
+        {
+            currentPlayerProperties = player.Value.CustomProperties;
+            if (currentPlayerProperties.ContainsKey("Winner")) { currentPlayerProperties.Remove("Winner"); }
+            PhotonNetwork.SetPlayerCustomProperties(currentPlayerProperties);
+        }
+    }
+
+    public void OnClickReturnToRoom()
+    {
+        ResetPlayerProperties();
+        PhotonNetwork.LoadLevel("Lobby");
     }
 }
