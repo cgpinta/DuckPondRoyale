@@ -178,7 +178,7 @@ AnimatorState:
   m_StateMachineBehaviours: []
   m_Position: {x: 50, y: 50, z: 0}
   m_IKOnFeet: 0
-  m_WriteDefaultValues: 1
+  m_WriteDefaultValues: 0
   m_Mirror: 0
   m_SpeedParameterActive: 0
   m_MirrorParameterActive: 0
@@ -674,7 +674,7 @@ AnimatorState:
   m_StateMachineBehaviours: []
   m_Position: {x: 50, y: 50, z: 0}
   m_IKOnFeet: 0
-  m_WriteDefaultValues: 1
+  m_WriteDefaultValues: 0
   m_Mirror: 0
   m_SpeedParameterActive: 0
   m_MirrorParameterActive: 0
@@ -1756,7 +1756,7 @@ AnimatorState:
   m_StateMachineBehaviours: []
   m_Position: {x: 50, y: 50, z: 0}
   m_IKOnFeet: 0
-  m_WriteDefaultValues: 1
+  m_WriteDefaultValues: 0
   m_Mirror: 0
   m_SpeedParameterActive: 0
   m_MirrorParameterActive: 0
@@ -2066,10 +2066,10 @@ AnimatorStateMachine:
     m_Position: {x: 670, y: 260, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -6352708275203396494}
-    m_Position: {x: 430, y: -30, z: 0}
+    m_Position: {x: 440, y: -30, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -3815264112054120486}
-    m_Position: {x: 300, y: -80, z: 0}
+    m_Position: {x: 280, y: -100, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -8272835439496945282}
     m_Position: {x: 360, y: -180, z: 0}

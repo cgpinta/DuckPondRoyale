@@ -76,13 +76,20 @@ public class PlayerController : Hittable, IPunObservable
 
     [Header("Stats")]
     public float damage;
+
+    [Header("Other")]
     public float onGroundSlowDown;
+    public float shortJumpMultiplier;
+    public float airSpeedSlowdown;
 
     float swimInvincibility;
 
     public Vector2 movementVector;
     private bool inputJump, inputPeck, inputHonk;
     bool inAttack;
+    bool jumpCancel;
+    bool groundedSwim;
+
     int currentFlaps;
     bool canControl, isDead;
     bool canPeck, canFlap, canHonk, canSwim;
@@ -139,10 +146,12 @@ public class PlayerController : Hittable, IPunObservable
 
         tr = GetComponent<Transform>();
         rb = GetComponent<Rigidbody2D>();
-        footCollider.sharedMaterial = matFriction;
+        footCollider.sharedMaterial = matNoFriction;
         pView = GetComponent<PhotonView>();
 
         onGroundSlowDown = 0.955f;
+        shortJumpMultiplier = .75f;
+        airSpeedSlowdown = .25f;
 
         rb.simulated = true;
         canControl = true;
@@ -153,7 +162,8 @@ public class PlayerController : Hittable, IPunObservable
         swimming = false;
         canSwim = true;
         inAttack = false;
-       
+        groundedSwim = false;
+
         damage = 0;
         speed = duckSettings.Speed;
         maxSpeed = duckSettings.MaxSpeed;
@@ -244,6 +254,20 @@ public class PlayerController : Hittable, IPunObservable
         if (onGround)
         {
             currentFlaps = flapCount;
+            jumpCancel = false;
+            swimming = false;
+            //Debug.Log("Grounded swim:" + groundedSwim);
+            if (!groundedSwim)
+            {
+                swimTimer.setTimer(0);
+            }
+            else
+            {
+                if (!swimTimer.isInProgress())
+                {
+                    groundedSwim = false;
+                }
+            }
         }
         canSwim = !swimTimer.isInProgress();
         
@@ -271,56 +295,50 @@ public class PlayerController : Hittable, IPunObservable
                 pInput.enabled = true;
         }
 
-        Debug.Log("canSwim:"+canSwim);
+        //Debug.Log("canSwim:"+canSwim);
 
     }
 
     void MovementCode()
     {
         //Basic sideways movement
-        if (onGround && (movementVector.x > 0 && rb.velocity.x < 0) || (movementVector.x < 0 && rb.velocity.x > 0))
-        {
-            if(Mathf.Abs(rb.velocity.x) < maxSpeed)
-            {
-                rb.velocity = new Vector2(-rb.velocity.x, rb.velocity.y);
-            }
-            //else
-            //{
-            //    rb.velocity = new Vector2(-maxSpeed, rb.velocity.y);
-            //}
-        }
-
         if (onGround)
         {
-            if(Mathf.Abs(rb.velocity.x) < maxSpeed)
+            if ((movementVector.x > 0 && rb.velocity.x < 0) || (movementVector.x < 0 && rb.velocity.x > 0))
+            {
+                rb.velocity = Vector2.right * rb.velocity.x * -1 * Time.deltaTime;       
+            }
+
+            if (Mathf.Abs(rb.velocity.x) < maxSpeed)
             {
                 if (Mathf.Abs(movementVector.x) > inputDeadzone)
                 {
                     rb.velocity += Vector2.right * speed * movementVector.x * Time.deltaTime;
                 }
-                else
-                {
-                    rb.velocity = new Vector2(rb.velocity.x / onGroundSlowDown, rb.velocity.y) * Time.deltaTime;
-                }
+
+            }
+            if(!(Mathf.Abs(movementVector.x) > inputDeadzone))
+            {
+                rb.velocity *= Vector2.right * onGroundSlowDown;
             }
         }
         else
         {
-            //if (Mathf.Abs(rb.velocity.x) < maxSpeed)
-            //{
-            //    rb.velocity = new Vector2(-rb.velocity.x, rb.velocity.y);
-            //}
-            rb.velocity += Vector2.right * speed * movementVector.x * Time.deltaTime;
+            rb.velocity += Vector2.right * (speed*airSpeedSlowdown) * movementVector.x * Time.deltaTime;
+            if (swimming)
+            {
+                if(Mathf.Abs(movementVector.x) > maxSpeed)
+                {
+                    rb.velocity += Vector2.right * airSpeedSlowdown * 0.5f;
+                }
+            }
         }
 
 
-
-
-
-        if(Mathf.Abs(rb.velocity.x) < 0.1)
-        {
-            rb.velocity = new Vector2(0, rb.velocity.y);
-        }
+        //if(Mathf.Abs(rb.velocity.x) < 0.1)
+        //{
+        //    rb.velocity = new Vector2(0, rb.velocity.y);
+        //}
         if (Mathf.Abs(rb.velocity.y) < 0.1)
         {
             rb.velocity = new Vector2(rb.velocity.x, 0);
@@ -333,15 +351,6 @@ public class PlayerController : Hittable, IPunObservable
             gravityMultipler = inAttackGravityMultiplier;
         }
 
-        //if jump button pressed longer, player jumps higher
-        if (rb.velocity.y < 0)
-        {
-            rb.velocity += Vector2.up * Physics2D.gravity.y * (fallMultiplier - 1) * Time.deltaTime * gravityMultipler;
-        }
-        else if (rb.velocity.y > 0 && !inputJump)
-        {
-            rb.velocity += Vector2.up * Physics2D.gravity.y * (lowJumpMultiplier - 1) * Time.deltaTime * gravityMultipler;
-        }
         //jump
         if (inputJump && onGround && canMove)
         {
@@ -349,9 +358,14 @@ public class PlayerController : Hittable, IPunObservable
             jumping = false;
         }
 
-
-
-
+        if (jumpCancel)
+        {
+            if(rb.velocity.y > jumpSpeed * shortJumpMultiplier)
+            {
+                rb.velocity = new Vector2(rb.velocity.x, jumpSpeed * shortJumpMultiplier);
+                jumpCancel = false;
+            }
+        }
 
         if(movementVector.x > 0)
         {
@@ -360,15 +374,6 @@ public class PlayerController : Hittable, IPunObservable
         else if(movementVector.x < 0)
         {
             direction = -1;
-        }
-
-        if (anims.Head.GetCurrentAnimatorClipInfo(0)[0].clip.name.Contains("Swim"))
-        {
-            footCollider.sharedMaterial = matLowFriction;
-        }
-        else
-        {
-            footCollider.sharedMaterial = matFriction;
         }
     }
 
@@ -466,15 +471,7 @@ public class PlayerController : Hittable, IPunObservable
     #region INPUT METHODS
     private void Direction(InputAction.CallbackContext context)
     {
-        if (!cantControlTimer.isInProgress())
-        {
-            movementVector = context.ReadValue<Vector2>();
-        }
-        else
-        {
-            movementVector = Vector2.zero;
-        }
-        
+        movementVector = context.ReadValue<Vector2>();   
     }
     private void Jump(InputAction.CallbackContext context)
     {
@@ -483,12 +480,15 @@ public class PlayerController : Hittable, IPunObservable
         if (context.started && onGround)
         {
             jumping = true;
-            //Debug.Log("jumping");
 
         }
         else if (context.performed && !onGround && currentFlaps > 0 && canMove)
         {
             Flap();
+        }
+        else if(context.canceled && !onGround)
+        {
+            jumpCancel = true;
         }
     }
 
@@ -594,36 +594,38 @@ public class PlayerController : Hittable, IPunObservable
         }
     }
     
-    private void Swim()
+    public void Swim(InputAction.CallbackContext context)
     {
         if (canSwim && pView.IsMine && canMove)
         {
-            canSwim = false;
-            anims.SetTriggerForAll("Swim");
-            if(Mathf.Abs(movementVector.y) > 0.5)
+            if (context.started)
             {
-                int verticalDirection = (int)(Mathf.Abs(movementVector.y) / movementVector.y);
+                canSwim = false;
+                anims.SetTriggerForAll("Swim");
+                if (Mathf.Abs(movementVector.y) > 0.5)
+                {
+                    int verticalDirection = (int)(Mathf.Abs(movementVector.y) / movementVector.y);
+                    rb.velocity = new Vector2(direction, 0.5f * verticalDirection) * swimSpeed;
+                }
+                else
+                {
+                    rb.velocity = new Vector2(direction, 0.5f * movementVector.y) * swimSpeed;
+                }
 
-
-                rb.velocity = new Vector2(direction, 0.5f * verticalDirection) * swimSpeed;
+                if (!onGround)
+                {
+                    swimTimer.setTimer(swimLag);
+                    cantControlTimer.setTimer(swimLag);
+                }
+                else
+                {
+                    swimTimer.setTimer(swimLag * .3f);
+                    cantControlTimer.setTimer(swimLag * .3f);
+                    groundedSwim = true;
+                }
+                swimming = true;
+                invincibleTimer.setTimer(postSwimInvincibility);
             }
-            else
-            {
-                rb.velocity = new Vector2(direction, 0.5f * movementVector.y) * swimSpeed;
-            }
-            if (!onGround)
-            {
-                swimTimer.setTimer(swimLag);
-                cantControlTimer.setTimer(swimLag);
-            }
-            else
-            {
-                swimTimer.setTimer(swimLag*.5f);
-                cantControlTimer.setTimer(swimLag*.5f);
-            }
-            
-            invincibleTimer.setTimer(postSwimInvincibility);
-            
         }
     }
     #endregion

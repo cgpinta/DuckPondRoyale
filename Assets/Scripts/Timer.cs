@@ -23,6 +23,11 @@ public class Timer
     {
         if (!isStopWatch)
         {
+            if(amount == 0)
+            {
+                endTime = 0;
+                return;
+            }
             endTime = Time.time + amount;
             startTime = Time.time;
         }

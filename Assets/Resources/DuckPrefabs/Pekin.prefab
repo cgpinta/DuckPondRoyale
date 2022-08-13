@@ -1384,6 +1384,7 @@ MonoBehaviour:
   chargedHonkLag: 0
   chargedCrouchHonkLag: 0
   damage: 0
+  onGroundSlowDown: 0
   movementVector: {x: 0, y: 0}
 --- !u!114 &3540748880086125279
 MonoBehaviour:

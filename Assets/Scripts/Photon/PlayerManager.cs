@@ -60,9 +60,9 @@ public class PlayerManager : MonoBehaviour
         PlayerHUDCanvas.worldCamera = cam;
         WinScreen.SetActive(false);
 
-        countdownText.Add("Duck");
-        countdownText.Add("Duck");
-        countdownText.Add("GOOSE!");
+        countdownText.Add("Goose");
+        countdownText.Add("Goose");
+        countdownText.Add("DUCK!");
         countdownAnimator = countdownTextBox.gameObject.GetComponent<Animator>();
 
         PlayerDied += UpdatePlayerAfterDeath;

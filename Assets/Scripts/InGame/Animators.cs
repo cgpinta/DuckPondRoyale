@@ -45,4 +45,11 @@ public class AnimatorHolder
         Body.SetTrigger(Trigger);
         Feet.SetTrigger(Trigger);
     }
+    public void ResetTriggerForAll(string Trigger)
+    {
+        Wings.ResetTrigger(Trigger);
+        Head.ResetTrigger(Trigger);
+        Body.ResetTrigger(Trigger);
+        Feet.ResetTrigger(Trigger);
+    }
 }
