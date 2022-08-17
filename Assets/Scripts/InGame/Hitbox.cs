@@ -79,6 +79,8 @@ public class Hitbox : MonoBehaviour
         centerTransform = new Vector2(this.transform.position.x + (center.x * direction), this.transform.position.y + center.y);
         if (active)
         {
+            showGizmo = true;
+            Debug.Log("hitbox active:" + active);
             if (!oldactive)
             {
                 instanceIDs.Clear();
@@ -94,6 +96,11 @@ public class Hitbox : MonoBehaviour
                     Hit(hittable);
                 }
             }
+            
+        }
+        else
+        {
+            showGizmo = false;
         }
         oldactive = active;
     }
@@ -218,12 +225,17 @@ public class Hitbox : MonoBehaviour
 
         if (PhotonNetwork.IsConnected)
         {
+
             PhotonView pView = hittable.gameObject.GetComponent<PhotonView>();          //pView = the opposing players view
+            PhotonView ownerView = this.owner.GetComponent<PhotonView>();
             pView.RPC("GetHit", RpcTarget.All, damage, knockback, hitstun, newAngle, type); //call GetHit on the opposing player
+            //ownerView.RPC("Hit", RpcTarget.All, hittable.damage, damage, knockback); //call Hit on the hitbox owner
+            ownerView.gameObject.GetComponent<PlayerController>().Hit(hittable.damage, damage, knockback);
         }
         else
         {
             hittable.GetHit(damage, knockback, hitstun, newAngle, type);
+            owner.Hit(hittable.damage, damage, knockback);
         }
 
 

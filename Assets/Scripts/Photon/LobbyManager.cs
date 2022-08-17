@@ -46,7 +46,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
 
     string tempRoomListUpdateName = "~~joiningRoom"; //name used for temp room to refresh room list
-
+    string quickTestRoomName = "quicktestroom";
 
     public event Action RoomLoaded;
 
@@ -55,6 +55,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         selectedStageName = stageList.getList[0].name;
         if (!PhotonNetwork.InRoom)
         {
+            Debug.Log("not in room");
             PhotonNetwork.CreateRoom(tempRoomListUpdateName);    //join a temp room to immediately leave so that OnRoomListUpdate is called
             roomPanel.SetActive(false);
             lobbyPanel.SetActive(true);
@@ -63,7 +64,13 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         {
             roomPanel.SetActive(true);
             lobbyPanel.SetActive(false);
+
             UpdatePlayerList();
+
+            if (PhotonNetwork.CurrentRoom.Name == quickTestRoomName)
+            {
+                OnClickSetStage(stageList.getList[1]);
+            }
         }
 
         
@@ -174,6 +181,10 @@ public class LobbyManager : MonoBehaviourPunCallbacks
             PlayerItem newPlayerItem = Instantiate(playerItemPrefab, playerItemParent);
             newPlayerItem.SetPlayerInfo(player.Value);
 
+            if(PhotonNetwork.CurrentRoom.Name == quickTestRoomName)
+            {
+                newPlayerItem.SetPlayerSelectedChar(player.Value, characterList.getList[0]);
+            }
 
 
             if(player.Value == PhotonNetwork.LocalPlayer)

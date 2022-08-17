@@ -52,4 +52,19 @@ public class AnimatorHolder
         Body.ResetTrigger(Trigger);
         Feet.ResetTrigger(Trigger);
     }
+
+    public void DisableAll()
+    {
+        Wings.enabled = false;
+        Head.enabled = false;
+        Body.enabled = false;
+        Feet.enabled = false;
+    }
+    public void EnableAll()
+    {
+        Wings.enabled = true;
+        Head.enabled = true;
+        Body.enabled = true;
+        Feet.enabled = true;
+    }
 }

@@ -64,7 +64,7 @@ namespace Photon.Pun
     public static partial class PhotonNetwork
     {
         /// <summary>Version number of PUN. Used in the AppVersion, which separates your playerbase in matchmaking.</summary>
-        public const string PunVersion = "2.40";
+        public const string PunVersion = "2.41";
 
         /// <summary>Version number of your game. Setting this updates the AppVersion, which separates your playerbase in matchmaking.</summary>
         /// <remarks>
@@ -104,11 +104,6 @@ namespace Photon.Pun
         /// The maximum number of assigned PhotonViews <i>per player</i> (or scene). See the [General Documentation](@ref general) topic "Limitations" on how to raise this limitation.
         /// </summary>
         public static readonly int MAX_VIEW_IDS = 1000; // VIEW & PLAYER LIMIT CAN BE EASILY CHANGED, SEE DOCS
-
-        public static void RaiseEvent(byte spawnPlayers, object value, RaiseEventOptions default1, RaiseEventOptions default2)
-        {
-            throw new NotImplementedException();
-        }
 
 
         /// <summary>Name of the PhotonServerSettings file (used to load and by PhotonEditor to save new files).</summary>

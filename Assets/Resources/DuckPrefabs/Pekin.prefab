@@ -94,7 +94,6 @@ Transform:
   - {fileID: 3427053909456778686}
   - {fileID: 5860884960606914751}
   - {fileID: 4599457580672570768}
-  - {fileID: 7180074525335479550}
   m_Father: {fileID: 3540748879528118052}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -114,7 +113,6 @@ MonoBehaviour:
   - {fileID: 8397119508580791736}
   - {fileID: 4083131133741255482}
   - {fileID: 8926179282159662109}
-  - {fileID: 672129902131555647}
   active: 0
   showGizmos: 0
 --- !u!1 &2885223341834682081
@@ -141,7 +139,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2885223341834682081}
-  m_LocalRotation: {x: -0, y: -0, z: -0.38268346, w: 0.9238795}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -586,7 +584,7 @@ MonoBehaviour:
   settings: {fileID: 11400000, guid: 6f89ebd2831e6534a8cb167fa2701b52, type: 2}
   updateValues: 0
   active: 0
-  showGizmo: 1
+  showGizmo: 0
   priority: 0
   damage: 5
   knockback: 6
@@ -1343,6 +1341,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d951df4087dbf814f8a13526235ec0b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  damage: 0
   nickname: 
   duckSettings: {fileID: 11400000, guid: e6386fb7edac35e498700eda630990c3, type: 2}
   footCollider: {fileID: 1182273343537077184}
@@ -1383,8 +1382,9 @@ MonoBehaviour:
   chargedCrouchedPeckLag: 0
   chargedHonkLag: 0
   chargedCrouchHonkLag: 0
-  damage: 0
   onGroundSlowDown: 0
+  shortJumpMultiplier: 0
+  airSpeedSlowdown: 0
   movementVector: {x: 0, y: 0}
 --- !u!114 &3540748880086125279
 MonoBehaviour:
@@ -1464,7 +1464,7 @@ MonoBehaviour:
       - m_Target: {fileID: 3540748880086125275}
         m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
         m_MethodName: Swim
-        m_Mode: 1
+        m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -1668,7 +1668,7 @@ MonoBehaviour:
   - {fileID: 3540748879251800313}
   - {fileID: 5239524251969981893}
   active: 0
-  showGizmos: 1
+  showGizmos: 0
 --- !u!1 &3540748880446814218
 GameObject:
   m_ObjectHideFlags: 0
@@ -2094,7 +2094,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3540748880956369504}
-  - component: {fileID: 3540748880956369506}
   - component: {fileID: 3540748880956369505}
   m_Layer: 0
   m_Name: Honk
@@ -2118,22 +2117,6 @@ Transform:
   m_Father: {fileID: 3540748880038319944}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!58 &3540748880956369506
-CircleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3540748880956369519}
-  m_Enabled: 0
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: -0.61, y: 0.16}
-  serializedVersion: 2
-  m_Radius: 0.5
 --- !u!114 &3540748880956369505
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2250,7 +2233,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4611826874030787054}
-  m_LocalRotation: {x: -0, y: -0, z: -0.38268346, w: 0.9238795}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -2312,7 +2295,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4857803281335330413}
-  m_LocalRotation: {x: -0, y: -0, z: -0.38268346, w: 0.9238795}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -2556,7 +2539,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8697471346318802513}
-  - component: {fileID: 5431070943530622513}
   - component: {fileID: 7367965063320188255}
   m_Layer: 0
   m_Name: Honk Charged
@@ -2580,22 +2562,6 @@ Transform:
   m_Father: {fileID: 2553726799575442311}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!58 &5431070943530622513
-CircleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7107259619690599545}
-  m_Enabled: 0
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: -0.61, y: 0.16}
-  serializedVersion: 2
-  m_Radius: 0.5
 --- !u!114 &7367965063320188255
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2688,68 +2654,6 @@ MonoBehaviour:
   circleRadius: 0.35
   hitboxAngle: 0
   currentHit: []
---- !u!1 &7506030100369371095
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 7180074525335479550}
-  - component: {fileID: 672129902131555647}
-  m_Layer: 0
-  m_Name: Downward head (3)
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &7180074525335479550
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7506030100369371095}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 4202789180098063452}
-  m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &672129902131555647
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7506030100369371095}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d31557678f67a6a43ba7059ebfe0e694, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  owner: {fileID: 0}
-  settings: {fileID: 11400000, guid: 31c601cadedd48e42b228391c13973b9, type: 2}
-  updateValues: 0
-  active: 0
-  showGizmo: 0
-  priority: 0
-  damage: 3
-  knockback: 5
-  hitstun: 1
-  angle: {x: 1, y: 1}
-  type: 0
-  hitboxShapes: 1
-  capsuleDirection: 0
-  center: {x: -0.17, y: 0.15}
-  size: {x: 2, y: -0.44}
-  circleRadius: 0.35
-  hitboxAngle: 0
-  currentHit: []
 --- !u!1 &8616330862741373955
 GameObject:
   m_ObjectHideFlags: 0
@@ -2798,7 +2702,7 @@ MonoBehaviour:
   settings: {fileID: 11400000, guid: c7b7ed32ace3cba4fa8bfe9550b4d379, type: 2}
   updateValues: 0
   active: 0
-  showGizmo: 1
+  showGizmo: 0
   priority: 0
   damage: 7
   knockback: 7

@@ -22,6 +22,7 @@ public class Attack : MonoBehaviour
     {
         if (active)
         {
+            showGizmos = true;
             if (!oldactive)
             {
                 instanceIDs.Clear();
@@ -30,6 +31,7 @@ public class Attack : MonoBehaviour
             
             foreach (var hitbox in hitboxes)
             {
+                hitbox.showGizmo = showGizmos;
                 hitbox.currentHit = hitbox.renderHitbox(showGizmos);
                 foreach(Hittable hittable in hitbox.currentHit)
                 {
@@ -40,6 +42,10 @@ public class Attack : MonoBehaviour
                     }
                 }
             }
+        }
+        else
+        {
+            showGizmos = false;
         }
         oldactive = active;
     }

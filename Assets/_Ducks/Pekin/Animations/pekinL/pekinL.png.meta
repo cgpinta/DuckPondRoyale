@@ -1287,7 +1287,7 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      pekinL44: 1535305970756257799
+      pekinL51: 0
       pekinL35: -2806694416460537934
       pekinL04: -7863163095607977
       pekinL18: -464901401431811508
@@ -1343,7 +1343,7 @@ TextureImporter:
       pekinL25: 5806995755737158606
       pekinL42: -2348041110980060555
       pekinL37: 4881359113614451201
-      pekinL51: 0
+      pekinL44: 1535305970756257799
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

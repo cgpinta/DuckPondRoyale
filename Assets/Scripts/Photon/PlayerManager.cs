@@ -50,7 +50,7 @@ public class PlayerManager : MonoBehaviour
     #endregion
 
     public event Action<Player> PlayerLoaded;
-    public event Action ActivateAllPlayerInput;
+    public event Action GameStart;
     public Action<Player, PlayerController> PlayerDied;
     public Action<Player> PlayerWon;
 
@@ -105,7 +105,7 @@ public class PlayerManager : MonoBehaviour
                     countdownTextBox.gameObject.SetActive(false);
                     countingDown = false;
                     LoadHUD();
-                    ActivateAllPlayerInput();
+                    GameStart();
                 }
                 else if(countdownNextNumber + 1 == countdownText.Count)
                 {

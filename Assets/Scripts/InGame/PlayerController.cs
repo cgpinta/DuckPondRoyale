@@ -5,12 +5,11 @@ using UnityEngine.InputSystem;
 using Photon.Pun;
 using Photon.Realtime;
 using System;
+using Unity.Burst.CompilerServices;
 
 public class PlayerController : Hittable, IPunObservable
 {
     public string nickname;
-
-
 
     #region INITIALIZE OBJECTS
     [Header("Components")]
@@ -32,6 +31,7 @@ public class PlayerController : Hittable, IPunObservable
     #endregion
 
     #region VARIABLES
+
     [Header("Movement")]
     public int direction;
     public float speed;
@@ -75,7 +75,7 @@ public class PlayerController : Hittable, IPunObservable
 
 
     [Header("Stats")]
-    public float damage;
+    //public float damage;
 
     [Header("Other")]
     public float onGroundSlowDown;
@@ -89,6 +89,8 @@ public class PlayerController : Hittable, IPunObservable
     bool inAttack;
     bool jumpCancel;
     bool groundedSwim;
+
+    int hitstunVerticalDirection;
 
     int currentFlaps;
     bool canControl, isDead;
@@ -113,6 +115,7 @@ public class PlayerController : Hittable, IPunObservable
     float maxChargeMultiplier = 4;
     float inputDeadzone = 0.6f;
     float inAttackGravityMultiplier = 0.5f;
+    float hitstunSlowdownMultiplier = 0.1f;
 
 
     float frameLength = 1f/60;
@@ -125,6 +128,7 @@ public class PlayerController : Hittable, IPunObservable
     Timer shieldTimer = new Timer();
     Timer landingTimer = new Timer();
     Timer hitstunTimer = new Timer();
+    Timer hitlagTimer = new Timer();
     Timer invincibleTimer = new Timer();
     Timer cantControlTimer = new Timer();
     Timer attackChargeTimer = new Timer(true);
@@ -140,7 +144,7 @@ public class PlayerController : Hittable, IPunObservable
         pManager = FindObjectOfType<PlayerManager>();
         if(pManager != null)
         {
-            pManager.ActivateAllPlayerInput += ActivateInput;
+            pManager.GameStart += ActivateInput;
             pManager.PlayerDied += Died;
         }
 
@@ -151,7 +155,7 @@ public class PlayerController : Hittable, IPunObservable
 
         onGroundSlowDown = 0.955f;
         shortJumpMultiplier = .75f;
-        airSpeedSlowdown = .25f;
+        airSpeedSlowdown = .5f;
 
         rb.simulated = true;
         canControl = true;
@@ -282,57 +286,90 @@ public class PlayerController : Hittable, IPunObservable
 
         if (hitstunTimer.isInProgress())
         {
-
+            if (rb.velocity.magnitude < 0.1)
+            {
+                hitstunTimer.setTimer(0);
+            }
+            if (onGround)
+            {
+                if (rb.velocity.magnitude < 5)
+                {
+                    hitstunTimer.setTimer(0);
+                }
+            }
             anims.SetBoolForAll("InHitstun", true);
             if(pInput != null)
                 pInput.enabled = false;
+            footCollider.sharedMaterial = matBouncy;
         }
         else
         {
-
             anims.SetBoolForAll("InHitstun", false);
             if (pInput != null)
                 pInput.enabled = true;
+            footCollider.sharedMaterial = matNoFriction;
         }
 
-        //Debug.Log("canSwim:"+canSwim);
-
+        
     }
 
     void MovementCode()
     {
         //Basic sideways movement
-        if (onGround)
+        if (hitlagTimer.isInProgress())
         {
-            if ((movementVector.x > 0 && rb.velocity.x < 0) || (movementVector.x < 0 && rb.velocity.x > 0))
+            anims.DisableAll();
+            rb.simulated = false;
+            return;
+        }
+        else
+        {
+            if (anims.Head.enabled == false)
             {
-                rb.velocity = Vector2.right * rb.velocity.x * -1 * Time.deltaTime;       
+                anims.EnableAll();
             }
+            rb.simulated = true;
+        }
 
-            if (Mathf.Abs(rb.velocity.x) < maxSpeed)
+        if (!hitstunTimer.isInProgress())
+        {
+            if (onGround)
             {
-                if (Mathf.Abs(movementVector.x) > inputDeadzone)
+                if ((movementVector.x > 0 && rb.velocity.x < 0) || (movementVector.x < 0 && rb.velocity.x > 0))
                 {
-                    rb.velocity += Vector2.right * speed * movementVector.x * Time.deltaTime;
+                    rb.velocity = Vector2.right * rb.velocity.x * -1 * Time.deltaTime;
                 }
 
+                if (Mathf.Abs(rb.velocity.x) < maxSpeed)
+                {
+                    if (Mathf.Abs(movementVector.x) > inputDeadzone)
+                    {
+                        rb.velocity += Vector2.right * speed * movementVector.x * Time.deltaTime;
+                    }
+
+                }
+                if (!(Mathf.Abs(movementVector.x) > inputDeadzone))
+                {
+                    rb.velocity *= Vector2.right * onGroundSlowDown;
+                }
             }
-            if(!(Mathf.Abs(movementVector.x) > inputDeadzone))
+            else
             {
-                rb.velocity *= Vector2.right * onGroundSlowDown;
+                rb.velocity += Vector2.right * (speed * airSpeedSlowdown) * movementVector.x * Time.deltaTime;
+                if (swimming)
+                {
+                    if (Mathf.Abs(movementVector.x) > maxSpeed)
+                    {
+                        rb.velocity += Vector2.right * airSpeedSlowdown * 0.5f;
+                    }
+                }
             }
         }
         else
         {
-            rb.velocity += Vector2.right * (speed*airSpeedSlowdown) * movementVector.x * Time.deltaTime;
-            if (swimming)
-            {
-                if(Mathf.Abs(movementVector.x) > maxSpeed)
-                {
-                    rb.velocity += Vector2.right * airSpeedSlowdown * 0.5f;
-                }
-            }
+            rb.velocity += Vector2.right * speed * hitstunSlowdownMultiplier * movementVector.x;
         }
+        
 
 
         //if(Mathf.Abs(rb.velocity.x) < 0.1)
@@ -641,24 +678,38 @@ public class PlayerController : Hittable, IPunObservable
             if (!invincibleTimer.isInProgress())
             {
                 this.damage += damage;
+                float calculatedHitstun = 1;
                 if (hitstun > 0)
                 {
-                    hitstunTimer.setTimer(hitstun);
+                    calculatedHitstun = (this.damage + knockback + 1) * 0.04f;
+                    hitstunTimer.setTimer(calculatedHitstun);
                 }
                 else
                 {
                     hitstunTimer.setTimer(0.5f);
                 }
 
+                float calculatedHitlag = ((this.damage + knockback + 1) * (1f / 100f));
+                hitlagTimer.setTimer(calculatedHitlag);
+
                 //rb.velocity = direction.normalized * knockback * (this.damage / 5);
-                rb.velocity = direction.normalized * knockback * ((this.damage + 1)/ 10);
+                rb.velocity = direction.normalized * knockback * ((this.damage + 1)/ 25);
                 Debug.Log(this.gameObject.name + " Player is hit: " 
                           + "Direction: " + direction.normalized 
                           + " Kb:" + knockback 
                           + " dmg/5: " + this.damage / 5 + " = " + rb.velocity);
-                invincibleTimer.setTimer(0.01f);
+                invincibleTimer.setTimer(calculatedHitstun * 0.1f);
+                
             }
         }
+    }
+
+    [PunRPC]
+    public void Hit(float enemyCurDamage, float damage, float knockback)
+    {
+        float calculatedHitlag = (enemyCurDamage + damage + knockback + 1) * (1f / 100f);
+        Debug.Log("enemyDamage:"+enemyCurDamage+" Damage:"+damage+" knockback:"+knockback+" Hitlag:"+calculatedHitlag);
+        hitlagTimer.setTimer(calculatedHitlag);
     }
 
     private void ActivateInput()
