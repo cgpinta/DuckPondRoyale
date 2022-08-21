@@ -20,6 +20,7 @@ public class PlayerController : Hittable, IPunObservable
     [SerializeField] GameObject sprite;
     PlayerManager pManager;
     [SerializeField] PlayerInput pInput;
+    public DeathDetection deathDetect;
 
     AnimatorHolder anims;
     public Animator wingAnim;
@@ -27,7 +28,7 @@ public class PlayerController : Hittable, IPunObservable
     public Animator bodyAnim;
     public Animator feetAnim;
 
-    PhotonView pView;
+    public PhotonView pView;
     #endregion
 
     #region VARIABLES
@@ -318,6 +319,7 @@ public class PlayerController : Hittable, IPunObservable
         //Basic sideways movement
         if (hitlagTimer.isInProgress())
         {
+            anims.SetBoolForAll("InHitstun", true);
             anims.DisableAll();
             rb.simulated = false;
             return;
@@ -665,6 +667,18 @@ public class PlayerController : Hittable, IPunObservable
             }
         }
     }
+
+    public bool HUD = true;
+    public void Defend(InputAction.CallbackContext context)
+    {
+        if (context.canceled)
+        {
+            HUD = !HUD;
+        }
+    }
+
+
+
     #endregion
 
 
@@ -719,17 +733,23 @@ public class PlayerController : Hittable, IPunObservable
 
     private void Died(Player player, PlayerController controller)
     {
-        //this.gameObject.SetActive(false);
     }
 
     //[PunRPC]
     public void Respawn(Vector3 spawnPoint)
     {
+        invincibleTimer.setTimer(3);
         damage = 0;
         tr.position = spawnPoint;
         rb.velocity = Vector3.zero;
-        Debug.Log("Player reset to:" +spawnPoint);
+        Debug.Log("Player reset to:" + tr.position);
         isDead = false;
+        
+    }
+
+    public bool isInvincible()
+    {
+        return invincibleTimer.isInProgress();
     }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)

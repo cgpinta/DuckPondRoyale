@@ -21,6 +21,7 @@ public class GameCamera : MonoBehaviour
     public Vector2 fixedLocation;
     public float zoom = 12;
     float defaultZoom = 12;
+    public float smoothTime;
 
     Camera cam;
 
@@ -34,6 +35,9 @@ public class GameCamera : MonoBehaviour
 
     bool isGameStarted;
     int depth = -10;
+
+    Vector3 velocity;
+
 
     float horzExtent;
     float vertExtent;
@@ -67,14 +71,15 @@ public class GameCamera : MonoBehaviour
         }
         
     }
-    private void Update()
+    private void LateUpdate()
     {
         if (!isGameStarted) { return; }
         if (players.Count == 0){ return; }
         
         if(camType == cameraType.SmashCam)
         {
-            transform.position = KeepCameraInBounds(GetCenterPoint(players));
+            transform.position = Vector3.SmoothDamp(transform.position, KeepCameraInBounds(GetCenterPoint(players)), ref velocity, smoothTime);
+            //transform.position = KeepCameraInBounds(GetCenterPoint(players));
         }
         else if(camType == cameraType.FollowPlayer1)
         {

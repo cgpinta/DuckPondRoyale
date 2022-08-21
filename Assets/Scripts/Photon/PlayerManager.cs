@@ -54,6 +54,7 @@ public class PlayerManager : MonoBehaviour
     public event Action<Player> PlayerLoaded;
     public event Action GameStart;
     public Action<Player, PlayerController> PlayerDied;
+    public Action<Player> PlayerRespawned;
     public Action<Player> PlayerWon;
 
     private void Start()
@@ -228,6 +229,7 @@ public class PlayerManager : MonoBehaviour
         countdownAnimator.SetTrigger("Count");
     }
 
+
     public void UpdatePlayerAfterDeath(Player player, PlayerController controller)
     {
         currentPlayerProperties = player.CustomProperties;
@@ -241,8 +243,11 @@ public class PlayerManager : MonoBehaviour
                 //PhotonView pView = controller.gameObject.GetComponent<PhotonView>();          //pView = the opposing players view
                 //pView.RPC("Respawn", RpcTarget.All, new Vector2(spawnPoints[0].position.x, spawnPoints[0].position.y)); //call GetHit on the opposing player
                 //controller.enabled = true;
-                //controller.gameObject.SetActive(true);
                 controller.Respawn(spawnPoints[0].position);
+                PlayerRespawned(player);
+                //controller.gameObject.SetActive(true);
+                
+                
 
             }
             //controller.Respawn(spawnPoints[0].position);

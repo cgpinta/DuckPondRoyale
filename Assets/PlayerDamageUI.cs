@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using TMPro;
 using Photon.Pun;
@@ -35,6 +36,18 @@ public class PlayerDamageUI : MonoBehaviour
     void Update()
     {
         if(pController != null)
+        {
             damageText.text = pController.damage.ToString();
+
+            if (!pController.HUD)
+            {
+                List<PlayerDamageUI> huds = FindObjectsOfType<PlayerDamageUI>().ToList();
+                foreach (PlayerDamageUI hud in huds)
+                {
+                    hud.gameObject.SetActive(false);
+                }
+            }
+        }
+            
     }
 }

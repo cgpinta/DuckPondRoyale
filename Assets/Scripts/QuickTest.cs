@@ -53,7 +53,7 @@ public class QuickTest : MonoBehaviourPunCallbacks
         string generated_string = "";
 
         for (int i = 0; i < length; i++)
-            generated_string += characters[Random.Range(0, length)];
+            generated_string += characters[Random.Range(0, characters.Length)];
 
         return generated_string;
     }
