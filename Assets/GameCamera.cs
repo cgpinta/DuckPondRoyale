@@ -13,6 +13,8 @@ public enum cameraType
 
 public class GameCamera : MonoBehaviour
 {
+    StageSettings stageSettings;
+
     public Vector2 startLocation;
     public Vector2 cameraLimits;
     public cameraType camType;
@@ -33,11 +35,24 @@ public class GameCamera : MonoBehaviour
     bool isGameStarted;
     int depth = -10;
 
+    float horzExtent;
+    float vertExtent;
+
     // Start is called before the first frame update
     void Start()
     {
         pManager = FindObjectOfType<PlayerManager>();
-        cam = this.GetComponent<Camera>();
+        stageSettings = pManager.curStageSettings;
+
+        cameraLimits = stageSettings.CameraLimits;
+
+        cam = Camera.main;
+
+        vertExtent = cam.orthographicSize;
+        horzExtent = vertExtent * Screen.width/Screen.height;
+
+        
+
 
         transform.position = new Vector3(startLocation.x, startLocation.y, -10);
         isGameStarted = false;
@@ -59,11 +74,11 @@ public class GameCamera : MonoBehaviour
         
         if(camType == cameraType.SmashCam)
         {
-            transform.position = GetCenterPoint(players);
+            transform.position = KeepCameraInBounds(GetCenterPoint(players));
         }
         else if(camType == cameraType.FollowPlayer1)
         {
-            transform.position = GetCenterPoint(players[0]);
+            transform.position = KeepCameraInBounds(GetCenterPoint(players[0]));
         }
         else if(camType == cameraType.Fixed)
         {
@@ -85,6 +100,12 @@ public class GameCamera : MonoBehaviour
             transform.position = new Vector3(startLocation.x, startLocation.y, depth);
             cam.orthographicSize = defaultZoom;
         }
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.blue;
+        Gizmos.DrawWireCube(Vector2.zero, cameraLimits);
     }
 
     void LoadCameraDetails()
@@ -126,6 +147,17 @@ public class GameCamera : MonoBehaviour
         return new Vector3(bounds.center.x, bounds.center.y, depth);
     }
 
-    
+    Vector3 KeepCameraInBounds(Vector3 currentPos)
+    {
+        minX = horzExtent - cameraLimits.x / 2f;
+        maxX = cameraLimits.x / 2f - horzExtent;
+        minY = vertExtent - cameraLimits.y / 2f;
+        maxY = cameraLimits.y / 2f - vertExtent;
+
+        Vector3 result = new Vector3(Mathf.Clamp(currentPos.x, minX, maxX),
+                    Mathf.Clamp(currentPos.y, minY, maxY),
+                    depth);
+        return result;
+    }
 
 }

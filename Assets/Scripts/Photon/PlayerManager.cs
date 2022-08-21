@@ -11,6 +11,8 @@ using ExitGames.Client.Photon;
 
 public class PlayerManager : MonoBehaviour
 {
+    public StageSettings curStageSettings;
+
     public CharacterList chars;
     public GameObject spawnpointParent;
 

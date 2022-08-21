@@ -134,6 +134,7 @@ GameObject:
   - component: {fileID: 519420032}
   - component: {fileID: 519420031}
   - component: {fileID: 519420029}
+  - component: {fileID: 519420033}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -176,7 +177,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 9.2383995
+  orthographic size: 12
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -200,13 +201,30 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 519420028}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.028824652, y: 0.37, z: -10}
+  m_LocalPosition: {x: 0, y: 0, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &519420033
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 519420028}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64974aebe1095844eb219e12f8ce2739, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  startLocation: {x: 0, y: 0}
+  cameraLimits: {x: 43, y: 25}
+  camType: 0
+  fixedLocation: {x: 0, y: 0}
+  zoom: 12
 --- !u!1 &610102066
 GameObject:
   m_ObjectHideFlags: 0
@@ -311,7 +329,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 610102066}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.7, y: -8.06, z: 0}
+  m_LocalPosition: {x: 0.55, y: -10.34, z: 0}
   m_LocalScale: {x: 64.60564, y: 4.451752, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -622,6 +640,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 5167357414390494766, guid: d6956703deb08204ab3353281e4f2ddb, type: 3}
+      propertyPath: deathLimits.x
+      value: 45
+      objectReference: {fileID: 0}
+    - target: {fileID: 5167357414390494766, guid: d6956703deb08204ab3353281e4f2ddb, type: 3}
+      propertyPath: deathLimits.y
+      value: 25
+      objectReference: {fileID: 0}
     - target: {fileID: 5867102818142921495, guid: d6956703deb08204ab3353281e4f2ddb, type: 3}
       propertyPath: m_Name
       value: StageManager
@@ -670,5 +696,9 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5867102818142921497, guid: d6956703deb08204ab3353281e4f2ddb, type: 3}
+      propertyPath: curStageSettings
+      value: 
+      objectReference: {fileID: 11400000, guid: ab738f7e115c9e1459f12537950404f0, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d6956703deb08204ab3353281e4f2ddb, type: 3}
