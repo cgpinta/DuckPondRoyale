@@ -4,6 +4,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 using Photon.Realtime;
+using Photon.Pun;
 
 public class WinScreen : MonoBehaviour
 {
@@ -24,10 +25,18 @@ public class WinScreen : MonoBehaviour
         pManager.PlayerWon += DisplayWinDetails;
     }
 
-    public void DisplayWinDetails(Player player)
+    public void DisplayWinDetails(PlayerController player)
     {
-        winnerName.text = player.NickName;
-        winnerCharImage.sprite = characterList.getList[(int)player.CustomProperties["SelectedChar"]].CSS;
+        if (PhotonNetwork.IsConnected)
+        {
+            winnerName.text = player.player.NickName;
+            winnerCharImage.sprite = characterList.getList[(int)player.player.CustomProperties["SelectedChar"]].CSS;
+        }
+        else
+        {
+            winnerName.text = "no name";
+            winnerCharImage.sprite = characterList.getList[0].CSS;
+        }
         //WinCanvas.gameObject.SetActive(true);
     }
 }

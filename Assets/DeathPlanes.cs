@@ -27,6 +27,7 @@ public class DeathPlanes : MonoBehaviour
         for (int i = 0; i < 4; i++)
         {
             colliders.Add(Instantiate(deathObject, this.transform));
+            Debug.Log(colliders[0].gameObject.GetInstanceID());
         }
 
         //set right x death plane

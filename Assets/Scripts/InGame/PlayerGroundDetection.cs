@@ -15,7 +15,7 @@ public class PlayerGroundDetection : MonoBehaviour
         if (!collision.isTrigger)
         {
             colliders.Add(collision);
-            Debug.Log("GROUNDED");
+            //Debug.Log("GROUNDED");
             playerController.setOnGround(true);
         }
     }
@@ -33,7 +33,7 @@ public class PlayerGroundDetection : MonoBehaviour
         if (!collision.isTrigger)
         {
             colliders.Remove(collision);
-            Debug.Log("NOT GROUNDED");
+            //Debug.Log("NOT GROUNDED");
             playerController.setOnGround(false);
         }
     }

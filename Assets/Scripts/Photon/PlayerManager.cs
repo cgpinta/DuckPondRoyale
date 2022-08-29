@@ -6,6 +6,7 @@ using Photon.Pun;
 using Photon.Realtime;
 using TMPro;
 using System;
+using System.Linq;
 using Random = UnityEngine.Random;
 using ExitGames.Client.Photon;
 
@@ -37,13 +38,15 @@ public class PlayerManager : MonoBehaviour
     int countdownNextNumber = 0;
     bool countingDown;
 
-    Transform[] spawnPoints;
+    List<Transform> spawnPoints = new List<Transform>();
     Player localPlayer;              //the local player
     ExitGames.Client.Photon.Hashtable currentPlayerProperties = new ExitGames.Client.Photon.Hashtable();
 
     GameObject localPlayerObject;
 
     Dictionary<int, Player> playerList = new Dictionary<int, Player>();
+    PlayerController[] controllerList;
+
 
     #region Variables for player spawning
     bool[] isSpawnPointTaken;
@@ -54,11 +57,12 @@ public class PlayerManager : MonoBehaviour
     public event Action<Player> PlayerLoaded;
     public event Action GameStart;
     public Action<Player, PlayerController> PlayerDied;
-    public Action<Player> PlayerRespawned;
-    public Action<Player> PlayerWon;
+    public Action<Player, PlayerController> PlayerRespawned;
+    public Action<PlayerController> PlayerWon;
 
     private void Start()
     {
+        Debug.Log("Stage loaded");
         Camera cam = Camera.main;
         PlayerHUDCanvas.worldCamera = cam;
         WinScreen.SetActive(false);
@@ -72,22 +76,30 @@ public class PlayerManager : MonoBehaviour
 
         countdownTextBox.gameObject.SetActive(false);
         countingDown = false;
+
+        spawnPoints = spawnpointParent.GetComponentsInChildren<Transform>().ToList();
+        spawnPoints.RemoveAt(0);
+        isSpawnPointTaken = new bool[spawnPoints.Count];
+
         if (PhotonNetwork.IsConnected)
         {
-            
             localPlayer = PhotonNetwork.LocalPlayer;
-            spawnPoints = spawnpointParent.GetComponentsInChildren<Transform>();
-            isSpawnPointTaken = new bool[spawnPoints.Length];
+            
 
             currentPlayerProperties["HasLoadedStage"] = true;
-            currentPlayerProperties["Lives"] = lifeCount;
-            currentPlayerProperties["Winner"] = false;
+            //currentPlayerProperties["Lives"] = lifeCount;
             localPlayer.SetCustomProperties(currentPlayerProperties);
             SetPlayerSpawnpoint(localPlayer);
         }
         else
         {
             StartCountdown(); //test script
+            controllerList = FindObjectsOfType<PlayerController>();
+            foreach(PlayerController controller in controllerList)
+            {
+                controller.lives = 30;
+            }
+            OfflineLoadHUD();
         }
     }
 
@@ -107,7 +119,11 @@ public class PlayerManager : MonoBehaviour
                 {
                     countdownTextBox.gameObject.SetActive(false);
                     countingDown = false;
-                    LoadHUD();
+                    if (PhotonNetwork.IsConnected)
+                    {
+                        LoadHUD();
+                    }
+                    
                     GameStart();
                 }
                 else if(countdownNextNumber + 1 == countdownText.Count)
@@ -140,6 +156,19 @@ public class PlayerManager : MonoBehaviour
         }
     }
 
+    void OfflineLoadHUD()
+    {
+        controllerList = FindObjectsOfType<PlayerController>();
+        foreach (PlayerController controller in controllerList)
+        {
+            GameObject HUD = Instantiate(PlayerHUDPrefab, PlayerHUDTransform);
+            PlayerHUDItem HUDitem = HUD.GetComponent<PlayerHUDItem>();
+            HUDitem.controller = controller;
+            //HUDitem.owner = player.Value;
+
+        }
+    }
+
     private bool CheckIfAllPlayersLoaded()
     {
         if (PhotonNetwork.IsMasterClient)
@@ -167,12 +196,12 @@ public class PlayerManager : MonoBehaviour
 
         if (!player.CustomProperties.ContainsKey("CurrentSpawnPoint"))
         {
-            if (numSpawnPointsTaken < spawnPoints.Length - 1)
+            if (numSpawnPointsTaken < spawnPoints.Count - 1)
             {
-                int spawnPointRand = Random.Range(0, spawnPoints.Length);
+                int spawnPointRand = Random.Range(0, spawnPoints.Count);
                 while (isSpawnPointTaken[spawnPointRand])
                 {
-                    spawnPointRand = Random.Range(0, spawnPoints.Length);
+                    spawnPointRand = Random.Range(0, spawnPoints.Count);
                 }
                 currentPlayerProperties["CurrentSpawnPoint"] = spawnPointRand;
                 isSpawnPointTaken[spawnPointRand] = true;
@@ -180,7 +209,7 @@ public class PlayerManager : MonoBehaviour
             }
             else
             {
-                for (int i = 0; i < spawnPoints.Length; i++)
+                for (int i = 0; i < spawnPoints.Count; i++)
                 {
                     if (!isSpawnPointTaken[i])
                     {
@@ -214,6 +243,10 @@ public class PlayerManager : MonoBehaviour
         
         GameObject currentPlayerObj = PhotonNetwork.Instantiate("DuckPrefabs/" + chosenChar, spawnPoint, Quaternion.identity);
         currentPlayerObj.GetComponent<PlayerInput>().DeactivateInput();
+        PlayerController curController = currentPlayerObj.GetComponent<PlayerController>();
+        curController.lives = lifeCount;
+        curController.player = PhotonNetwork.LocalPlayer;
+
 
         localPlayerObject = currentPlayerObj;
         StartCountdown();
@@ -232,39 +265,44 @@ public class PlayerManager : MonoBehaviour
 
     public void UpdatePlayerAfterDeath(Player player, PlayerController controller)
     {
-        currentPlayerProperties = player.CustomProperties;
-        int tempLives = (int)currentPlayerProperties["Lives"] - 1;
-        currentPlayerProperties["Lives"] = tempLives;
-        Debug.Log("Old lives:"+ (tempLives+1)+", New Lives:" + currentPlayerProperties["Lives"]);
-        if((int)player.CustomProperties["Lives"] > 0)
+
+        controller.lives--;
+        Debug.Log("New Lives:"+controller.lives);
+        if(controller.lives > 0)
         {
             if (PhotonNetwork.IsConnected)
             {
-                //PhotonView pView = controller.gameObject.GetComponent<PhotonView>();          //pView = the opposing players view
-                //pView.RPC("Respawn", RpcTarget.All, new Vector2(spawnPoints[0].position.x, spawnPoints[0].position.y)); //call GetHit on the opposing player
-                //controller.enabled = true;
                 controller.Respawn(spawnPoints[0].position);
-                PlayerRespawned(player);
+                PlayerRespawned(player, controller);
                 //controller.gameObject.SetActive(true);
-                
-                
-
+            }
+            else
+            {
+                controller.Respawn(spawnPoints[0].position);
+                PlayerRespawned(player, controller);
             }
             //controller.Respawn(spawnPoints[0].position);
         }
         else
         {
-            currentPlayerProperties["Winner"] = false;
-            Destroy(controller.gameObject);
-            Player winner = AreAllPlayersDead();
+            //TODO: PUNRPC METHOD FOR SHOWING WIN SCREEN
+            if (PhotonNetwork.IsMasterClient)
+            {
+                PhotonNetwork.Destroy(controller.gameObject);
+            }
+            
+            PlayerController winner = AreAllPlayersDead();
             if (winner != null)
             {
                 //PhotonNetwork.RaiseEvent(2, null, RaiseEventOptions.Default, SendOptions.SendUnreliable);
                 //PlayerWon(winner);
-                if(localPlayer == winner)
+                controllerList = FindObjectsOfType<PlayerController>();
+                
+                if(PhotonNetwork.LocalPlayer == winner.player)
                 {
-                    Destroy(localPlayerObject);
+                    PhotonNetwork.Destroy(winner.gameObject);
                 }
+
                 WinScreen.SetActive(true);
                 WinScreen.GetComponent<WinScreen>().DisplayWinDetails(winner);
             }
@@ -273,16 +311,23 @@ public class PlayerManager : MonoBehaviour
     }
 
 
-    public Player AreAllPlayersDead()
+    public PlayerController AreAllPlayersDead()
     {
-        Player winner = null;
+        PlayerController winner = null;
         int numOfPlayersAlive = 0;
-        foreach (KeyValuePair<int, Player> player in PhotonNetwork.CurrentRoom.Players)
+
+        if(controllerList == null)
         {
-            if ((int)player.Value.CustomProperties["Lives"] > 0)
+            controllerList = FindObjectsOfType<PlayerController>();
+        }
+
+        foreach (PlayerController controller in controllerList)
+        {
+            //if ((int)player.Value.CustomProperties["Lives"] > 0)
+            if(controller.lives > 0)
             {
                 numOfPlayersAlive++;
-                winner = player.Value;
+                winner = controller;
             }
             if(numOfPlayersAlive > 1)
             {
@@ -294,12 +339,12 @@ public class PlayerManager : MonoBehaviour
 
     public void ResetPlayerProperties()
     {
-        foreach(KeyValuePair<int, Player> player in PhotonNetwork.CurrentRoom.Players)
-        {
-            currentPlayerProperties = player.Value.CustomProperties;
-            if (currentPlayerProperties.ContainsKey("Winner")) { currentPlayerProperties.Remove("Winner"); }
-            PhotonNetwork.SetPlayerCustomProperties(currentPlayerProperties);
-        }
+        //foreach(KeyValuePair<int, Player> player in PhotonNetwork.CurrentRoom.Players)
+        //{
+        //    currentPlayerProperties = player.Value.CustomProperties;
+        //    if (currentPlayerProperties.ContainsKey("Winner")) { currentPlayerProperties.Remove("Winner"); }
+        //    PhotonNetwork.SetPlayerCustomProperties(currentPlayerProperties);
+        //}
     }
 
     public void OnClickReturnToRoom()

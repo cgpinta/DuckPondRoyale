@@ -1348,11 +1348,12 @@ MonoBehaviour:
   sprite: {fileID: 3540748880883408939}
   pInput: {fileID: 3540748880086125279}
   deathDetect: {fileID: 0}
+  pView: {fileID: 0}
+  pManager: {fileID: 0}
   wingAnim: {fileID: 3540748879019476392}
   headAnim: {fileID: 3540748879528118053}
   bodyAnim: {fileID: 3540748879555447613}
   feetAnim: {fileID: 3540748880518974354}
-  pView: {fileID: 0}
   direction: 0
   speed: 50
   maxSpeed: 0
@@ -1384,6 +1385,7 @@ MonoBehaviour:
   chargedCrouchedPeckLag: 0
   chargedHonkLag: 0
   chargedCrouchHonkLag: 0
+  lives: 0
   onGroundSlowDown: 0
   shortJumpMultiplier: 0
   airSpeedSlowdown: 0

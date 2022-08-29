@@ -18,17 +18,23 @@ public class PlayerController : Hittable, IPunObservable
     Rigidbody2D rb;
     public CapsuleCollider2D footCollider;
     [SerializeField] GameObject sprite;
-    PlayerManager pManager;
+    
     [SerializeField] PlayerInput pInput;
-    public DeathDetection deathDetect;
 
+    [Header("DO NOT CONFIGURE")]
+    public DeathDetection deathDetect;
+    public Player player;
+    public PhotonView pView;
+    public PlayerManager pManager;
+
+    [Header("Animators")]
     AnimatorHolder anims;
     public Animator wingAnim;
     public Animator headAnim;
     public Animator bodyAnim;
     public Animator feetAnim;
 
-    public PhotonView pView;
+    
     #endregion
 
     #region VARIABLES
@@ -72,11 +78,12 @@ public class PlayerController : Hittable, IPunObservable
     public float chargedCrouchedPeckLag;
     public float chargedHonkLag;
     public float chargedCrouchHonkLag;
-    
+
 
 
     [Header("Stats")]
     //public float damage;
+    public int lives;
 
     [Header("Other")]
     public float onGroundSlowDown;
@@ -139,7 +146,7 @@ public class PlayerController : Hittable, IPunObservable
 
 
     // START: is called before the first frame update
-    void Start()
+    void Awake()
     {
         anims = new AnimatorHolder(wingAnim, headAnim, bodyAnim, feetAnim);
         pManager = FindObjectOfType<PlayerManager>();
@@ -733,7 +740,7 @@ public class PlayerController : Hittable, IPunObservable
 
     private void Died(Player player, PlayerController controller)
     {
-    }
+    } 
 
     //[PunRPC]
     public void Respawn(Vector3 spawnPoint)
@@ -747,6 +754,20 @@ public class PlayerController : Hittable, IPunObservable
         
     }
 
+    [PunRPC]
+    public void LoseLife(Player player, PlayerController controller)
+    {
+        //if(player != this.player)
+        //{
+        //    return;
+        //}
+        lives--;
+        //if(lives > 0)
+        //{
+
+        //}
+    }
+
     public bool isInvincible()
     {
         return invincibleTimer.isInProgress();
@@ -758,11 +779,15 @@ public class PlayerController : Hittable, IPunObservable
         {
             stream.SendNext(sprite.transform.rotation);
             stream.SendNext(damage);
+            stream.SendNext(lives);
+            stream.SendNext(player);
         }
         else
         {
             this.sprite.transform.rotation = (Quaternion)stream.ReceiveNext();
             this.damage = (float)stream.ReceiveNext();
+            this.lives = (int)stream.ReceiveNext();
+            this.player = (Player)stream.ReceiveNext();
         }
     }
 }

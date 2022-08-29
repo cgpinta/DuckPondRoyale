@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 66016922614188972}
   - component: {fileID: 5943403257665586786}
   - component: {fileID: 3341945745876393912}
-  m_Layer: 5
+  m_Layer: 6
   m_Name: Return Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -145,7 +145,7 @@ GameObject:
   - component: {fileID: 7468123143803871079}
   - component: {fileID: 9009527992402579500}
   - component: {fileID: 4226631049046066206}
-  m_Layer: 5
+  m_Layer: 6
   m_Name: WinnerText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -280,7 +280,7 @@ GameObject:
   - component: {fileID: 4466622924966531898}
   - component: {fileID: 4650010228628828113}
   - component: {fileID: 6877556734252782462}
-  m_Layer: 5
+  m_Layer: 6
   m_Name: Text (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -416,7 +416,7 @@ GameObject:
   - component: {fileID: 1831921087654219899}
   - component: {fileID: 2804394496553117032}
   - component: {fileID: 5393247113581331972}
-  m_Layer: 5
+  m_Layer: 6
   m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -467,7 +467,7 @@ Canvas:
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 25
   m_SortingLayerID: 0
-  m_SortingOrder: 2
+  m_SortingOrder: 100
   m_TargetDisplay: 0
 --- !u!114 &2804394496553117032
 MonoBehaviour:
@@ -520,7 +520,7 @@ GameObject:
   - component: {fileID: 7826162415158517738}
   - component: {fileID: 5484751294480019216}
   - component: {fileID: 2315415179688995895}
-  m_Layer: 5
+  m_Layer: 6
   m_Name: WinnerName
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -655,7 +655,7 @@ GameObject:
   - component: {fileID: 5194146910009373880}
   - component: {fileID: 8003612078584516956}
   - component: {fileID: 3670794149578821062}
-  m_Layer: 5
+  m_Layer: 6
   m_Name: Background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -730,7 +730,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2642595339708321325}
   - component: {fileID: 9146579773466408732}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Win Screen
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -883,7 +883,7 @@ GameObject:
   - component: {fileID: 5867102818142921496}
   - component: {fileID: 5867102818142921497}
   m_Layer: 0
-  m_Name: StageManager
+  m_Name: PlayerManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -920,6 +920,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e606aa1a74d8e7c4188e965d2dd345ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  curStageSettings: {fileID: 0}
   chars: {fileID: 11400000, guid: 82d3d9234a1337545bb86f0f08698361, type: 2}
   spawnpointParent: {fileID: 5867102819155098895}
   countdownTextBox: {fileID: 5867102819128370828}
@@ -1317,7 +1318,7 @@ GameObject:
   - component: {fileID: 5167357414390494766}
   m_Layer: 0
   m_Name: Death Plane
-  m_TagString: Death
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1330,7 +1331,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5867102820147563104}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.02978678, y: 0.17328002, z: -0.113888495}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1362,7 +1363,7 @@ GameObject:
   - component: {fileID: 2464037551836230424}
   - component: {fileID: 6356847670189582742}
   - component: {fileID: 1892544694743820348}
-  m_Layer: 5
+  m_Layer: 6
   m_Name: WinnerCharacter
   m_TagString: Untagged
   m_Icon: {fileID: 0}

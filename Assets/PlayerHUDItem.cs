@@ -11,6 +11,7 @@ public class PlayerHUDItem : MonoBehaviour
     public TMP_Text playerName;
     public CharacterList characterList;
     public Player owner;
+    public PlayerController controller;
     public PlayerManager pManager;
 
     ExitGames.Client.Photon.Hashtable playerProperties = new ExitGames.Client.Photon.Hashtable();
@@ -30,15 +31,26 @@ public class PlayerHUDItem : MonoBehaviour
     void Start()
     {
         pManager = FindObjectOfType<PlayerManager>();
-        playerName.text = owner.NickName;
-        charIcon.sprite = characterList.getList[(int)owner.CustomProperties["SelectedChar"]].CSS;
+        
         pManager.PlayerDied += LoseLife;
-
-        playerProperties = owner.CustomProperties;
-
-        numLives = (int)owner.CustomProperties["Lives"];
+        numLives = 30;
+        if (PhotonNetwork.IsConnected)
+        {
+            playerProperties = owner.CustomProperties;
+            playerName.text = owner.NickName;
+            numLives = (int)PhotonNetwork.CurrentRoom.CustomProperties["LifeCount"];
+            charIcon.sprite = characterList.getList[(int)owner.CustomProperties["SelectedChar"]].CSS;
+        }
 
         updateLifeCount();   
+    }
+
+    private void Update()
+    {
+        if (!PhotonNetwork.IsConnected)
+        {
+
+        }
     }
 
     void updateLifeCount()
@@ -60,7 +72,7 @@ public class PlayerHUDItem : MonoBehaviour
 
     void LoseLife(Player player, PlayerController controller)
     {
-        numLives = (int)player.CustomProperties["Lives"];
+        numLives = controller.lives;
         Debug.Log(numLives);
         if (player == this.owner && numLives != lives.Count)
         {

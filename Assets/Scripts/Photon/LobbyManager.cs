@@ -52,6 +52,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
     private void Start()
     {
+        Debug.Log("Lobby loaded");
         selectedStageName = stageList.getList[0].name;
         if (!PhotonNetwork.InRoom)
         {
@@ -62,6 +63,8 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         }
         else
         {
+            
+
             roomPanel.SetActive(true);
             lobbyPanel.SetActive(false);
 
@@ -73,7 +76,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
             }
         }
 
-        
+
     }
 
     
@@ -229,6 +232,12 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
     public void OnClickStartButton()
     {
+        int lifeCount = 3;
+
+        ExitGames.Client.Photon.Hashtable roomProperties = PhotonNetwork.CurrentRoom.CustomProperties;
+        roomProperties["LifeCount"] = lifeCount;
+        PhotonNetwork.CurrentRoom.SetCustomProperties(roomProperties);
+
         Debug.Log("Now loading stage: " + selectedStageName);
         PhotonNetwork.LoadLevel(selectedStageName);
     }

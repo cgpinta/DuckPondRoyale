@@ -229,8 +229,8 @@ public class Hitbox : MonoBehaviour
             PhotonView pView = hittable.gameObject.GetComponent<PhotonView>();          //pView = the opposing players view
             PhotonView ownerView = this.owner.GetComponent<PhotonView>();
             pView.RPC("GetHit", RpcTarget.All, damage, knockback, hitstun, newAngle, type); //call GetHit on the opposing player
-            //ownerView.RPC("Hit", RpcTarget.All, hittable.damage, damage, knockback); //call Hit on the hitbox owner
-            ownerView.gameObject.GetComponent<PlayerController>().Hit(hittable.damage, damage, knockback);
+            ownerView.RPC("Hit", RpcTarget.All, hittable.damage, damage, knockback); //call Hit on the hitbox owner
+            //ownerView.gameObject.GetComponent<PlayerController>().Hit(hittable.damage, damage, knockback);
         }
         else
         {
