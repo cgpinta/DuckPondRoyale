@@ -199,6 +199,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5867102818142921497, guid: d6956703deb08204ab3353281e4f2ddb, type: 3}
+      propertyPath: buttonClick
+      value: 
+      objectReference: {fileID: 8300000, guid: a375c88793b99c944ac8734efc9297d6, type: 3}
+    - target: {fileID: 5867102818142921497, guid: d6956703deb08204ab3353281e4f2ddb, type: 3}
       propertyPath: curStageSettings
       value: 
       objectReference: {fileID: 11400000, guid: d617307e7c495014a92933a00aea87a3, type: 2}
@@ -588,7 +592,7 @@ PolygonCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
-    border: {x: 1.375, y: 0, z: 1.375, w: 2.25}
+    border: {x: 1.375, y: 0, z: 1.375, w: 2.3125}
     pivot: {x: 0.5, y: 0.5}
     oldSize: {x: 13.875, y: 4.5625}
     newSize: {x: 18.1395, y: 4.9366593}

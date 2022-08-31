@@ -16,12 +16,20 @@ public class ConnectToServer : MonoBehaviourPunCallbacks
     public TMP_InputField nicknameField;
     public TMP_Text connectButtonText;
 
+    PlayAudio playAudio;
 
     bool quickTest;
     string quickTestRoomName = "quicktestroom";
 
-    public void StartConnection()
+    private void Start()
     {
+        playAudio = GetComponent<PlayAudio>();
+    }
+
+
+    public void OnClickStartConnection()
+    {
+        playAudio.play = true;
         quickTest = false;
         if (nicknameField.text.Length < 1) { return; }
 

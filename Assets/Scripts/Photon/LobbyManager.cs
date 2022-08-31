@@ -9,7 +9,10 @@ using System;
 
 public class LobbyManager : MonoBehaviourPunCallbacks
 {
-    
+    [Header("Sounds")]
+    AudioSource audioSource;
+    public AudioClip buttonSelect;
+    public AudioClip gameStart;
 
     [Header("Lobby Panel")]
     public GameObject lobbyPanel;
@@ -53,6 +56,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     private void Start()
     {
         Debug.Log("Lobby loaded");
+        audioSource = GetComponent<AudioSource>();
         selectedStageName = stageList.getList[0].name;
         if (!PhotonNetwork.InRoom)
         {
@@ -79,8 +83,6 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
     }
 
-    
-
     private void Update()
     {
         if (PhotonNetwork.IsMasterClient && PhotonNetwork.CurrentRoom.PlayerCount >= minPlayerCount)
@@ -96,13 +98,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     }
 
 
-    public void OnClickCreate()
-    {
-        if(createInput.text.Length > 0)
-        {
-            PhotonNetwork.CreateRoom(createInput.text, new RoomOptions() { MaxPlayers = 10, BroadcastPropsChangeToAll = true});
-        }
-    }
+    
 
     public void JoinRoom()
     {
@@ -152,10 +148,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         PhotonNetwork.JoinRoom(roomName);
     }
 
-    public void OnClickLeaveRoom()
-    {
-        PhotonNetwork.LeaveRoom();
-    }
+    
 
     public override void OnLeftRoom()
     {
@@ -210,11 +203,32 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         UpdatePlayerList();
     }
 
+
+
+
+    public void OnClickCreate()
+    {
+        if (createInput.text.Length > 0)
+        {
+            PlaySound(buttonSelect);
+            PhotonNetwork.CreateRoom(createInput.text, new RoomOptions() { MaxPlayers = 10, BroadcastPropsChangeToAll = true });
+        }
+    }
+
+    public void OnClickLeaveRoom()
+    {
+        PlaySound(buttonSelect);
+        PhotonNetwork.LeaveRoom();
+    }
+
+
     public event Action<Player, DuckSettings> SetPlayerChar;
     public void OnClickSetPlayerChar(DuckSettings settings)
     {
+        
         if (SetPlayerChar != null)
         {
+            PlaySound(buttonSelect);
             SetPlayerChar(PhotonNetwork.LocalPlayer, settings);
         }
     }
@@ -226,12 +240,14 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         Debug.Log("Stage set to: " + selectedStageName);
         if (SetRoomStage != null)
         {
+            PlaySound(buttonSelect);
             SetRoomStage(settings);
         }
     }
 
     public void OnClickStartButton()
     {
+        PlaySound(buttonSelect);
         int lifeCount = 3;
 
         ExitGames.Client.Photon.Hashtable roomProperties = PhotonNetwork.CurrentRoom.CustomProperties;
@@ -240,5 +256,11 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
         Debug.Log("Now loading stage: " + selectedStageName);
         PhotonNetwork.LoadLevel(selectedStageName);
+    }
+
+    void PlaySound(AudioClip clip)
+    {
+        audioSource.clip = clip;
+        audioSource.Play(0);
     }
 }

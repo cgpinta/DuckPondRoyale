@@ -6,6 +6,7 @@ using Photon.Pun;
 using Photon.Realtime;
 using System;
 using Unity.Burst.CompilerServices;
+using Random = UnityEngine.Random;
 
 public class PlayerController : Hittable, IPunObservable
 {
@@ -89,6 +90,10 @@ public class PlayerController : Hittable, IPunObservable
     public float onGroundSlowDown;
     public float shortJumpMultiplier;
     public float airSpeedSlowdown;
+
+    [Header("Sounds")]
+    AudioClip flap;
+
 
     float swimInvincibility;
 
@@ -694,13 +699,22 @@ public class PlayerController : Hittable, IPunObservable
     [PunRPC]
     public override void GetHit(float damage, float knockback, float hitstun, Vector2 direction, knockbackType type)
     {
+        
+        
         if (pView.IsMine)
         {
             if (!invincibleTimer.isInProgress())
             {
+                if (knockback != 0)
+                {
+                    int hitSoundIndex = Random.Range(0, pManager.hitSounds.getList.Count);
+                    pManager.PlaySound(pManager.hitSounds.getList[hitSoundIndex]);
+                    Debug.Log("Playing sound " + Time.time);
+                }
+
                 this.damage += damage;
                 float calculatedHitstun = 1;
-                if (hitstun > 0)
+                if (hitstun > 25)
                 {
                     calculatedHitstun = (this.damage + knockback + 1) * 0.04f;
                     hitstunTimer.setTimer(calculatedHitstun);
@@ -729,8 +743,9 @@ public class PlayerController : Hittable, IPunObservable
     public void Hit(float enemyCurDamage, float damage, float knockback)
     {
         float calculatedHitlag = (enemyCurDamage + damage + knockback + 1) * (1f / 100f);
-        Debug.Log("enemyDamage:"+enemyCurDamage+" Damage:"+damage+" knockback:"+knockback+" Hitlag:"+calculatedHitlag);
+        Debug.Log("damage from: "+ this.GetInstanceID() +" enemyDamage:"+enemyCurDamage+" Damage:"+damage+" knockback:"+knockback+" Hitlag:"+calculatedHitlag);
         hitlagTimer.setTimer(calculatedHitlag);
+        //AudioSource.Play
     }
 
     private void ActivateInput()

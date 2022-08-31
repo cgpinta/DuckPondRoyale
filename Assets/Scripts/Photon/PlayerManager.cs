@@ -27,6 +27,15 @@ public class PlayerManager : MonoBehaviour
 
     [Header("Win Screen")]
     public GameObject WinScreen;
+    public AudioClip buttonClick;
+    
+
+    [Header("Sounds")]
+    AudioSource audioSource;
+    public AudioList hitSounds;
+
+
+
 
     bool playersLoaded = false;
 
@@ -63,6 +72,7 @@ public class PlayerManager : MonoBehaviour
     private void Start()
     {
         Debug.Log("Stage loaded");
+        audioSource = GetComponent<AudioSource>();
         Camera cam = Camera.main;
         PlayerHUDCanvas.worldCamera = cam;
         WinScreen.SetActive(false);
@@ -349,7 +359,14 @@ public class PlayerManager : MonoBehaviour
 
     public void OnClickReturnToRoom()
     {
+        PlaySound(buttonClick);
         ResetPlayerProperties();
         PhotonNetwork.LoadLevel("Lobby");
+    }
+
+    public void PlaySound(AudioClip clip)
+    {
+        audioSource.clip = clip;
+        audioSource.Play(0);
     }
 }
