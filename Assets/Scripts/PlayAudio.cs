@@ -2,29 +2,28 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(AudioSource))]
 public class PlayAudio : MonoBehaviour
 {
-    public AudioClip audioClip;
+    public List<AudioClip> audioClips;
     public AudioSource audioSource;
-
-    public bool play;
 
 
     // Start is called before the first frame update
     void Start()
     {
-        play = false;
         audioSource = GetComponent<AudioSource>();
-        audioSource.clip = audioClip;
     }
 
-    // Update is called once per frame
-    void Update()
+    public void PlayClip(string soundname)
     {
-        if(play)
+        foreach(AudioClip clip in audioClips)
         {
-            audioSource.Play(0);
-            play = false;
+            if(clip.name == soundname)
+            {
+                audioSource.clip = clip;
+                audioSource.Play(0);
+            }
         }
     }
 }

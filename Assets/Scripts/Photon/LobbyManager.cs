@@ -76,7 +76,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
             if (PhotonNetwork.CurrentRoom.Name == quickTestRoomName)
             {
-                OnClickSetStage(stageList.getList[1]);
+                OnClickSetStage(stageList.getList[0]);
             }
         }
 

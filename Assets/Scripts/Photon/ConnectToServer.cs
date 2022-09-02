@@ -29,7 +29,6 @@ public class ConnectToServer : MonoBehaviourPunCallbacks
 
     public void OnClickStartConnection()
     {
-        playAudio.play = true;
         quickTest = false;
         if (nicknameField.text.Length < 1) { return; }
 

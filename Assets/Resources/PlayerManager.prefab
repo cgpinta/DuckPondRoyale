@@ -883,6 +883,7 @@ GameObject:
   - component: {fileID: 5867102818142921496}
   - component: {fileID: 5867102818142921497}
   - component: {fileID: -484819250123909015}
+  - component: {fileID: 5167375691377364693}
   m_Layer: 0
   m_Name: PlayerManager
   m_TagString: Untagged
@@ -930,7 +931,7 @@ MonoBehaviour:
   PlayerHUDCanvas: {fileID: 5867102818094625273}
   WinScreen: {fileID: 4637048815256280836}
   buttonClick: {fileID: 8300000, guid: a375c88793b99c944ac8734efc9297d6, type: 3}
-  hitSounds: {fileID: 11400000, guid: 3068affb18fa28048809348c45d77d5a, type: 2}
+  fightMusic: {fileID: 0}
 --- !u!82 &-484819250123909015
 AudioSource:
   m_ObjectHideFlags: 0
@@ -1027,6 +1028,18 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &5167375691377364693
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5867102818142921495}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4db8971d11062414e92e953b61a4d866, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5867102818279225801
 GameObject:
   m_ObjectHideFlags: 0

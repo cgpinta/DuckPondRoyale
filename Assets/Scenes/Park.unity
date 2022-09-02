@@ -156,7 +156,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5867102818142921496, guid: d6956703deb08204ab3353281e4f2ddb, type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5867102818142921496, guid: d6956703deb08204ab3353281e4f2ddb, type: 3}
       propertyPath: m_LocalPosition.x
@@ -198,6 +198,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5867102818142921497, guid: d6956703deb08204ab3353281e4f2ddb, type: 3}
+      propertyPath: fightMusic
+      value: 
+      objectReference: {fileID: 8300000, guid: 9231a4bd8d72b584db462d504dd4b067, type: 3}
     - target: {fileID: 5867102818142921497, guid: d6956703deb08204ab3353281e4f2ddb, type: 3}
       propertyPath: buttonClick
       value: 
@@ -481,7 +485,7 @@ Transform:
   m_Children:
   - {fileID: 1972869391}
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1827424304
 GameObject:

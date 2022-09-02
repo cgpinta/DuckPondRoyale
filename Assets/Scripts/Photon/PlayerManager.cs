@@ -27,12 +27,14 @@ public class PlayerManager : MonoBehaviour
 
     [Header("Win Screen")]
     public GameObject WinScreen;
-    public AudioClip buttonClick;
+    
     
 
     [Header("Sounds")]
-    AudioSource audioSource;
-    public AudioList hitSounds;
+    AudioPlayer audioPlayer;
+    public AudioClip fightMusic;
+    public AudioClip buttonClick;
+
 
 
 
@@ -72,7 +74,7 @@ public class PlayerManager : MonoBehaviour
     private void Start()
     {
         Debug.Log("Stage loaded");
-        audioSource = GetComponent<AudioSource>();
+        audioPlayer = GetComponent<AudioPlayer>();
         Camera cam = Camera.main;
         PlayerHUDCanvas.worldCamera = cam;
         WinScreen.SetActive(false);
@@ -133,7 +135,7 @@ public class PlayerManager : MonoBehaviour
                     {
                         LoadHUD();
                     }
-                    
+                    audioPlayer.PlaySound(fightMusic);
                     GameStart();
                 }
                 else if(countdownNextNumber + 1 == countdownText.Count)
@@ -359,14 +361,8 @@ public class PlayerManager : MonoBehaviour
 
     public void OnClickReturnToRoom()
     {
-        PlaySound(buttonClick);
+        audioPlayer.PlaySound(buttonClick);
         ResetPlayerProperties();
         PhotonNetwork.LoadLevel("Lobby");
-    }
-
-    public void PlaySound(AudioClip clip)
-    {
-        audioSource.clip = clip;
-        audioSource.Play(0);
     }
 }

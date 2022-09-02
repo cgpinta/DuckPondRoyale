@@ -21,6 +21,7 @@ public class PlayerController : Hittable, IPunObservable
     [SerializeField] GameObject sprite;
     
     [SerializeField] PlayerInput pInput;
+    AudioPlayer audioPlayer;
 
     [Header("DO NOT CONFIGURE")]
     public DeathDetection deathDetect;
@@ -79,25 +80,23 @@ public class PlayerController : Hittable, IPunObservable
     public float chargedCrouchedPeckLag;
     public float chargedHonkLag;
     public float chargedCrouchHonkLag;
-
-
-
-    [Header("Stats")]
-    //public float damage;
-    public int lives;
+    
 
     [Header("Other")]
+    public int lives;
     public float onGroundSlowDown;
     public float shortJumpMultiplier;
     public float airSpeedSlowdown;
+    public Vector2 movementVector;
 
     [Header("Sounds")]
-    AudioClip flap;
+    public AudioClip flap;
+    public AudioList hitSounds;
 
 
     float swimInvincibility;
 
-    public Vector2 movementVector;
+    
     private bool inputJump, inputPeck, inputHonk;
     bool inAttack;
     bool jumpCancel;
@@ -165,10 +164,11 @@ public class PlayerController : Hittable, IPunObservable
         rb = GetComponent<Rigidbody2D>();
         footCollider.sharedMaterial = matNoFriction;
         pView = GetComponent<PhotonView>();
+        audioPlayer = GetComponent<AudioPlayer>();
 
         onGroundSlowDown = 0.955f;
         shortJumpMultiplier = .75f;
-        airSpeedSlowdown = .5f;
+        airSpeedSlowdown = 1;
 
         rb.simulated = true;
         canControl = true;
@@ -705,10 +705,10 @@ public class PlayerController : Hittable, IPunObservable
         {
             if (!invincibleTimer.isInProgress())
             {
-                if (knockback != 0)
+                if (damage != 0)
                 {
-                    int hitSoundIndex = Random.Range(0, pManager.hitSounds.getList.Count);
-                    pManager.PlaySound(pManager.hitSounds.getList[hitSoundIndex]);
+                    int hitSoundIndex = Random.Range(0, hitSounds.getList.Count);
+                    audioPlayer.PlaySound(hitSounds.getList[hitSoundIndex]);
                     Debug.Log("Playing sound " + Time.time);
                 }
 
@@ -746,6 +746,7 @@ public class PlayerController : Hittable, IPunObservable
         Debug.Log("damage from: "+ this.GetInstanceID() +" enemyDamage:"+enemyCurDamage+" Damage:"+damage+" knockback:"+knockback+" Hitlag:"+calculatedHitlag);
         hitlagTimer.setTimer(calculatedHitlag);
         //AudioSource.Play
+
     }
 
     private void ActivateInput()
