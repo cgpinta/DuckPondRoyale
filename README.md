@@ -21,9 +21,3 @@ Gamepad controls below are specified using the Xbox layout but should work for a
 | "Swim" (Dash) | L    | B |
 | Honk      | I        | Y |
 | Shield    | LShift   | Left Trigger|
-
-WASD - Move
-J - Jump
-K - Peck
-L - "Swim" this is a simple horizontal dash
-I - Honk
